@@ -16,7 +16,10 @@
                 <div class="logo">
                     <h1>TOME<span>RU!</span></h1>
                 </div>
-                <ul class="nav-links">
+                <button class="mobile-menu-btn" id="mobileMenuBtn">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <ul class="nav-links" id="navLinks">
                     <li><a href="#features">Características</a></li>
                     <li><a href="#how-it-works">Cómo funciona</a></li>
                     <li><a href="#testimonials">Testimonios</a></li>
@@ -170,7 +173,7 @@
                     <div class="testimonial-author">
                         <div class="author-img">FE</div>
                         <div class="author-info">
-                            <h4>Fabiana Escalante</h4>
+                            <h4>(nombre)</h4>
                             <p>Coordinadora Académica</p>
                         </div>
                     </div>
@@ -180,7 +183,7 @@
                     <div class="testimonial-author">
                         <div class="author-img">ER</div>
                         <div class="author-info">
-                            <h4>Elvio Rossi</h4>
+                            <h4>(nombre)</h4>
                             <p>Director de Recursos Docentes</p>
                         </div>
                     </div>
@@ -190,7 +193,7 @@
                     <div class="testimonial-author">
                         <div class="author-img">MC</div>
                         <div class="author-info">
-                            <h4>María Cortez</h4>
+                            <h4>(nombre)</h4>
                             <p>Docente de Secundaria</p>
                         </div>
                     </div>
@@ -256,5 +259,39 @@
             </div>
         </div>
     </footer>
+
+    <script>
+        // Mobile Menu Toggle
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const navLinks = document.getElementById('navLinks');
+        
+        mobileMenuBtn.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+        });
+        
+        // Close menu when clicking a link
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                navLinks.classList.remove('active');
+            });
+        });
+        
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+    </script>
 </body>
 </html>

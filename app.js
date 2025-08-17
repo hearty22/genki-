@@ -10,11 +10,9 @@ const app = express();
 const PORT = process.env.PORT;
 
 app.use(express.json());
-app.use(express.static("public"));
 
-app.get("/",(req, res)=>{
-    res.send("/public/index.html");
-})
+
+app.get("/",(req, res)=>{})
 
 app.listen(PORT, async ()=>{
     await db_conect()
