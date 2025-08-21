@@ -10,7 +10,11 @@ const app = express();
 const PORT = process.env.PORT;
 
 app.use(express.json());
+app.use(express.static("public"))
 
+app.get("/", (req, res)=>{
+    res.send("./public/index.hmtl");
+});
 
 app.get("/",(req, res)=>{})
 
