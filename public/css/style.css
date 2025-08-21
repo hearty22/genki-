@@ -1,7 +1,7 @@
         :root {
             --primary: #7E57C2;
             --primary-light: #B39DDB;
-            --primary-dark: #5E35B1;
+            --primary-dark: #5e35b1;
             --secondary: #FFD54F;
             --accent: #26A69A;
             --accent-light: #80CBC4;
@@ -644,3 +644,7 @@
                 padding: 25px 15px;
             }
         }
+
+
+
+
