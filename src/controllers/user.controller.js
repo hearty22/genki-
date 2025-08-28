@@ -1,5 +1,5 @@
 import { usersModel } from "../models/users.model.js";
-
+const errReg = false;
 export const getUsers = async (req,res)=>{
     try {
         const users = await usersModel.findAll()
@@ -17,9 +17,12 @@ export const createUser = async (req, res)=>{
         if(!password){return res.status(400).json({message:"campo no rellenado: password"})}
         const newUser = new usersModel({user_name, email, password})
         newUser.save()
-        return res.status(201).json({message:`usuario creado: ${newUser}`});
-
+        res.status(201).json({message:`usuario creado: ${newUser}`});
+        errReg = false
     } catch (error) {
-        res.status(500).json({error: "error interno al crear el usuario"})
+        res.status(500).json({error: "error interno al crear el usuario"});
+        errReg = true
     }
 }
+
+export default errReg;
