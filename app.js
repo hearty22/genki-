@@ -3,6 +3,7 @@ import { configDotenv } from "dotenv";
 //importacion de la base de datos
 import "./src/models/users.model.js";
 import { db_conect } from "./src/database/db.js";
+import userRouter from "./src/routes/user.routes.js";
 
 configDotenv();
 
@@ -11,6 +12,8 @@ const PORT = process.env.PORT;
 
 app.use(express.json());
 app.use(express.static("public"))
+
+app.use("/api", userRouter)
 
 app.get("/", (req, res)=>{
     res.send("./public/index.hmtl");
