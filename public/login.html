@@ -1,42 +1,42 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
- 
   <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
-  
-  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
- 
   <link rel="stylesheet" href="./css/login.style.css">
- 
   <title>Login - genki!</title>
 </head>
 <body>
-   <div class="container">
-     <div class="login-container">
-       <div class="register">
-         <h2>Registrarse</h2>
-         <form action="" id="register-form"> 
-           <input type="text" placeholder="Nombre" class="nombre" id="name">
-           <input type="text" placeholder="Correo" class="correo" id="email">
-           <input type="password" placeholder="Contraseña" class="pass" id="pass">
-           <input type="password" placeholder="Confirma contraseña" class="repass" id="repass">
-           <input type="submit" class="submit" value="REGISTRARSE">
-         </form>
-         <div class="register" id="message"></div>
-       </div>
-       <div class="login">
-         <h2>Iniciar Sesión</h2>
-         <div class="login-items">
-           <button class="fb"><i class="fab fa-facebook-f"></i> Acceder con Facebook</button>
-           <button class="tw"><i class="fab fa-twitter"></i> Acceder con Twitter</button>
-           <button class="correo"><i class="fas fa-envelope"></i> Acceder con Correo</button>
-         </div>
-       </div>
-     </div>
-   </div>
-   <script src="./js/login.js"></script>
+  <div class="container">
+    <div class="login-container">
+      <div class="form-toggle">
+        <button id="show-login" class="toggle-btn">Iniciar Sesión</button>
+        <button id="show-register" class="toggle-btn">Registrarse</button>
+      </div>
+      <div id="login-form-container" class="">
+        <h2>Iniciar Sesión</h2>
+        <form id="login-form">
+          <input type="text" placeholder="Correo" class="Correo" id="loginemail">
+          <input type="password" placeholder="Contraseña" class="pass" id="loginpass">
+          <div id="message-login"></div>
+          <input type="submit" class="submit" value="INICIAR SESION">
+        </form>
+
+      </div>
+      <div id="register-form-container" class="">
+        <h2>Registrarse</h2>
+        <form id="register-form">
+          <input type="text" placeholder="Nombre" class="nombre" id="name">
+          <input type="text" placeholder="Correo" class="correo" id="email">
+          <input type="password" placeholder="Contraseña" class="pass" id="pass">
+          <input type="password" placeholder="Confirma contraseña" class="repass" id="repass">
+          <div id="message-register"></div>
+          <input type="submit" class="submit" value="REGISTRARSE">
+        </form>
+      </div>
+    </div>
+  </div>
+  <script src="./js/login.js"></script>
 </body>
 </html>
