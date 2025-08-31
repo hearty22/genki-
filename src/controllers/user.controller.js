@@ -2,7 +2,7 @@ import { usersModel } from "../models/users.model.js";
 import { configDotenv } from "dotenv";
 import jwt from "jsonwebtoken";
 configDotenv()
-const SECRET = "hola";
+const SECRET = process.env.JWT;
 
 export const getUsers = async (req,res)=>{
     try {
@@ -48,7 +48,7 @@ export const loginUser = async (req, res)=>{
         user.update({
             gender: gender
         })
-        // console.log(SECRET);
+        console.log(SECRET);
         const token = jwt.sign({
             id: user.id,
             user_name: user.user_name,

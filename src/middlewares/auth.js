@@ -1,5 +1,6 @@
 import jwt from "jsonwebtoken";
-const SECRET = "hola";
+import { configDotenv } from "dotenv"; configDotenv()
+const SECRET = process.env.JWT;
 
 export const authMiddleware = async (req, res, next) =>{
     const authHeader = req.headers.authorization;
