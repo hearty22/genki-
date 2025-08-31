@@ -23,5 +23,9 @@ export const usersModel =  sequelize.define("users",{
     profile_photo:{
         type: DataTypes.BLOB("long"),
         allowNull: true
+    },
+    gender:{
+        type: DataTypes.STRING(),
+        allowNull: true
     }
 },{timestamps:false});

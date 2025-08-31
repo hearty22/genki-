@@ -26,6 +26,7 @@ document.getElementById("login-form").addEventListener("submit", async (e)=>{
     e.preventDefault()
     console.log(e.target.children.loginemail.value);
     console.log(e.target.children.loginpass.value)
+    console.log(e.target.children.gender.value)
 
     const mensaje = document.getElementById("message-login");
     const res = await fetch("http://localhost:3000/api/login",{
@@ -35,18 +36,21 @@ document.getElementById("login-form").addEventListener("submit", async (e)=>{
         },
         body: JSON.stringify({
             email: e.target.children.loginemail.value,
-            password: e.target.children.loginpass.value
+            password: e.target.children.loginpass.value,
+            gender: e.target.children.gender.value
         })
 
     });
     const data = await res.json();
     if (res.ok) {
-        console.log("logueado cabro")
-        mensaje.textContent = "Logeado cabro";
+        // console.log(data.token);
+        // console.log("logueado cabro")
+        mensaje.textContent = data.message || "credenciales validas";
         mensaje.style.color = "green";
+        localStorage.setItem("token", data.token)
         window.location.href = "./custom.profile.html"
     } else {
-        console.log("error mi cabro")
+        // console.log("error mi cabro")
         mensaje.textContent = data.message || data.error || "credenciales invalidas"
         mensaje.style.color = "red"
     }

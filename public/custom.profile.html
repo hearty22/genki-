@@ -3,31 +3,34 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Personalización de Perfil</title>
+  <title>Personaliza tu Foto de Perfil</title>
   <link rel="stylesheet" href="./css/custom.profile.css">
 </head>
 <body>
   <div class="container">
-    <h1>Personalización de Perfil</h1>
-    <div class="preview">
-      <img id="currentPFP" src="" alt="Foto de Perfil">
+    <h1>Personaliza tu Foto de Perfil</h1>
+    <div class="profile-section">
+      <div class="pfp-preview" id="pfpPreview" style="border: 4px solid #4ecdc4;">
+        <img id="currentPFP" src="./img/pfp-default.webp" alt="Foto de Perfil" />
+      </div>
+      <div class="username" id="username">Nombre de Usuario</div>
+      <!-- <div class="color-picker-section">
+        <label for="frameColor">Color del Marco:</label>
+        <input type="color" id="frameColor" name="frameColor" value="#4ecdc4">
+      </div> -->
+      <!-- Formulario para seleccionar género -->
+        <form id="pfpForm"><br>
+          <label for="profilePicture" class="custom-file-label">
+            <span>📷 Agregar Foto de Perfil</span>
+            <input type="file" id="profilePicture" name="profilePicture" accept="image/jpeg,image/png">
+          </label>
+          <input type="submit" value="HECHO">
+        </form>
+      </form>
     </div>
-    <form id="profileForm">
-      <div class="form-group">
-        <label for="username">Nombre de Usuario</label>
-        <input type="text" id="username" name="username" required>
-      </div>
-      <div class="form-group">
-        <label for="email">Email</label>
-        <input type="email" id="email" name="email" required>
-      </div>
-      <div class="form-group">
-        <label for="profilePicture">Foto de Perfil</label>
-        <input type="file" id="profilePicture" name="profilePicture" accept="image/jpeg,image/png">
-      </div>
-      <input type="hidden" id="userId" name="userId" value="1"> <!-- Reemplaza con el ID del usuario -->
-      <input type="submit" value="Guardar Cambios">
-    </form>
   </div>
+  <script src="./js/custom.profile.js"></script>
+  
+    
 </body>
 </html>

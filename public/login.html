@@ -19,6 +19,13 @@
         <form id="login-form">
           <input type="text" placeholder="Correo" class="Correo" id="loginemail">
           <input type="password" placeholder="Contraseña" class="pass" id="loginpass">
+        <label for="gender" style="color: #4ecdc4; font-weight: 500; margin-bottom: 6px;">Género:</label>
+        <select id="gender" name="gender" style="padding: 8px 12px; border-radius: 8px; border: 1.5px solid #4ecdc4; font-size: 1rem; color: #22223b;">
+          <option value="">Selecciona tu género</option>
+          <option value="masculino">Masculino</option>
+          <option value="femenino">Femenino</option>
+          <option value="otro">Otro</option>
+        </select>
           <div id="message-login"></div>
           <input type="submit" class="submit" value="INICIAR SESION">
         </form>

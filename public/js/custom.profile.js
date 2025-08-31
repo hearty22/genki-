@@ -1,0 +1,39 @@
+
+// Mostrar preview de la imagen seleccionada
+    const profilePictureInput = document.getElementById('profilePicture');
+    const currentPFP = document.getElementById('currentPFP');
+    const pfpPreview = document.getElementById('pfpPreview');
+    const frameColorInput = document.getElementById('frameColor');
+
+    profilePictureInput.addEventListener('change', function(e) {
+        const file = e.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(evt) {
+                currentPFP.src = evt.target.result;
+            }
+            reader.readAsDataURL(file);
+        } else {
+            currentPFP.src = "./img/pfp-default.webp";
+        }
+    });
+    
+    document.getElementById("pfpForm").addEventListener("submit", async (e)=>{
+        e.preventDefault();
+        const formData = new FormData();
+        const file = document.getElementById("profilePicture").files[0];
+
+        if (file){formData.append("profilePicture", file);};
+        const token = localStorage.getItem("token")
+        console.log(token);
+
+        const res = await fetch("http://localhost:3000/api/profile",{
+            method: "POST",
+            headers:{"Authorization": `Bearer ${token}`},
+            body: formData
+        });
+        console.log(2)
+        const data = await res.json();
+        if(res.ok){alert("Foto de perfil guardada")}
+        else{alert("error al guardar la foto")}
+    })
