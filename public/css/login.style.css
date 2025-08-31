@@ -17,6 +17,7 @@ body {
 
 /* Caja principal con sombra y bordes redondeados */
 .login-container {
+  position: relative;
   background: #fff;
   border-radius: 24px;
   box-shadow: 0 8px 32px rgba(255, 107, 107, 0.12);
@@ -28,6 +29,7 @@ body {
   max-width: 400px;
   width: 100%;
   overflow: hidden;
+  min-height: 480px; 
 }
 
 /* Toggle de formularios */
@@ -59,15 +61,31 @@ body {
 /* Contenedores de formularios */
 #login-form-container,
 #register-form-container {
-  width: 100%;
-  padding: 36px 32px 24px 32px;
+  /* width: 100%;
   box-sizing: border-box;
-  display: none;
+  display: none; */
+  padding: 36px 32px 24px 32px;
+  opacity: 0;
+  transform: translateY(30px);
+  pointer-events: none;
+  transition: opacity 0.4s cubic-bezier(.4,0,.2,1), transform 0.4s cubic-bezier(.4,0,.2,1);
+  position: absolute;
+  width: 100%;
+  left: 0;
+  top: 80px; /* Ajusta según tu diseño */
+  z-index: 1;
+  background: #fff;
+  border-radius: 0 0 24px 24px;
+  box-sizing: border-box;
 }
 
 #login-form-container.active,
 #register-form-container.active {
   display: block;
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+  z-index: 2;
 }
 
 h2 {
@@ -96,7 +114,6 @@ input[type="password"] {
   transition: border 0.2s, box-shadow 0.2s;
   box-shadow: 0 2px 8px rgba(78, 205, 196, 0.04);
 }
-
 input[type="text"]:focus,
 input[type="password"]:focus {
   outline: none;

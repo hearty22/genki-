@@ -19,5 +19,9 @@ export const usersModel =  sequelize.define("users",{
     password:{
         type: DataTypes.STRING(200),
         allowNull: false
+    },
+    profile_photo:{
+        type: DataTypes.BLOB("long"),
+        allowNull: true
     }
 },{timestamps:false});

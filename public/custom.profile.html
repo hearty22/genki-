@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Personalización de Perfil</title>
+  <link rel="stylesheet" href="./css/custom.profile.css">
+</head>
+<body>
+  <div class="container">
+    <h1>Personalización de Perfil</h1>
+    <div class="preview">
+      <img id="currentPFP" src="" alt="Foto de Perfil">
+    </div>
+    <form id="profileForm">
+      <div class="form-group">
+        <label for="username">Nombre de Usuario</label>
+        <input type="text" id="username" name="username" required>
+      </div>
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" required>
+      </div>
+      <div class="form-group">
+        <label for="profilePicture">Foto de Perfil</label>
+        <input type="file" id="profilePicture" name="profilePicture" accept="image/jpeg,image/png">
+      </div>
+      <input type="hidden" id="userId" name="userId" value="1"> <!-- Reemplaza con el ID del usuario -->
+      <input type="submit" value="Guardar Cambios">
+    </form>
+  </div>
+</body>
+</html>

@@ -34,8 +34,16 @@ export const loginUser = async (req, res)=>{
         if(!email){return res.status(400).json({message:"campo no rellenado: email"})}
         if(!password){return res.status(400).json({message: "campo no rellenado: password"})}
         
-        const userexist = await usersModel.findOne({where:{email}})
-        if(!userexist){return res.status(400).json({message:"el email no esta asociado a la pagina"})}
+        const userexist = await usersModel.findOne({
+            where:{
+                email:email,
+                password:password
+            }})
+        if(!userexist){return res.status(400).json({message:"credenciales invalidas"})}
+
+
+
+
         res.status(200).json({message:"el email existe cabro"});
 
     } catch (error) {

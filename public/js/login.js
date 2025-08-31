@@ -41,12 +41,13 @@ document.getElementById("login-form").addEventListener("submit", async (e)=>{
     });
     const data = await res.json();
     if (res.ok) {
-        console.log("logeado cabro")
+        console.log("logueado cabro")
         mensaje.textContent = "Logeado cabro";
         mensaje.style.color = "green";
+        window.location.href = "./custom.profile.html"
     } else {
         console.log("error mi cabro")
-        mensaje.textContent = data.message || data.error || "no hay nada"
+        mensaje.textContent = data.message || data.error || "credenciales invalidas"
         mensaje.style.color = "red"
     }
 })
