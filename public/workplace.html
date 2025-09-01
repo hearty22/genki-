@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../css/w.css">
+    <link rel="stylesheet" href="./css/w.css">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Raleway:wght@300;400;600;700&display=swap" rel="stylesheet">
     <title>Menú principal</title>
@@ -55,26 +55,54 @@
                     <a href="index.html">
                         <i class="bx bx-log-out icon"></i>
                         <span class="text nav-text">Salir</span >
-                    </a>
-                </li>
-                <li class="mode">
-                    <div class="sun-moon">
-                        <i class="bx bx-moon icon moon"></i>
-                        <i class="bx bx-sun icon sun"></i>
-                    </div>
-                    <span class="mode-text text">Modo oscuro</span>
-                    <div class="toggle-switch">
-                        <span class="switch"></span>
-                    </div>
-                </li>
+                        </a>
+                    </li>
+                    <li class="mode">
+                        <div class="sun-moon">
+                            <i class="bx bx-moon icon moon"></i>
+                            <i class="bx bx-sun icon sun"></i>
+                        </div>
+                        <span class="mode-text text">Modo Oscuro</span>
+                        <div class="toggle-switch">
+                            <span class="switch"></span>
+                        </div>
+                    </li>
             </div>
         </div>
     </nav>
+    <div class="navbar">
+        <ul>
+            <li class="calendario">
+                <a href="#acavaelcalendario">
+                    <i class="bx bx-calendar-alt"></i>
+                </a>
+            </li>
+            <li class="profile" id="profileBtn">
+                <i class="bx bx-user-circle"></i>
+                <div class="profile-dropdown" id="profileDropdown">
+                    <div class="pd-header">
+                        <img src="https://via.placeholder.com/64" alt="Mi perfil">
+                        <div class="pd-name"><strong>Nombre Apellido</strong></div>
+                    </div>
+                    <hr>
+                    <a href="#" class="pd-link">
+                        <i class="bx bx-user"></i>
+                        <span class="text-profile">Tu perfil</span>
+                    </a>
+                    <a href="#" class="pd-link">
+                        <i class="bx bx-cog"></i>
+                        <span class="text-profile">Configuración</span>
+                    </a>
+                    <button class="button-logout">Cerrar sesión</button>
+                </div>
+            </li>
+        </ul>
+    </div>
     <section class="home">
         <div class="text">
             Dashboard
         </div>
-    </section>
-    <script src="../js/script.js"></script>
+</section>
+    <script src="./js/script.js"></script>
 </body>
 </html>
