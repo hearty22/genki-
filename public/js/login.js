@@ -9,7 +9,8 @@ document.getElementById("register-form").addEventListener("submit",async (e)=>{
         body: JSON.stringify({
             user_name: e.target.children.name.value,
             email: e.target.children.email.value,
-            password: e.target.children.pass.value
+            password: e.target.children.pass.value,
+            gender: e.target.children.gender.value
         })
     
     });
@@ -26,7 +27,6 @@ document.getElementById("login-form").addEventListener("submit", async (e)=>{
     e.preventDefault()
     console.log(e.target.children.loginemail.value);
     console.log(e.target.children.loginpass.value)
-    console.log(e.target.children.gender.value)
 
     const mensaje = document.getElementById("message-login");
     const res = await fetch("http://localhost:3000/api/login",{
@@ -37,7 +37,6 @@ document.getElementById("login-form").addEventListener("submit", async (e)=>{
         body: JSON.stringify({
             email: e.target.children.loginemail.value,
             password: e.target.children.loginpass.value,
-            gender: e.target.children.gender.value
         })
 
     });

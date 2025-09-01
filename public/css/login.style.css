@@ -29,7 +29,7 @@ body {
   max-width: 400px;
   width: 100%;
   overflow: hidden;
-  min-height: 480px; 
+  min-height: 90vh; 
 }
 
 /* Toggle de formularios */

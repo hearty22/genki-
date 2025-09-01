@@ -15,14 +15,16 @@ export const getUsers = async (req,res)=>{
 
 export const createUser = async (req, res)=>{
     try {
-        const {user_name, email, password}  = req.body
+        const {user_name, email, password, gender}  = req.body
         if(!user_name){return res.status(400).json({message:"campo no rellenado: user_name"})}
         if(!email){return res.status(400).json({message:"campo no rellenado: email"})}
         if(!password){return res.status(400).json({message:"campo no rellenado: password"})}
+        if(!gender){return res.status(400).json({message:"campo no rellenado: genero"})}
+
         const emailexist = await usersModel.findOne({where: {email}})
         if(emailexist){return res.status(400).json({message:"el email ingresado ya esta asociado "})};
 
-        const newUser = new usersModel({user_name, email, password})
+        const newUser = new usersModel({user_name, email, password, gender})
         newUser.save()
         res.status(201).json({message:`usuario creado: ${newUser}`});
     
@@ -34,10 +36,9 @@ export const createUser = async (req, res)=>{
 
 export const loginUser = async (req, res)=>{
     try {
-        const {email, password, gender} = req.body
+        const {email, password} = req.body
         if(!email){return res.status(400).json({message:"campo no rellenado: email"})}
         if(!password){return res.status(400).json({message: "campo no rellenado: contraseña"})}
-        if(!gender){return res.status(400).json({message:"campo no rellenado: genero"})}
         
         const user = await usersModel.findOne({
             where:{
@@ -45,9 +46,7 @@ export const loginUser = async (req, res)=>{
                 password:password
             }})
         if(!user){return res.status(400).json({message:"credenciales invalidas"})}
-        user.update({
-            gender: gender
-        })
+
         console.log(SECRET);
         const token = jwt.sign({
             id: user.id,
