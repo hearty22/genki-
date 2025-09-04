@@ -1,0 +1,556 @@
+* {
+    margin: 0;
+    padding: 0;
+    font-family: Poppins, sans-serif;
+    box-sizing: border-box;
+}
+
+:root {
+    --body-color:#9B27B00D;
+    --sidebar-color:#ffffff;
+    --primary-color:#9C27B0;
+    --primary-color-light: #9B27B00D;
+    --toggle-color: #DDDDDD;
+    --text-color: #707070;
+
+    --tran-03: all 0.2s ease;
+    --tran-04: all 0.3s ease;
+    --tran-05: all 0.4s ease;
+}
+
+body {
+    min-height: 100vh;
+    background-color: var(--body-color);
+    transition: var(--tran-05);
+}
+
+::selection {
+    background-color: var(--primary-color);
+    color: var(--sidebar-color);
+}
+
+body.dark {
+    --body-color: #18191A;
+    --sidebar-color: #242526;
+    --primary-color-light: #3A3B3C;
+    --toggle-color: #FFFFFF;
+    --text-color: #CCCCCC;
+}
+
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 250px;
+    padding: 10px 14px;
+    background: var(--sidebar-color);
+    transition: var(--tran-05);
+    z-index: 100;
+}
+
+.sidebar.close {
+    width: 88px;
+}
+
+.sidebar li {
+    height: 50px;
+    list-style: none;
+    display: flex;
+    align-items: center;
+    margin-top: 3px;
+}
+
+.sidebar header .image,
+.sidebar .icon {
+    min-width: 60px;
+    border-radius: 1vh;
+}
+
+.sidebar .icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 60px;
+    border-radius: 1vh;
+    height: 100%;
+    font-size: 2.70vh;
+}
+
+.sidebar .text,
+.sidebar .icon {
+    color: var(--text-color);
+    transition: var(--tran-03);
+}
+
+.sidebar .text{
+    font-size: 17px;
+    font-weight: 500;
+    white-space: nowrap;
+    opacity: 1;
+}
+
+.sidebar.close .text {
+    opacity: 0;
+}
+
+.sidebar header {
+    position: relative;
+}
+
+.sidebar header .logo {
+    display: flex;
+    flex-direction: column;
+}
+
+.genki {
+    margin-top: 2px;
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.workplace {
+    font-size: 16px;
+    margin-top: -2px;
+    display: block;
+}
+
+.sidebar header .image {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.sidebar header .image img {
+    width: 40px;
+    border-radius: 6px;
+}
+
+.sidebar header .toggle {
+    position: absolute;
+    top: 20%;
+    right: 0px;
+    height: 35px;
+    width: 35px;
+    background-color: var(--primary-color);
+    color: var(--sidebar-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 35px;
+    cursor: pointer;
+    transition: var(--tran-05);
+    border-radius: 1vh;
+}
+
+body.dark .sidebar header .toggle{
+    color: var(--text-color);
+}
+
+.sidebar.close .toggle {
+    width: 100%;
+    top: 20%;
+}
+
+.sidebar .menu {
+    margin-top: 40px;
+}
+
+.sidebar li.search-box {
+    border-radius:  1vh;
+    background-color: var(--primary-color-light);
+    cursor: pointer;
+    transition: var(--tran-05);
+}
+
+.sidebar li.search-box input {
+    height: 100%;
+    width: 100%;
+    outline: none;
+    border: none;
+    background-color: var(--primary-color-light);
+    color: var(--text-color);
+    border-radius: 0.5vh;
+    font-size: 2vh;
+    font-weight: 500;
+    transition: var(--tran-05);
+}
+
+.sidebar li a {
+    list-style: none;
+    height: 100%;
+    background-color: transparent;
+    display: flex;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+    border-radius: 1vh;
+    text-decoration: none;
+    transition: var(--tran-05);
+}
+
+.sidebar li a:hover{
+    background-color: var(--primary-color);
+}
+
+.sidebar li a:hover .icon,
+.sidebar li a:hover .text {
+    color: var(--sidebar-color);
+}
+
+.sidebar .menu-bar {
+    height: calc(100% - 55px);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    overflow-y: scroll;
+}
+
+.menu-bar::-webkit-scrollbar {
+    display: none;
+}
+
+.sidebar .menu-bar .mode {
+    border-radius: 1vh;
+    background-color: var(--primary-color-light);
+    position: relative;
+    transition: var(--tran-05);
+}
+
+.menu-bar .mode .sun-moon{
+    height: 7vh;
+    width: 9vh;
+}
+
+.mode .sun-moon i {
+    position: absolute;
+}
+
+.mode .sun-moon i.sun {
+    opacity: 0;
+}
+
+body.dark .mode .sun-moon i.sun {
+    opacity: 1;
+}
+
+body.dark .mode .sun-moon i.moon {
+    opacity: 0;
+}
+
+.menu-bar .bottom-content .toggle-switch {
+    position: absolute;
+    right: 0;
+    height: 100%;
+    min-width: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.toggle-switch .switch {
+    position: relative;
+    height: 22px;
+    width: 40px;
+    border-radius: 25px;
+    background-color: var(--toggle-color);
+    transition: var(--tran-05);
+}
+
+.switch::before{
+    content: '';
+    position: absolute;
+    height: 15px;
+    width: 15px;
+    border-radius: 50%;
+    left: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: var(--sidebar-color);
+    transition: var(--tran-04);
+}
+
+body.dark .switch::before{
+    left: 20px;
+}
+
+.home .text {
+    font-size: 30px;
+    font-weight: 500;
+    color: var(--text-color);
+    padding: 12px 60px;
+}
+
+.sidebar.sidebar.close ~ .home {
+    left: 78px;
+    height: 100vh;
+    width: calc(100% - 78px);
+}
+
+body.dark .home .text {
+    color: var(--text-color);
+}
+
+/* navbar
+ */
+
+.navbar {
+    width: calc(100% - 250px);
+    margin-left: 250px;
+    height: 60px;
+    background: var(--primary-color);
+    display: flex;
+    align-items: center;
+    padding: 0 20px;
+    color: #fff;
+    position: relative;
+    top: 0;
+    left: 0;
+    z-index: 50;
+    transition: var(--tran-05);
+}
+
+.sidebar.close ~ .navbar {
+    width: calc(100% - 88px);
+    margin-left: 88px;
+}
+
+.navbar ul {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    justify-content: flex-end;
+    width: 100%;
+}
+
+.navbar .profile {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.navbar .profile:focus {
+    outline: 2px solid rgba(0,0,0,0.12);
+    outline-offset: 2px;
+}
+
+.navbar ul i {
+    font-size: 26px;
+    line-height: 2;
+    color: #ffffff;
+}
+
+.pd-link i{
+    color: #FFFFFF;
+    line-height: 2;
+    font-size: 26px;
+}
+
+.profile-dropdown {
+    position: absolute;
+    top: calc(100% + 15px);
+    right: 0;
+    height: 400px;
+    width: 300px;
+    background: #FFFFFF;
+    border-radius: 10px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+    padding: 20px 20px;
+    transition: opacity 0.3s, transform 0.3s;
+    transform-origin: top right;
+    transform: translateY(-10px);
+    pointer-events: none;
+    opacity: 0;
+}
+
+.profile-dropdown.open {
+    display: block;
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+}
+
+.pd-name {
+    color: var(--primary-color);
+    font-size: 25px;
+}
+
+.button-logout {
+    background-color: rgba(0,0,0,0);
+    color: var(--primary-color);
+    border-radius: 60px;
+    border: 2px solid var(--primary-color);
+    width: 170px;
+    height: 60px;
+    display: inline-block;
+    padding: 10px;
+    transition: var(--tran-04);
+    margin-top: 16px;
+    font-size: 20px;
+}
+
+.button-logout:hover {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.pd-header {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+}
+
+.profile-pic {
+    border: 2px solid var(--primary-color);
+    border-radius: 50%;
+    width: 120px;
+    height: 120px;
+    overflow: hidden;
+    background: rgba(0,0,0,0);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 10px;
+}
+
+.profile-pic img {
+    width: 110%;
+    height: 110%;
+    object-fit: cover;
+}
+
+.pd-link {
+    font-size: 19px;
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+}
+
+hr {
+    margin-top: 10px;
+}
+
+.profile-dropdown a {
+    text-decoration: none;
+}
+
+.home {
+    min-height: calc(100vh - 60px);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    padding-top: 0;
+    box-sizing: border-box;
+    position: relative;
+    top: 0;
+    left: 250px;
+    width: calc(100% - 250px);
+    background-color: var(--body-color);
+    transition: var(--tran-05);
+}
+
+.inicio {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 32px;
+    margin: 0 auto;
+    width: fit-content;
+}
+
+.inicio img {
+    object-fit: cover;
+    width: 120px;
+    height: 80px;
+    border-radius: 8px;
+    margin-bottom: 0;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.07);
+}
+
+.bienvenida {
+    width: 100%;
+    text-align: center;
+    margin-bottom: 40px;
+}
+.bienvenida h1 {
+    font-family: 'Raleway', cursive;
+    font-size: 2.5em;
+    font-weight: 700;
+    color: var(--primary-color);
+}
+.bienvenida .nombre {
+    font-style: italic;
+    color: var(--text-color);
+}
+
+.clase1, .clase2, .claseagregar {
+    border: 2px solid var(--primary-color);
+    border-radius: 18px;
+    background: #fff;
+    box-shadow: 0 2px 8px rgba(156,39,176,0.08);
+    padding: 24px 16px;
+    width: 220px;
+    height: 260px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+.clase1:hover, .clase2:hover{
+    box-shadow: 0 4px 16px rgba(156,39,176,0.18);
+    transform: translateY(-10px);
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+/*toda la logica dejamelo a mi, mi bebé
+<3*/
+ .claseagregar:hover {
+    box-shadow: 0 4px 16px rgba(156,39,176,0.18);
+    transform: scale(1.08);
+    transition: transform 0.3s;
+ }
+ 
+.instituto-titulo {
+    font-family: 'Raleway', cursive;
+    font-size: 1.2em;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: var(--primary-color);
+}
+.instituto-clases {
+    font-size: 1em;
+    color: var(--text-color);
+    margin-top: 10px;
+}
+.claseagregar .text {
+    font-family: 'Raleway', cursive;
+    font-size: 1.1em;
+    color: var(--text-color);
+}
+
+.claseagregar {
+    justify-content: center;
+    align-items: center;
+    background: var(--primary-color-light);
+    border-style: dashed;
+} 
+/* hola mi amor JAJS*/
+/* eso si, despues puede que refactorice el frontend para modificar el doom content*/
+.claseagregar i {
+    font-size: 60px;
+    color: var(--primary-color);
+    margin-bottom: 12px;
+}

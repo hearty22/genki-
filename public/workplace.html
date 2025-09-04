@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./css/w.css">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Raleway:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <title>Menú principal</title>
+</head>
+<body>
+    <nav class="sidebar">
+        <header>
+            <div class="text logo">
+                <span class="genki">GENKI!</span>
+                <span class="workplace">Workplace</span>
+            </div>
+            <i class="bx bx-menu toggle"></i>
+        </header>
+        <div class="menu-bar">
+            <div class="menu">
+                <li class="search-box">
+                    <i class="bx bx-search icon"></i>
+                    <input type="text" placeholder="Buscar...">
+                </li>
+                <ul class="menu-links">
+                    <li class="nav-link">
+                        <a href="#">
+                            <i class="bx bx-home-alt icon"></i>
+                            <span class="text nav-text">Dashboard</span>
+                        </a>
+                    </li>
+                    <li class="nav-link">
+                        <a href="#">
+                            <i class="bx bx-home-alt icon"></i>
+                            <span class="text nav-text">Dashboard</span>
+                        </a>
+                    </li>
+                    <li class="nav-link">
+                        <a href="#">
+                            <i class="bx bx-home-alt icon"></i>
+                            <span class="text nav-text">Dashboard</span>
+                        </a>
+                    </li>
+                    <li class="nav-link">
+                        <a href="#">
+                            <i class="bx bx-home-alt icon"></i>
+                            <span class="text nav-text">Dashboard</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <div class="bottom-content">
+                <li class="">
+                    <a href="index.html">
+                        <i class="bx bx-log-out icon"></i>
+                        <span class="text nav-text">Salir</span >
+                        </a>
+                    </li>
+                    <li class="mode">
+                        <div class="sun-moon">
+                            <i class="bx bx-moon icon moon"></i>
+                            <i class="bx bx-sun icon sun"></i>
+                        </div>
+                        <span class="mode-text text">Modo Oscuro</span>
+                        <div class="toggle-switch">
+                            <span class="switch"></span>
+                        </div>
+                    </li>
+            </div>
+        </div>
+    </nav>
+    <div class="navbar">
+        <ul>
+            <li class="calendario">
+                <a href="#acavaelcalendario">
+                    <i class="bx bx-calendar-alt"></i>
+                </a>
+            </li>
+            <li class="profile" id="profileBtn">
+                <i class="bx bx-user-circle"></i>
+                <div class="profile-dropdown" id="profileDropdown">
+                    <div class="pd-header">
+                        <div class="profile-pic">
+                            <img src="https://imgs.search.brave.com/xc5TGQ0zphdK0RO8oi183xSQRK-1c6L2krMaD_CzvlU/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9pLnBp/bmltZy5jb20vb3Jp/Z2luYWxzLzczLzQy/LzI5LzczNDIyOTUw/NmI0NGNmNGNjNDgw/YWFkYWQ2YWM1ZTY2/LmpwZw" alt="Mi perfil">
+                        </div>
+                        <div class="pd-name"><strong>Nombre Apellido</strong></div>
+                    </div>
+                    <hr>
+                    <a href="#" class="pd-link">
+                        <i class="bx bx-user"></i>
+                        <span class="text-profile">Tu perfil</span>
+                    </a>
+                    <a href="#" class="pd-link">
+                        <i class="bx bx-cog"></i>
+                        <span class="text-profile">Configuración</span>
+                    </a>
+                    <button class="button-logout">Cerrar sesión</button>
+                </div>
+            </li>
+        </ul>
+    </div>
+    <section class="home">
+        <div class="bienvenida">
+            <h1>Bienvenido de vuelta, <span class="nombre">(nombre)</span>!</h1>
+        </div>
+        <div class="inicio">
+            <div class="clase1">
+                <a href="#">
+                    <div class="instituto-titulo">Instituto 1</div>
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcToHEhkTw7tnGlR1taYOH87wXsUEWtd-FNJFw&s" alt="imagen instituto 1">
+                    <div class="instituto-clases">clases: x</div>
+                </a>
+            </div>
+            <div class="clase2">
+                <a href="#">
+                    <div class="instituto-titulo">Instituto 1</div>
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcToHEhkTw7tnGlR1taYOH87wXsUEWtd-FNJFw&s" alt="imagen instituto 1">
+                    <div class="instituto-clases">clases: x</div>
+                </a>
+            </div>
+            <div class="claseagregar">
+                <i class="bx bx-plus"></i>
+                <hr>
+                <h1 class="text">Agregar institución</h1>
+            </div>
+        </div>
+</section>
+    <script src="./js/script.js"></script>
+</body>
+</html>
