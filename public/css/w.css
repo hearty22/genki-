@@ -276,16 +276,6 @@ body.dark .switch::before{
     left: 20px;
 }
 
-.home {
-    position: absolute;
-    top: 0;
-    left: 250px;
-    height: 100vh;
-    width: calc(100% - 250px);
-    background-color: var(--body-color);
-    transition: var(--tran-05);
-}
-
 .home .text {
     font-size: 30px;
     font-weight: 500;
@@ -356,7 +346,13 @@ body.dark .home .text {
 .navbar ul i {
     font-size: 26px;
     line-height: 2;
-    color: #fff;
+    color: #ffffff;
+}
+
+.pd-link i{
+    color: #FFFFFF;
+    line-height: 2;
+    font-size: 26px;
 }
 
 .profile-dropdown {
@@ -450,9 +446,111 @@ hr {
 }
 
 .home {
+    min-height: calc(100vh - 60px);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    padding-top: 0;
+    box-sizing: border-box;
+    position: relative;
+    top: 0;
+    left: 250px;
+    width: calc(100% - 250px);
+    background-color: var(--body-color);
+    transition: var(--tran-05);
+}
+
+.inicio {
     display: flex;
     justify-content: center;
     align-items: center;
+    gap: 32px;
+    margin: 0 auto;
+    width: fit-content;
 }
 
+.inicio img {
+    object-fit: cover;
+    width: 120px;
+    height: 80px;
+    border-radius: 8px;
+    margin-bottom: 0;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.07);
+}
 
+.bienvenida {
+    width: 100%;
+    text-align: center;
+    margin-bottom: 40px;
+}
+.bienvenida h1 {
+    font-family: 'Raleway', cursive;
+    font-size: 2.5em;
+    font-weight: 700;
+    color: var(--primary-color);
+}
+.bienvenida .nombre {
+    font-style: italic;
+    color: var(--text-color);
+}
+
+.clase1, .clase2, .claseagregar {
+    border: 2px solid var(--primary-color);
+    border-radius: 18px;
+    background: #fff;
+    box-shadow: 0 2px 8px rgba(156,39,176,0.08);
+    padding: 24px 16px;
+    width: 220px;
+    height: 260px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+.clase1:hover, .clase2:hover{
+    box-shadow: 0 4px 16px rgba(156,39,176,0.18);
+    transform: translateY(-10px);
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+/*toda la logica dejamelo a mi, mi bebé
+<3*/
+ .claseagregar:hover {
+    box-shadow: 0 4px 16px rgba(156,39,176,0.18);
+    transform: scale(1.08);
+    transition: transform 0.3s;
+ }
+ 
+.instituto-titulo {
+    font-family: 'Raleway', cursive;
+    font-size: 1.2em;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: var(--primary-color);
+}
+.instituto-clases {
+    font-size: 1em;
+    color: var(--text-color);
+    margin-top: 10px;
+}
+.claseagregar .text {
+    font-family: 'Raleway', cursive;
+    font-size: 1.1em;
+    color: var(--text-color);
+}
+
+.claseagregar {
+    justify-content: center;
+    align-items: center;
+    background: var(--primary-color-light);
+    border-style: dashed;
+} 
+/* hola mi amor JAJS*/
+/* eso si, despues puede que refactorice el frontend para modificar el doom content*/
+.claseagregar i {
+    font-size: 60px;
+    color: var(--primary-color);
+    margin-bottom: 12px;
+}
