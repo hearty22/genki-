@@ -8,7 +8,9 @@
     const token = localStorage.getItem("token");
     if(token){
         const payload = parseJwt(token);
+        console.log(payload)
         if(payload && payload.user_name){
             document.getElementById("username").textContent = payload.user_name;
+            document.getElementById("profile-picture").textContent = payload
         }
     }

@@ -1,18 +1,9 @@
 import { usersModel } from "../models/users.model.js";
 import { configDotenv } from "dotenv";
-import jwt from "jsonwebtoken";
+import { generateToken, verifyToken } from "../helpers/jwt.helper.js";
+import { comparePassword, hashPassword } from "../helpers/bcrypt.helper.js";
 configDotenv()
-const SECRET = process.env.JWT;
-
-export const getUsers = async (req,res)=>{
-    try {
-        const users = await usersModel.findAll()
-        res.status(200).json(users)
-    } catch (error) {
-        res.status(500).json({error:"error interno al obtener a los usuarios"})
-    }
-}
-
+//register
 export const createUser = async (req, res)=>{
     try {
         const {user_name, email, password, gender}  = req.body
@@ -24,56 +15,59 @@ export const createUser = async (req, res)=>{
         const emailexist = await usersModel.findOne({where: {email}})
         if(emailexist){return res.status(400).json({message:"el email ingresado ya esta asociado "})};
 
-        const newUser = new usersModel({user_name, email, password, gender})
+        const hashpassword = await hashPassword(password);
+        
+        const newUser = new usersModel({user_name, email, password: hashpassword, gender})
         newUser.save()
         res.status(201).json({message:`usuario creado: ${newUser}`});
     
     } catch (error) {
+        console.log(error);
         res.status(500).json({error: "error interno al crear el usuario"});
         
     }
 }
 
+
 export const loginUser = async (req, res)=>{
     try {
         const {email, password} = req.body
-        if(!email){return res.status(400).json({message:"campo no rellenado: email"})}
-        if(!password){return res.status(400).json({message: "campo no rellenado: contraseña"})}
+        if(!email){ return res.status(400).json({message:"campo no rellenado: email"})}
+        if(!password){ return res.status(400).json({message: "campo no rellenado: contraseña"})}
         
         const user = await usersModel.findOne({
             where:{
-                email:email,
-                password:password
+                email:email
             }})
         if(!user){return res.status(400).json({message:"credenciales invalidas"})}
 
-       
-        const token = jwt.sign({
-            id: user.id,
-            user_name: user.user_name,
-            email: user.email,
-            gender: user.gender
-        }, SECRET, {expiresIn: "3d"})
+        const passMatch = await comparePassword(password, user.password)
 
-        res.status(200).json({token, user: {name: user.user_name, email:user.email}});
+        generateToken(user, res);
+
+        res.status(200).json({user: {name: user.user_name, email:user.email}});
 
     } catch (error) {
+        console.log(error);
         res.status(500).json({error: "error interno al iniciar sesión"})
     }
 }
-export const uploadProfile = async (req, res)=>{
+
+
+export const getProfile = async (req, res)=>{
     try {
-        const userId = req.user.id
-        const imagePath = req.file ? req.file.filename : "pfp-default.webp"
-
-        await usersModel.update(
-            {profile_photo: imagePath },
-            {where: {id: userId}}
-        );
-
-        res.json({message: "perfil actualizado"})
+        const info = verifyToken(req)
+        res.cookie("user", info,
+            {
+            httpOnly: false,
+            secure: false, // solo por HTTPS
+            sameSite: "strict",
+            maxAge: 60 * 60 * 1000 // 1 hora
+            }
+        )
+        return res.status(200);
     } catch (error) {
-        res.status(500).json({error: "error al guardar la foto"})
+        console.log(error);
+        return res.status(500).json({error: "error interno en obtener la informacion del usuario"})
     }
-} 
-
+};
