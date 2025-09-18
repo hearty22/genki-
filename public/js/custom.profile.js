@@ -25,7 +25,6 @@
 
         if (file){formData.append("profilePicture", file);};
         const token = localStorage.getItem("token")
-        console.log(token);
 
         const res = await fetch("http://localhost:3000/api/profile",{
             method: "POST",
@@ -33,8 +32,11 @@
             body: formData
         });
         const data = await res.json();
-        if(res.ok){alert("Foto de perfil guardada")}
+        if(res.ok){
+            window.location.href = "./workplace.html"
+        }
         else{alert("error al guardar la foto")}
+        
     })
 
     const parseJwt = (token)=>{

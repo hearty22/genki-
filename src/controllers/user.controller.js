@@ -47,7 +47,7 @@ export const loginUser = async (req, res)=>{
             }})
         if(!user){return res.status(400).json({message:"credenciales invalidas"})}
 
-        console.log(SECRET);
+       
         const token = jwt.sign({
             id: user.id,
             user_name: user.user_name,
