@@ -1,3 +1,7 @@
+/**
+ * Controlador de usuarios - Versión corregida
+ */
+
 import fs from "fs";
 import path from "path";
 import multer from "multer";
@@ -6,13 +10,19 @@ import { usersModel } from "../models/users.model.js";
 import { instModel } from "../models/inst.model.js";
 import { generateToken, verifyToken } from "../helpers/jwt.helper.js";
 import { comparePassword, hashPassword } from "../helpers/bcrypt.helper.js";
+
+// Configuración de multer para subir fotos de perfil
 export const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    // cb() es un "callback" que indica a Multer dónde guardar el archivo
-    cb(null, 'uploads/profiles'); // La carpeta donde se guardarán las fotos
+    // Crear la carpeta si no existe
+    const uploadDir = 'uploads/profiles';
+    if (!fs.existsSync(uploadDir)) {
+      fs.mkdirSync(uploadDir, { recursive: true });
+    }
+    cb(null, uploadDir);
   },
   filename: function (req, file, cb) {
-    // Crea un nombre de archivo único para evitar conflictos
+    // Crear un nombre de archivo único para evitar conflictos
     const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
     cb(null, file.fieldname + '-' + uniqueSuffix + path.extname(file.originalname));
   }
@@ -46,15 +56,15 @@ export const createUser = async (req, res)=>{
         if(emailexist){return res.status(400).json({message:"el email ingresado ya esta asociado "})};
 
         const hashpassword = await hashPassword(password);
-        
+
         const newUser = new usersModel({user_name, email, password: hashpassword, gender})
         newUser.save()
         res.status(201).json({message:`usuario creado: ${newUser}`});
-    
+
     } catch (error) {
         console.log(error);
         res.status(500).json({error: "error interno al crear el usuario"});
-        
+
     }
 }
 
@@ -64,7 +74,7 @@ export const loginUser = async (req, res)=>{
         const {email, password} = req.body
         if(!email){ return res.status(400).json({message:"campo no rellenado: email"})}
         if(!password){ return res.status(400).json({message: "campo no rellenado: contraseña"})}
-        
+
         const user = await usersModel.findOne({
             where:{
                 email:email
@@ -119,7 +129,8 @@ export const getProfile = async (req, res)=>{
         return res.status(500).json({error: "Error interno del servidor"});
     }
 };
-// endpoint para subir la foto de perfil
+
+// endpoint para subir la foto de perfil - CORREGIDO
 export const Profile = async (req, res)=>{
     try {
         const token = verifyToken(req);
@@ -130,18 +141,24 @@ export const Profile = async (req, res)=>{
             return res.status(400).json({error: "No se ha seleccionado ningún archivo"});
         }
 
-        // Obtener la ruta relativa del archivo
-        const profilePhotoPath = req.file.path;
+        // Obtener la ruta relativa del archivo (compatible con el frontend)
+        const profilePhotoPath = req.file.path.replace(/\\/g, '/'); // Normalizar path para web
+
+        console.log("📸 Subiendo foto de perfil para usuario:", userId);
+        console.log("📁 Archivo:", req.file.filename);
+        console.log("🛤️ Path:", profilePhotoPath);
 
         // Actualizar el usuario con la nueva foto de perfil
-        const updatedUser = await usersModel.update(
+        const [updatedRows] = await usersModel.update(
             { profile_photo_path: profilePhotoPath },
             { where: { id: userId } }
         );
 
-        if (updatedUser[0] === 0) {
+        if (updatedRows === 0) {
             return res.status(404).json({error: "Usuario no encontrado"});
         }
+
+        console.log("✅ Foto de perfil actualizada exitosamente");
 
         res.status(200).json({
             message: "Foto de perfil actualizada exitosamente",
@@ -150,29 +167,16 @@ export const Profile = async (req, res)=>{
         });
 
     } catch (error) {
-        console.log(error);
+        console.log("❌ Error en Profile:", error);
         if (error.message === 'Solo se permiten archivos de imagen') {
             return res.status(400).json({error: error.message});
         }
         if (error.message === "error en validar el token") {
             return res.status(401).json({error: "Token inválido o expirado"});
         }
-        return res.status(500).json({error: "Error interno del servidor"});
+        return res.status(500).json({error: "Error interno del servidor", details: error.message});
     }
 };
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 export const deleteProfilePhoto = async (req, res)=>{
     try {

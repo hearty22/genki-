@@ -11,9 +11,7 @@ export const db_conect = async (retryCount = 0) => {
         await sequelize.authenticate();
         console.log("✅ Servidor conectado exitosamente con la base de datos");
 
-        // Sincronizar modelos si es necesario
         // await sequelize.sync({ force: false });
-        console.log("📊 Modelos sincronizados");
 
     } catch (error) {
         console.log("❌ Error de conexión con la base de datos:");
