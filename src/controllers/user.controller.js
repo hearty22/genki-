@@ -1,7 +1,10 @@
 import fs from "fs";
 import path from "path";
 import multer from "multer";
+import jwt from "jsonwebtoken";
 import { usersModel } from "../models/users.model.js";
+import { instModel } from "../models/inst.model.js";
+import { userInstitutionModel } from "../models/userInstitution.model.js";
 import { generateToken, verifyToken } from "../helpers/jwt.helper.js";
 import { comparePassword, hashPassword } from "../helpers/bcrypt.helper.js";
 export const storage = multer.diskStorage({
@@ -172,12 +175,6 @@ export const Profile = async (req, res)=>{
 
 
 
-
-
-
-
-
-
 export const deleteProfilePhoto = async (req, res)=>{
     try {
         const token = verifyToken(req);
@@ -219,5 +216,187 @@ export const deleteProfilePhoto = async (req, res)=>{
             return res.status(401).json({error: "Token inválido o expirado"});
         }
         return res.status(500).json({error: "Error interno del servidor"});
+    }
+};
+
+// Obtener instituciones del usuario
+export const getUserInstitutions = async (req, res) => {
+    try {
+        const token = verifyToken(req);
+        const userId = token.id;
+
+        // Buscar las instituciones del usuario
+        const userInstitutions = await userInstitutionModel.findAll({
+            where: {
+                user_id: userId,
+                is_active: true
+            },
+            include: [
+                {
+                    model: instModel,
+                    as: 'institution',
+                    attributes: ['id_institucion', 'name', 'siglas', 'logo', 'address', 'nivel']
+                }
+            ],
+            attributes: ['role', 'createdAt']
+        });
+
+        const institutions = userInstitutions.map(ui => ({
+            id: ui.institution.id_institucion,
+            name: ui.institution.name,
+            siglas: ui.institution.siglas,
+            logo: ui.institution.logo,
+            address: ui.institution.address,
+            nivel: ui.institution.nivel,
+            role: ui.role,
+            joinedAt: ui.createdAt
+        }));
+
+        res.status(200).json({
+            message: "Instituciones del usuario obtenidas exitosamente",
+            institutions: institutions
+        });
+
+    } catch (error) {
+        console.log(error);
+        if (error.message === "error en validar el token") {
+            return res.status(401).json({error: "Token inválido o expirado"});
+        }
+        return res.status(500).json({error: "Error interno del servidor"});
+    }
+};
+
+// Asignar institución a usuario
+export const assignInstitutionToUser = async (req, res) => {
+    try {
+        const token = verifyToken(req);
+        const userId = token.id;
+        const { institutionId, role } = req.body;
+
+        if (!institutionId) {
+            return res.status(400).json({message: "ID de institución requerido"});
+        }
+
+        // Verificar que la institución existe
+        const institution = await instModel.findOne({
+            where: { id_institucion: institutionId }
+        });
+
+        if (!institution) {
+            return res.status(404).json({message: "Institución no encontrada"});
+        }
+
+        // Verificar si ya existe la relación
+        const existingRelation = await userInstitutionModel.findOne({
+            where: {
+                user_id: userId,
+                institution_id: institutionId
+            }
+        });
+
+        if (existingRelation) {
+            if (existingRelation.is_active) {
+                return res.status(400).json({message: "El usuario ya está asignado a esta institución"});
+            } else {
+                // Reactivar la relación
+                await userInstitutionModel.update(
+                    { is_active: true, role: role },
+                    { where: { id: existingRelation.id } }
+                );
+                return res.status(200).json({message: "Usuario reasignado a la institución exitosamente"});
+            }
+        }
+
+        // Crear nueva relación
+        await userInstitutionModel.create({
+            user_id: userId,
+            institution_id: institutionId,
+            role: role
+        });
+
+        res.status(201).json({
+            message: "Usuario asignado a la institución exitosamente"
+        });
+
+    } catch (error) {
+        console.log(error);
+        if (error.message === "error en validar el token") {
+            return res.status(401).json({error: "Token inválido o expirado"});
+        }
+        return res.status(500).json({error: "Error interno del servidor"});
+    }
+};
+
+// Remover institución de usuario
+export const removeInstitutionFromUser = async (req, res) => {
+    try {
+        const token = verifyToken(req);
+        const userId = token.id;
+        const { institutionId } = req.params;
+
+        // Buscar la relación
+        const relation = await userInstitutionModel.findOne({
+            where: {
+                user_id: userId,
+                institution_id: institutionId,
+                is_active: true
+            }
+        });
+
+        if (!relation) {
+            return res.status(404).json({message: "Relación usuario-institución no encontrada"});
+        }
+
+        // Desactivar la relación (soft delete)
+        await userInstitutionModel.update(
+            { is_active: false },
+            { where: { id: relation.id } }
+        );
+
+        res.status(200).json({
+            message: "Usuario removido de la institución exitosamente"
+        });
+
+    } catch (error) {
+        console.log(error);
+        if (error.message === "error en validar el token") {
+            return res.status(401).json({error: "Token inválido o expirado"});
+        }
+        return res.status(500).json({error: "Error interno del servidor"});
+    }
+};
+
+// ✅ Endpoint de prueba para verificar el modelo
+export const testInstitutions = async (req, res) => {
+    try {
+        console.log("🧪 Probando modelo instModel...");
+
+        // Verificar si el modelo existe
+        console.log("instModel:", instModel);
+        console.log("instModel name:", instModel.name);
+
+        // Intentar una consulta simple
+        const count = await instModel.count();
+        console.log("Total de instituciones en BD:", count);
+
+        // Obtener una institución
+        const firstInst = await instModel.findOne();
+        console.log("Primera institución:", firstInst);
+
+        res.status(200).json({
+            message: "Test exitoso",
+            modelName: instModel.name,
+            totalCount: count,
+            firstInstitution: firstInst
+        });
+
+    } catch (error) {
+        console.log("❌ Error en testInstitutions:", error);
+        console.log("❌ Error stack:", error.stack);
+        return res.status(500).json({
+            error: "Error en test",
+            details: error.message,
+            stack: error.stack
+        });
     }
 };

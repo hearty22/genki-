@@ -29,7 +29,20 @@ export const instModel = sequelize.define("instituciones",{
     nivel: {
         type: DataTypes.STRING(100),
         allowNull: true
+    },
+    is_active: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: true
     }
 }, {
     timestamps: true
 });
+
+// Relaciones
+instModel.associate = (models) => {
+    instModel.belongsToMany(models.usersModel, {
+        through: models.userInstitutionModel,
+        foreignKey: 'institution_id',
+        otherKey: 'user_id'
+    });
+};

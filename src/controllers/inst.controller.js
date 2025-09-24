@@ -2,6 +2,8 @@ import fs from "fs";
 import path from "path";
 import multer from "multer";
 import { instModel } from "../models/inst.model.js";
+import { userInstitutionModel } from "../models/userInstitution.model.js";
+import { verifyToken } from "../helpers/jwt.helper.js";
 import { Op } from "sequelize";
 // Configuración de multer para subir logos de instituciones
 export const storage = multer.diskStorage({
@@ -38,47 +40,86 @@ export const upload = multer({
 // Crear una nueva institución
 export const createInstitution = async (req, res) => {
   try {
+    console.log("🔄 Intentando crear institución...");
+    console.log("📦 Datos recibidos:", req.body);
+
+    const token = verifyToken(req);
+    const userId = token.id;
     const { name, siglas, notas, address, nivel } = req.body;
+
+    console.log("👤 Usuario ID:", userId);
 
     // Validación de campos requeridos
     if (!name) {
+      console.log("❌ Error: nombre requerido");
       return res.status(400).json({ message: "Campo requerido: name" });
     }
 
     // Verificar si ya existe una institución con el mismo nombre
+    console.log("🔍 Verificando si existe institución con nombre:", name);
     const existingInstitution = await instModel.findOne({ where: { name } });
     if (existingInstitution) {
+      console.log("❌ Error: institución ya existe");
       return res.status(400).json({ message: "Ya existe una institución con ese nombre" });
     }
 
     // Crear la nueva institución
-    const newInstitution = new instModel({
+    console.log("🏗️ Creando nueva institución...");
+    const newInstitution = await instModel.create({
       name,
       siglas,
       notas,
       address,
-      nivel
+      nivel,
+      is_active: true
     });
 
-    await newInstitution.save();
+    console.log("✅ Institución creada con ID:", newInstitution.id_institucion);
+
+    // Asignar automáticamente al usuario creador como miembro con rol de Administrador
+    console.log("👥 Asignando usuario como administrador...");
+    await userInstitutionModel.create({
+      user_id: userId,
+      institution_id: newInstitution.id_institucion,
+      role: 'Administrador',
+      is_active: true
+    });
+
+    console.log("✅ Usuario asignado exitosamente");
 
     res.status(201).json({
       message: "Institución creada exitosamente",
-      institution: newInstitution
+      institution: {
+        id: newInstitution.id_institucion,
+        name: newInstitution.name,
+        siglas: newInstitution.siglas,
+        address: newInstitution.address,
+        nivel: newInstitution.nivel
+      }
     });
 
   } catch (error) {
-    console.log(error);
-    res.status(500).json({ error: "Error interno al crear la institución" });
+    console.log("❌ Error en createInstitution:", error);
+    console.log("❌ Error stack:", error.stack);
+    if (error.message === "error en validar el token") {
+      return res.status(401).json({error: "Token inválido o expirado"});
+    }
+    res.status(500).json({ error: "Error interno al crear la institución", details: error.message });
   }
 };
 
 // Obtener todas las instituciones
 export const getAllInstitutions = async (req, res) => {
   try {
+    console.log("🔍 Buscando todas las instituciones activas...");
+
     const institutions = await instModel.findAll({
-      attributes: ['id_institucion', 'name', 'siglas', 'logo', 'notas', 'address', 'nivel', 'createdAt', 'updatedAt']
+      where: { is_active: true },
+      attributes: ['id_institucion', 'name', 'siglas', 'logo', 'address', 'nivel', 'createdAt'],
+      order: [['name', 'ASC']]
     });
+
+    console.log("✅ Encontradas", institutions.length, "instituciones activas");
 
     res.status(200).json({
       message: "Instituciones obtenidas exitosamente",
@@ -86,7 +127,7 @@ export const getAllInstitutions = async (req, res) => {
     });
 
   } catch (error) {
-    console.log(error);
+    console.log("❌ Error en getAllInstitutions:", error);
     res.status(500).json({ error: "Error interno al obtener las instituciones" });
   }
 };

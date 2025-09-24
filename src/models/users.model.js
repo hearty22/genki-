@@ -29,3 +29,12 @@ export const usersModel =  sequelize.define("users",{
         allowNull: true
     }
 },{timestamps:true});
+
+// Relaciones
+usersModel.associate = (models) => {
+    usersModel.belongsToMany(models.instModel, {
+        through: models.userInstitutionModel,
+        foreignKey: 'user_id',
+        otherKey: 'institution_id'
+    });
+};

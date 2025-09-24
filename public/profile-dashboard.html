@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="./css/w.css">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Raleway:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./css/institutions.css">
     <style>
         .profile-dashboard {
             max-width: 1200px;
@@ -414,6 +415,61 @@
                     <i class="bx bx-edit"></i>
                     Editar Perfil
                 </button>
+                <button class="add-institution-btn" onclick="showCreateInstitutionModal()">
+                    <i class="bx bx-plus"></i>
+                    Crear/Asignar Institución
+                </button>
+            </div>
+
+            <!-- Modal para crear/asignar institución -->
+            <div id="institutionModal" class="modal">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h2>Crear/Asignar Institución</h2>
+                        <span class="close" onclick="closeInstitutionModal()">&times;</span>
+                    </div>
+                    <div class="modal-body">
+                        <form id="institutionForm">
+                            <div class="form-group">
+                                <label for="institutionName">Nombre de la Institución *</label>
+                                <input type="text" id="institutionName" name="name" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="institutionSiglas">Siglas</label>
+                                <input type="text" id="institutionSiglas" name="siglas">
+                            </div>
+                            <div class="form-group">
+                                <label for="institutionAddress">Dirección</label>
+                                <input type="text" id="institutionAddress" name="address">
+                            </div>
+                            <div class="form-group">
+                                <label for="institutionNivel">Nivel</label>
+                                <select id="institutionNivel" name="nivel">
+                                    <option value="">Seleccionar nivel</option>
+                                    <option value="Primaria">Primaria</option>
+                                    <option value="Secundaria">Secundaria</option>
+                                    <option value="Terciaria">Terciaria</option>
+                                    <option value="Universitaria">Universitaria</option>
+                                    <option value="Posgrado">Posgrado</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="userRole">Tu Rol en la Institución</label>
+                                <select id="userRole" name="role">
+                                    <option value="">Seleccionar rol</option>
+                                    <option value="Estudiante">Estudiante</option>
+                                    <option value="Profesor">Profesor</option>
+                                    <option value="Administrador">Administrador</option>
+                                    <option value="Directivo">Directivo</option>
+                                </select>
+                            </div>
+                            <div class="form-actions">
+                                <button type="button" class="cancel-btn" onclick="closeInstitutionModal()">Cancelar</button>
+                                <button type="submit" class="submit-btn">Crear y Asignar</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
             </div>
         </div>
     </section>

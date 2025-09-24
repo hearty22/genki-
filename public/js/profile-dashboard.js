@@ -14,6 +14,77 @@ const parseJwt = (token) => {
     }
 }
 
+// ✅ Cargar instituciones del usuario
+async function loadUserInstitutions() {
+    try {
+        const token = getCookie('token') || localStorage.getItem("token");
+
+        if (!token) {
+            console.log("No se encontró token");
+            return;
+        }
+
+        const response = await fetch("/api/institutions", {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        });
+
+        if (response.ok) {
+            const data = await response.json();
+            const institutions = data.institutions;
+
+            // Actualizar estadística de instituciones
+            document.getElementById("statSessions").textContent = institutions.length;
+
+            // Crear sección de instituciones si no existe
+            let institutionsSection = document.querySelector('.institutions-section');
+            if (!institutionsSection) {
+                institutionsSection = document.createElement('div');
+                institutionsSection.className = 'institutions-section';
+                institutionsSection.innerHTML = `
+                    <h2>Mis Instituciones</h2>
+                    <div class="institutions-grid" id="institutionsGrid">
+                        <!-- Las instituciones se cargarán aquí -->
+                    </div>
+                `;
+
+                // Insertar después de las estadísticas
+                const statsSection = document.querySelector('.stats-section');
+                statsSection.parentNode.insertBefore(institutionsSection, statsSection.nextSibling);
+            }
+
+            const institutionsGrid = document.getElementById('institutionsGrid');
+
+            if (institutions.length === 0) {
+                institutionsGrid.innerHTML = '<p class="no-institutions">No estás asignado a ninguna institución aún.</p>';
+            } else {
+                institutionsGrid.innerHTML = institutions.map(inst => `
+                    <div class="institution-card">
+                        <div class="institution-header">
+                            <h3>${inst.name}</h3>
+                            ${inst.siglas ? `<span class="institution-siglas">(${inst.siglas})</span>` : ''}
+                        </div>
+                        ${inst.logo ? `<img src="/${inst.logo}" alt="Logo de ${inst.name}" class="institution-logo">` : ''}
+                        <div class="institution-info">
+                            ${inst.address ? `<p><strong>Dirección:</strong> ${inst.address}</p>` : ''}
+                            ${inst.nivel ? `<p><strong>Nivel:</strong> ${inst.nivel}</p>` : ''}
+                            <p><strong>Rol:</strong> ${inst.role || 'Sin especificar'}</p>
+                            <p><strong>Miembro desde:</strong> ${new Date(inst.joinedAt).toLocaleDateString('es-ES')}</p>
+                        </div>
+                    </div>
+                `).join('');
+            }
+
+            console.log("✅ Instituciones cargadas exitosamente:", institutions.length);
+        } else {
+            console.log("Error al obtener instituciones:", response.status);
+        }
+    } catch (error) {
+        console.error("Error al cargar las instituciones:", error);
+    }
+}
+
 // ✅ Cargar información del perfil del usuario
 async function loadUserProfile() {
     try {
@@ -134,8 +205,93 @@ function initDropdown() {
     }
 }
 
+// ✅ Funciones para el modal de institución
+function showCreateInstitutionModal() {
+    document.getElementById('institutionModal').style.display = 'block';
+}
+
+function closeInstitutionModal() {
+    document.getElementById('institutionModal').style.display = 'none';
+    document.getElementById('institutionForm').reset();
+}
+
+// ✅ Manejar el envío del formulario de institución
+document.getElementById('institutionForm')?.addEventListener('submit', async function(e) {
+    e.preventDefault();
+
+    const formData = new FormData(e.target);
+    const institutionData = {
+        name: formData.get('name'),
+        siglas: formData.get('siglas'),
+        address: formData.get('address'),
+        nivel: formData.get('nivel'),
+        role: formData.get('role')
+    };
+
+    try {
+        const token = getCookie('token') || localStorage.getItem("token");
+
+        if (!token) {
+            alert('No se encontró token de autenticación');
+            return;
+        }
+
+        // Primero crear la institución
+        const createResponse = await fetch("/api/institutions", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify(institutionData)
+        });
+
+        if (createResponse.ok) {
+            const createResult = await createResponse.json();
+            const institutionId = createResult.institution.id_institucion;
+
+            // Luego asignar la institución al usuario
+            const assignResponse = await fetch("/api/institutions", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify({
+                    institutionId: institutionId,
+                    role: institutionData.role
+                })
+            });
+
+            if (assignResponse.ok) {
+                alert('Institución creada y asignada exitosamente');
+                closeInstitutionModal();
+                loadUserInstitutions(); // Recargar las instituciones
+            } else {
+                const errorData = await assignResponse.json();
+                alert('Error al asignar la institución: ' + errorData.message);
+            }
+        } else {
+            const errorData = await createResponse.json();
+            alert('Error al crear la institución: ' + errorData.message);
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        alert('Error al procesar la solicitud');
+    }
+});
+
+// ✅ Cerrar modal al hacer clic fuera de él
+window.addEventListener('click', function(e) {
+    const modal = document.getElementById('institutionModal');
+    if (e.target === modal) {
+        closeInstitutionModal();
+    }
+});
+
 // ✅ Cargar todo cuando se carga la página
 document.addEventListener('DOMContentLoaded', function() {
     loadUserProfile();
+    loadUserInstitutions();
     initDropdown();
 });
