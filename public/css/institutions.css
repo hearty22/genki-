@@ -1,4 +1,4 @@
-/* Estilos para la sección de instituciones */
+/* Estilos para la sección de instituciones - Mejorados y unificados */
 .institutions-section {
     margin: 30px 0;
     padding: 25px;
@@ -20,31 +20,62 @@
     text-align: center;
 }
 
+/* Grid mejorado para instituciones */
 .institutions-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 20px;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 24px;
     margin-top: 20px;
+    align-items: start;
 }
 
+/* Tarjeta de institución mejorada */
 .institution-card {
     background: rgba(255, 255, 255, 0.05);
-    border-radius: 10px;
+    border-radius: 12px;
     padding: 20px;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    transition: all 0.3s ease;
     border: 1px solid rgba(255, 255, 255, 0.1);
+    position: relative;
+    overflow: hidden;
+    backdrop-filter: blur(10px);
+}
+
+.institution-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(45deg, transparent 30%, rgba(255, 255, 255, 0.1) 50%, transparent 70%);
+    transform: translateX(-100%);
+    transition: transform 0.6s;
+    z-index: 1;
+}
+
+.institution-card:hover::before {
+    transform: translateX(100%);
 }
 
 .institution-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    transform: translateY(-8px);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
+    border-color: var(--primary-color);
 }
 
+.institution-card > * {
+    position: relative;
+    z-index: 2;
+}
+
+/* Header de la institución */
 .institution-header {
     display: flex;
     align-items: center;
     justify-content: space-between;
     margin-bottom: 15px;
+    gap: 15px;
 }
 
 .institution-header h3 {
@@ -52,94 +83,172 @@
     font-size: 1.3em;
     font-weight: 600;
     margin: 0;
+    flex: 1;
 }
 
 .institution-siglas {
     color: var(--text-color);
     opacity: 0.7;
     font-size: 0.9em;
+    background: rgba(255, 255, 255, 0.1);
+    padding: 4px 8px;
+    border-radius: 6px;
 }
 
+/* Logo de la institución */
 .institution-logo {
-    width: 60px;
-    height: 60px;
-    object-fit: contain;
+    width: 100%;
+    height: 120px;
+    object-fit: cover;
     border-radius: 8px;
-    margin: 10px 0;
+    margin: 15px 0;
     background: rgba(255, 255, 255, 0.1);
     padding: 5px;
+    transition: transform 0.3s ease;
 }
 
+.institution-card:hover .institution-logo {
+    transform: scale(1.05);
+}
+
+/* Información de la institución */
 .institution-info {
-    color: var(--text-color);
-    font-size: 0.95em;
-    line-height: 1.6;
+    position: absolute;
+    bottom: 15px;
+    left: 20px;
+    right: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
 }
 
-.institution-info p {
-    margin: 8px 0;
+.nivel, .status {
+    background: rgba(255, 255, 255, 0.2);
+    padding: 6px 12px;
+    border-radius: 12px;
+    font-size: 0.8em;
+    font-weight: 500;
+    backdrop-filter: blur(5px);
 }
 
-.institution-info strong {
+.status.joined {
+    background: rgba(76, 175, 80, 0.8);
+    color: white;
+}
+
+.status.available {
+    background: rgba(33, 150, 243, 0.8);
+    color: white;
+}
+
+/* Clases para el workplace (compatibilidad) */
+.clase {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    padding: 20px;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    position: relative;
+    overflow: hidden;
+    backdrop-filter: blur(10px);
+    cursor: pointer;
+}
+
+.clase::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(45deg, transparent 30%, rgba(255, 255, 255, 0.1) 50%, transparent 70%);
+    transform: translateX(-100%);
+    transition: transform 0.6s;
+    z-index: 1;
+}
+
+.clase:hover::before {
+    transform: translateX(100%);
+}
+
+.clase:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
+    border-color: var(--primary-color);
+}
+
+.clase > * {
+    position: relative;
+    z-index: 2;
+}
+
+.instituto-titulo {
     color: var(--primary-color);
+    font-size: 1.3em;
+    font-weight: 600;
+    margin-bottom: 15px;
+    display: block;
 }
 
+.instituto-info {
+    position: absolute;
+    bottom: 15px;
+    left: 20px;
+    right: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+}
+
+/* Botón para agregar institución */
+.claseagregar {
+    background: linear-gradient(135deg, var(--primary-color), #667eea);
+    border-radius: 12px;
+    padding: 20px;
+    transition: all 0.3s ease;
+    border: 2px dashed rgba(255, 255, 255, 0.3);
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 200px;
+    color: white;
+    text-align: center;
+}
+
+.claseagregar:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 30px rgba(102, 126, 234, 0.4);
+    border-color: rgba(255, 255, 255, 0.5);
+}
+
+.claseagregar i {
+    font-size: 3em;
+    margin-bottom: 15px;
+    opacity: 0.8;
+}
+
+.claseagregar .text {
+    font-size: 1.1em;
+    font-weight: 500;
+}
+
+/* Estado sin instituciones */
 .no-institutions {
     text-align: center;
     color: var(--text-color);
     opacity: 0.7;
-    font-style: italic;
     padding: 40px 20px;
+    font-style: italic;
+    grid-column: 1 / -1;
 }
 
-/* Media queries para instituciones */
-@media (max-width: 768px) {
-    .institutions-section {
-        padding: 20px;
-        margin: 20px 0;
-    }
-
-    .institutions-grid {
-        grid-template-columns: 1fr;
-        gap: 15px;
-    }
-
-    .institution-card {
-        padding: 15px;
-    }
-
-    .institution-header {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 10px;
-    }
-
-    .institution-logo {
-        width: 50px;
-        height: 50px;
-    }
-}
-
-/* Botón para agregar institución */
-.add-institution-btn {
-    background: linear-gradient(135deg, var(--primary-color), #667eea);
-    color: white;
-    border: none;
-    padding: 12px 24px;
-    border-radius: 8px;
-    font-size: 14px;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin-left: 15px;
-}
-
-.add-institution-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+.no-institutions p {
+    margin: 10px 0;
+    font-size: 1.1em;
 }
 
 /* Modal de institución */
@@ -262,7 +371,7 @@
     box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
 }
 
-/* Animaciones */
+/* Animaciones mejoradas */
 @keyframes fadeIn {
     from { opacity: 0; }
     to { opacity: 1; }
@@ -276,5 +385,52 @@
     to {
         transform: translateY(0);
         opacity: 1;
+    }
+}
+
+@keyframes shimmer {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
+}
+
+/* Estados de carga y animaciones */
+.institution-card.loading {
+    opacity: 0.7;
+    pointer-events: none;
+}
+
+.institution-card.loading::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+    animation: shimmer 1.5s infinite;
+    z-index: 3;
+}
+
+/* Mejoras de accesibilidad */
+.institution-card:focus {
+    outline: 2px solid var(--primary-color);
+    outline-offset: 2px;
+}
+
+.clase:focus {
+    outline: 2px solid var(--primary-color);
+    outline-offset: 2px;
+}
+
+/* Dark mode enhancements */
+@media (prefers-color-scheme: dark) {
+    .institution-card {
+        background: rgba(255, 255, 255, 0.08);
+        border-color: rgba(255, 255, 255, 0.15);
+    }
+
+    .clase {
+        background: rgba(255, 255, 255, 0.08);
+        border-color: rgba(255, 255, 255, 0.15);
     }
 }

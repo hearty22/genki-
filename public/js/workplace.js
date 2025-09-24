@@ -155,7 +155,7 @@
                         <div class="claseagregar" onclick="showCreateInstitutionModal()">
                             <i class="bx bx-plus"></i>
                             <hr>
-                            <h1 class="text">Crear primera institución</h1>
+                            <div class="text">Crear primera institución</div>
                         </div>
                     `;
                 } else {
@@ -168,11 +168,13 @@
 
                         institutionsHTML += `
                             <div class="clase${isJoined ? ' joined' : ''}" data-institution-id="${institution.id_institucion}">
-                                <a href="#" ${isJoined ? 'onclick="goToInstitution(' + institution.id_institucion + ')"' : 'onclick="joinInstitution(' + institution.id_institucion + ')"'}>
+                                <a href="#" ${isJoined ? `onclick="goToInstitution(${institution.id_institucion})"` : `onclick="joinInstitution(${institution.id_institucion})"`}>
+                                    <div class="institution-logo-container">
+                                        ${institution.logo ? `<img src="/${institution.logo}" alt="${institution.name}" class="institution-logo">` : `<img src="https://via.placeholder.com/300x150?text=${encodeURIComponent(institution.name)}" alt="${institution.name}" class="institution-logo">`}
+                                    </div>
                                     <div class="instituto-titulo">${institution.name}</div>
-                                    ${institution.logo ? `<img src="/${institution.logo}" alt="${institution.name}" class="institution-logo">` : '<img src="https://via.placeholder.com/150x100?text=' + encodeURIComponent(institution.name) + '" alt="' + institution.name + '">'}
+                                    ${institution.nivel ? `<div class="nivel">${institution.nivel}</div>` : ''}
                                     <div class="instituto-info">
-                                        ${institution.nivel ? `<span class="nivel">${institution.nivel}</span>` : ''}
                                         ${isJoined ? `<span class="status joined">✓ Miembro</span>` : `<span class="status available">Disponible</span>`}
                                     </div>
                                 </a>
@@ -184,7 +186,7 @@
                         <div class="claseagregar" onclick="showCreateInstitutionModal()">
                             <i class="bx bx-plus"></i>
                             <hr>
-                            <h1 class="text">Crear institución</h1>
+                            <div class="text">Crear institución</div>
                         </div>
                     `;
 
@@ -414,34 +416,53 @@
                         height: 120px;
                         object-fit: cover;
                         border-radius: 8px;
+                        margin-bottom: 15px;
+                        transition: transform 0.3s ease;
+                    }
+
+                    .institution-logo:hover {
+                        transform: scale(1.02);
+                    }
+
+                    .instituto-titulo {
+                        font-family: 'Raleway', cursive;
+                        font-size: 1.3em;
+                        font-weight: 600;
+                        margin-bottom: 15px;
+                        color: var(--primary-color);
+                        text-align: center;
+                        line-height: 1.3;
                     }
 
                     .instituto-info {
-                        position: absolute;
-                        bottom: 10px;
-                        left: 10px;
-                        right: 10px;
                         display: flex;
                         justify-content: space-between;
                         align-items: center;
+                        gap: 10px;
+                        margin-top: auto;
+                        padding-top: 15px;
                     }
 
                     .nivel, .status {
-                        background: rgba(255, 255, 255, 0.2);
-                        padding: 4px 8px;
+                        background: rgba(255, 255, 255, 0.9);
+                        padding: 6px 12px;
                         border-radius: 12px;
                         font-size: 0.8em;
                         font-weight: 500;
+                        backdrop-filter: blur(5px);
+                        border: 1px solid rgba(156, 39, 176, 0.2);
                     }
 
                     .status.joined {
-                        background: rgba(76, 175, 80, 0.8);
+                        background: rgba(76, 175, 80, 0.9);
                         color: white;
+                        border-color: rgba(76, 175, 80, 0.3);
                     }
 
                     .status.available {
-                        background: rgba(33, 150, 243, 0.8);
+                        background: rgba(33, 150, 243, 0.9);
                         color: white;
+                        border-color: rgba(33, 150, 243, 0.3);
                     }
 
                     .clase {
@@ -459,6 +480,7 @@
                         background: linear-gradient(45deg, transparent 30%, rgba(255, 255, 255, 0.1) 50%, transparent 70%);
                         transform: translateX(-100%);
                         transition: transform 0.6s;
+                        z-index: 1;
                     }
 
                     .clase:hover::before {
@@ -466,11 +488,26 @@
                     }
 
                     .no-institutions {
+                        grid-column: 1 / -1;
                         text-align: center;
                         color: var(--text-color);
                         opacity: 0.7;
-                        padding: 40px;
+                        padding: 60px 20px;
                         font-style: italic;
+                        background: rgba(255, 255, 255, 0.05);
+                        border-radius: 12px;
+                        border: 2px dashed rgba(156, 39, 176, 0.2);
+                    }
+
+                    .no-institutions p {
+                        margin: 15px 0;
+                        font-size: 1.2em;
+                        color: var(--primary-color);
+                    }
+
+                    .no-institutions p:last-child {
+                        font-size: 1.1em;
+                        opacity: 0.8;
                     }
                 </style>
             `;
