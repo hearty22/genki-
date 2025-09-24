@@ -3,6 +3,8 @@ const sidebar = body.querySelector("nav");
 const toggle = body.querySelector(".toggle");
 const searchBtn = body.querySelector(".search-box");
 const modeSwitch = body.querySelector(".toggle-switch");
+const mobileMenuToggle = body.querySelector("#mobileMenuToggle");
+const sidebarOverlay = body.querySelector("#sidebarOverlay");
 modeText = body.querySelector(".mode-text");
 
 toggle.addEventListener("click", () => {
@@ -12,6 +14,37 @@ toggle.addEventListener("click", () => {
 searchBtn.addEventListener("click", () => {
     sidebar.classList.remove("close");
 });
+
+// Función para abrir el sidebar en móviles
+const openMobileSidebar = () => {
+    sidebar.classList.add("open");
+    sidebar.classList.remove("close");
+    sidebarOverlay.classList.add("active");
+    document.body.style.overflow = "hidden";
+};
+
+// Función para cerrar el sidebar en móviles
+const closeMobileSidebar = () => {
+    sidebar.classList.remove("open");
+    sidebarOverlay.classList.remove("active");
+    document.body.style.overflow = "";
+};
+
+// Event listener para el botón de menú móvil
+if (mobileMenuToggle) {
+    mobileMenuToggle.addEventListener("click", () => {
+        if (sidebar.classList.contains("open")) {
+            closeMobileSidebar();
+        } else {
+            openMobileSidebar();
+        }
+    });
+}
+
+// Event listener para el overlay
+if (sidebarOverlay) {
+    sidebarOverlay.addEventListener("click", closeMobileSidebar);
+}
 
 modeSwitch.addEventListener("click", () => {
     body.classList.toggle("dark");

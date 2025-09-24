@@ -47,6 +47,7 @@ body.dark {
     background: var(--sidebar-color);
     transition: var(--tran-05);
     z-index: 100;
+    transform: translateX(0);
 }
 
 .sidebar.close {
@@ -198,17 +199,31 @@ body.dark .sidebar header .toggle{
     color: var(--sidebar-color);
 }
 
-.sidebar .menu-bar {
-    height: calc(100% - 55px);
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    overflow-y: scroll;
-}
+    .sidebar .menu-bar {
+        height: calc(100% - 55px);
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        overflow-y: auto;
+        padding-right: 5px;
+    }
 
-.menu-bar::-webkit-scrollbar {
-    display: none;
-}
+    .menu-bar::-webkit-scrollbar {
+        width: 4px;
+    }
+
+    .menu-bar::-webkit-scrollbar-track {
+        background: transparent;
+    }
+
+    .menu-bar::-webkit-scrollbar-thumb {
+        background: var(--primary-color);
+        border-radius: 2px;
+    }
+
+    .menu-bar::-webkit-scrollbar-thumb:hover {
+        background: rgba(156, 39, 176, 0.8);
+    }
 
 .sidebar .menu-bar .mode {
     border-radius: 1vh;
@@ -549,8 +564,212 @@ hr {
 } 
 /* hola mi amor JAJS*/
 /* eso si, despues puede que refactorice el frontend para modificar el doom content*/
-.claseagregar i {
-    font-size: 60px;
-    color: var(--primary-color);
-    margin-bottom: 12px;
+/* Botón de menú móvil */
+.mobile-menu-toggle {
+    display: none;
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 24px;
+    transition: var(--tran-03);
+}
+
+.mobile-menu-toggle:hover {
+    background: rgba(156, 39, 176, 0.8);
+}
+
+/* Overlay para el sidebar en móviles */
+.sidebar-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 99;
+    backdrop-filter: blur(2px);
+}
+
+.sidebar-overlay.active {
+    display: block;
+}
+
+/* Media Queries para diseño responsive */
+@media (max-width: 1024px) {
+    .sidebar {
+        width: 200px;
+    }
+
+    .sidebar.close {
+        width: 70px;
+    }
+
+    .sidebar.sidebar.close ~ .home {
+        left: 70px;
+        width: calc(100% - 70px);
+    }
+
+    .sidebar.sidebar.close ~ .navbar {
+        width: calc(100% - 70px);
+        margin-left: 70px;
+    }
+
+    .navbar {
+        width: calc(100% - 200px);
+        margin-left: 200px;
+    }
+
+    .inicio {
+        gap: 20px;
+        padding: 0 20px;
+    }
+
+    .clase1, .clase2, .claseagregar {
+        width: 200px;
+        height: 240px;
+    }
+}
+
+@media (max-width: 768px) {
+    .sidebar {
+        transform: translateX(-100%);
+        width: 280px;
+        z-index: 1000;
+    }
+
+    .sidebar.open {
+        transform: translateX(0);
+    }
+
+    .sidebar.close {
+        width: 280px;
+        transform: translateX(-100%);
+    }
+
+    .sidebar.sidebar.close ~ .home {
+        left: 0;
+        width: 100%;
+    }
+
+    .sidebar.sidebar.close ~ .navbar {
+        width: 100%;
+        margin-left: 0;
+    }
+
+    .navbar {
+        width: 100%;
+        margin-left: 0;
+        padding: 0 15px;
+    }
+
+    .mobile-menu-toggle {
+        display: block;
+    }
+
+    .navbar ul {
+        justify-content: flex-end;
+        gap: 15px;
+    }
+
+    .navbar ul i {
+        font-size: 22px;
+    }
+
+    .home {
+        left: 0;
+        width: 100%;
+        padding: 20px;
+    }
+
+    .bienvenida {
+        margin-bottom: 30px;
+    }
+
+    .bienvenida h1 {
+        font-size: 2em;
+    }
+
+    .inicio {
+        flex-direction: column;
+        gap: 20px;
+        width: 100%;
+        max-width: 400px;
+    }
+
+    .clase1, .clase2, .claseagregar {
+        width: 100%;
+        max-width: 300px;
+        height: auto;
+        padding: 20px;
+    }
+
+    .inicio img {
+        width: 100px;
+        height: 70px;
+    }
+
+    .profile-dropdown {
+        width: 280px;
+        right: -20px;
+    }
+
+    .profile-dropdown.open {
+        right: 0;
+    }
+}
+
+@media (max-width: 480px) {
+    .sidebar {
+        width: 100vw;
+    }
+
+    .sidebar.close {
+        width: 100vw;
+    }
+
+    .navbar {
+        padding: 0 10px;
+    }
+
+    .navbar ul {
+        gap: 10px;
+    }
+
+    .navbar ul i {
+        font-size: 20px;
+    }
+
+    .home {
+        padding: 15px;
+    }
+
+    .bienvenida h1 {
+        font-size: 1.8em;
+    }
+
+    .inicio {
+        max-width: 100%;
+        padding: 0 10px;
+    }
+
+    .clase1, .clase2, .claseagregar {
+        max-width: 100%;
+        padding: 15px;
+    }
+
+    .profile-dropdown {
+        width: calc(100vw - 40px);
+        max-width: 300px;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
+    .profile-dropdown.open {
+        left: 50%;
+        transform: translateX(-50%);
+    }
 }
