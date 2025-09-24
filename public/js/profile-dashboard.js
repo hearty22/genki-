@@ -50,8 +50,8 @@ async function loadUserProfile() {
                 document.getElementById("userGender").textContent = user.gender || 'No disponible';
 
                 // ✅ Formatear fecha de creación
-                if (user.created_at) {
-                    const date = new Date(user.created_at);
+                if (user.createdAt) {
+                    const date = new Date(user.createdAt);
                     document.getElementById("userJoined").textContent =
                         date.toLocaleDateString('es-ES', {
                             year: 'numeric',

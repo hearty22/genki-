@@ -90,7 +90,7 @@ export const getProfile = async (req, res)=>{
         // Buscar al usuario en la base de datos
         const user = await usersModel.findOne({
             where: { id: userId },
-            attributes: ['id', 'user_name', 'email', 'gender', 'profile_photo_path']
+            attributes: ['id', 'user_name', 'email', 'gender', 'profile_photo_path', 'createdAt']
         });
 
         if (!user) {
@@ -104,7 +104,8 @@ export const getProfile = async (req, res)=>{
                 user_name: user.user_name,
                 email: user.email,
                 gender: user.gender,
-                profile_photo_path: user.profile_photo_path
+                profile_photo_path: user.profile_photo_path,
+                createdAt: user.createdAt
             }
         });
 
