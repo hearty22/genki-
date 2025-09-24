@@ -1,24 +1,224 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calendario</title>
-    <link rel="stylesheet" href="css/calendar.css">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Calendario con Filtros</title>
+  <style>
+    :root{
+      --bg:#f9f9ff; /* blanco suave */
+      --card:#fff;
+      --accent:#7c3aed; /* morado */
+      --accent-light:#ede9fe;
+      --muted:#6b7280;
+      --today:#f97316;
+      --glass: rgba(124,58,237,0.08);
+      font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;min-height:100vh;display:flex;align-items:center;justify-content:center;background:var(--bg);color:#111}
+    .container{width:960px;max-width:96%;background:var(--card);border-radius:14px;box-shadow:0 8px 30px rgba(0,0,0,0.08);overflow:hidden;display:grid;grid-template-columns:1fr 320px}
+
+    /* left: calendar */
+    .cal{padding:20px;}
+    .header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;}
+    .nav{display:flex;gap:8px;align-items:center}
+    button.icon{background:var(--accent-light);border:0;padding:8px;border-radius:8px;color:var(--accent);cursor:pointer;font-weight:600}
+    .month{font-size:20px;font-weight:600;color:var(--accent)}
+    .weekdays{display:grid;grid-template-columns:repeat(7,1fr);gap:8px;color:var(--muted);font-size:13px;margin-top:8px}
+    .grid{display:grid;grid-template-columns:repeat(7,1fr);gap:8px;margin-top:8px}
+    .day{min-height:84px;padding:8px;border-radius:10px;background:transparent;border:1px solid transparent;cursor:pointer;position:relative}
+    .day:hover{transform:translateY(-3px);transition:all .14s}
+    .day.inactive{opacity:.25}
+    .date-num{font-weight:600}
+    .today{background:var(--accent-light);border:1px solid var(--accent)}
+    .selected{outline:3px solid rgba(124,58,237,0.15);box-shadow:0 6px 20px rgba(124,58,237,0.1)}
+    .events{position:absolute;left:8px;right:8px;bottom:8px;display:flex;gap:6px;flex-wrap:wrap}
+    .dot{height:10px;width:10px;border-radius:50%}
+
+    /* event types */
+    .dot.school{background:#3b82f6}
+    .dot.act{background:#22c55e}
+    .dot.personal{background:#eab308}
+
+    /* right: panel */
+    .panel{padding:20px;border-left:1px solid #eee;background:#fafafa}
+    .today-card{background:#fff;padding:14px;border-radius:12px;margin-bottom:12px;box-shadow:0 2px 6px rgba(0,0,0,0.05)}
+    .events-list{max-height:420px;overflow:auto;padding-right:8px}
+    .event-item{padding:10px;border-radius:8px;background:#fff;border:1px solid #eee;margin-bottom:8px}
+    .small{font-size:13px;color:var(--muted)}
+    .add-btn{display:block;width:100%;padding:10px;border-radius:10px;border:0;background:var(--accent);color:white;cursor:pointer;font-weight:600}
+    select, input{padding:8px;border-radius:8px;border:1px solid #ddd;background:#fff;color:inherit}
+
+    /* responsive */
+    @media (max-width:880px){
+      .container{grid-template-columns:1fr}
+      .panel{order:2}
+    }
+  </style>
 </head>
 <body>
-    <div class="profile">
-        <button id="profileBtn" class="profile-btn">
-            <img src="https://placehold.co/40x40" alt="Profile">
-        </button>
-        <div id="profileDropdown" class="profile-dropdown">
-            <a href="#">Perfil</a>
-            <a href="#">Configuración</a>
-            <a href="#">Cerrar sesión</a>
+  <div class="container">
+    <div class="cal">
+      <div class="header">
+        <div class="nav">
+          <button class="icon" id="prev">◀</button>
+          <button class="icon" id="todayBtn">Hoy</button>
+          <button class="icon" id="next">▶</button>
         </div>
+        <div>
+          <div class="month" id="monthLabel">Mes Año</div>
+          <div class="small" id="yearLabel">Año</div>
+        </div>
+      </div>
+      <div class="weekdays">
+        <div>Dom</div><div>Lun</div><div>Mar</div><div>Mie</div><div>Jue</div><div>Vie</div><div>Sab</div>
+      </div>
+      <div class="grid" id="calendarGrid"></div>
     </div>
-    <h1>calendario</h1>
 
-    <script src="js/script.js"></script>
+    <aside class="panel">
+      <div class="today-card">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <div>
+            <div id="selectedFull" style="font-weight:700;font-size:16px">Selecciona una fecha</div>
+            <div class="small" id="selectedShort">—</div>
+          </div>
+          <div style="text-align:right">
+            <div class="small">Hoy</div>
+            <div id="todayShort" style="font-weight:700"></div>
+          </div>
+        </div>
+      </div>
+
+      <div style="margin-bottom:8px;display:flex;gap:8px">
+        <input id="eventText" placeholder="Agregar evento..." style="flex:1" />
+        <select id="eventType">
+          <option value="school">Escolar</option>
+          <option value="act">Acto</option>
+          <option value="personal">Personal</option>
+        </select>
+        <button id="addEvent" class="add-btn" style="width:auto;padding:8px 12px">+</button>
+      </div>
+
+      <div style="margin-bottom:12px">
+        <strong>Filtros:</strong><br>
+        <label><input type="checkbox" class="filter" value="school" checked> Escolar</label><br>
+        <label><input type="checkbox" class="filter" value="act" checked> Acto</label><br>
+        <label><input type="checkbox" class="filter" value="personal" checked> Personal</label>
+      </div>
+
+      <div class="events-list" id="eventsList"></div>
+    </aside>
+  </div>
+
+  <script>
+    (function(){
+      const monthLabel=document.getElementById('monthLabel');
+      const yearLabel=document.getElementById('yearLabel');
+      const grid=document.getElementById('calendarGrid');
+      const prev=document.getElementById('prev');
+      const next=document.getElementById('next');
+      const todayBtn=document.getElementById('todayBtn');
+      const selectedFull=document.getElementById('selectedFull');
+      const selectedShort=document.getElementById('selectedShort');
+      const todayShort=document.getElementById('todayShort');
+      const eventText=document.getElementById('eventText');
+      const eventType=document.getElementById('eventType');
+      const addEventBtn=document.getElementById('addEvent');
+      const eventsList=document.getElementById('eventsList');
+      const filterInputs=document.querySelectorAll('.filter');
+
+      let current=new Date();
+      let selectedDate=null;
+
+      const STORAGE_KEY='cal_events_v2';
+      let events=loadEvents();
+
+      function loadEvents(){
+        try{const raw=localStorage.getItem(STORAGE_KEY);return raw?JSON.parse(raw):{};}catch(e){return{}};
+      }
+      function saveEvents(){localStorage.setItem(STORAGE_KEY,JSON.stringify(events));}
+      function formatISO(d){return d.getFullYear()+ '-' + String(d.getMonth()+1).padStart(2,'0')+ '-' + String(d.getDate()).padStart(2,'0');}
+      function pretty(d){return d.toLocaleDateString('es-ES',{weekday:'long',day:'numeric',month:'long',year:'numeric'});}
+
+      function render(){
+        grid.innerHTML='';
+        const year=current.getFullYear();
+        const month=current.getMonth();
+        monthLabel.textContent=current.toLocaleString('es-ES',{month:'long',year:'numeric'});
+        yearLabel.textContent=year;
+
+        const firstDay=new Date(year,month,1);
+        const startIdx=firstDay.getDay();
+        const daysInMonth=new Date(year,month+1,0).getDate();
+        const prevMonthDays=new Date(year,month,0).getDate();
+
+        const totalCells=42;
+        for(let i=0;i<totalCells;i++){
+          const cell=document.createElement('div');
+          cell.className='day';
+          const dayNum=i-startIdx+1;
+          let cellDate;
+          if(dayNum<=0){cell.classList.add('inactive');cellDate=new Date(year,month-1,prevMonthDays+dayNum);}
+          else if(dayNum>daysInMonth){cell.classList.add('inactive');cellDate=new Date(year,month+1,dayNum-daysInMonth);}
+          else{cellDate=new Date(year,month,dayNum);}
+          const iso=formatISO(cellDate);
+
+          const num=document.createElement('div');num.className='date-num';num.textContent=cellDate.getDate();cell.appendChild(num);
+
+          const today=new Date();if(formatISO(today)===iso){cell.classList.add('today');todayShort.textContent=today.toLocaleDateString('es-ES',{day:'numeric',month:'short'});}
+          if(selectedDate&&iso===selectedDate){cell.classList.add('selected');}
+
+          if(events[iso]){
+            const activeFilters=getActiveFilters();
+            const evWrap=document.createElement('div');evWrap.className='events';
+            events[iso].forEach(e=>{if(activeFilters.includes(e.type)){const dot=document.createElement('div');dot.className='dot '+e.type;evWrap.appendChild(dot);}});
+            if(evWrap.children.length) cell.appendChild(evWrap);
+          }
+
+          cell.addEventListener('click',()=>{selectedDate=iso;updateSelectedPanel();render();});
+          grid.appendChild(cell);
+        }
+        renderEventsList();
+      }
+
+      function updateSelectedPanel(){
+        if(selectedDate){const d=new Date(selectedDate+'T00:00:00');selectedFull.textContent=pretty(d);selectedShort.textContent=selectedDate;}
+        else{selectedFull.textContent='Selecciona una fecha';selectedShort.textContent='—';}
+      }
+
+      function renderEventsList(){
+        eventsList.innerHTML='';
+        const activeFilters=getActiveFilters();
+        if(selectedDate){
+          const dayEvents=(events[selectedDate]||[]).filter(e=>activeFilters.includes(e.type));
+          if(dayEvents.length===0){const p=document.createElement('div');p.className='small';p.textContent='No hay eventos visibles.';eventsList.appendChild(p);return;}
+          dayEvents.forEach(item=>{
+            const el=document.createElement('div');el.className='event-item';
+            el.innerHTML=`<strong>${escapeHtml(item.text)}</strong> <span class=\"small\">(${item.type})</span> <button data-id=\"${item.id}\" style=\"float:right;background:transparent;border:0;color:var(--muted);cursor:pointer\">Eliminar</button>`;
+            const btn=el.querySelector('button');btn.addEventListener('click',()=>removeEvent(selectedDate,item.id));
+            eventsList.appendChild(el);
+          });
+        }
+      }
+
+      function addEvent(date,text,type){if(!text) return;const id=Date.now()+'-'+Math.random().toString(36).slice(2,8);if(!events[date])events[date]=[];events[date].push({id,text,type});saveEvents();render();eventText.value='';}
+      function removeEvent(date,id){if(!events[date])return;events[date]=events[date].filter(e=>e.id!==id);if(events[date].length===0)delete events[date];saveEvents();render();}
+      function escapeHtml(s){return String(s).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;','\'':'&#39;'}[m]));}
+      function getActiveFilters(){return Array.from(filterInputs).filter(f=>f.checked).map(f=>f.value);}
+
+      prev.addEventListener('click',()=>{current.setMonth(current.getMonth()-1);render();});
+      next.addEventListener('click',()=>{current.setMonth(current.getMonth()+1);render();});
+      todayBtn.addEventListener('click',()=>{current=new Date();render();});
+      addEventBtn.addEventListener('click',()=>{if(!selectedDate)selectedDate=formatISO(new Date());updateSelectedPanel();const text=eventText.value.trim();if(!text)return eventText.focus();addEvent(selectedDate,text,eventType.value);});
+      eventText.addEventListener('keydown',e=>{if(e.key==='Enter'){addEventBtn.click();}});
+      filterInputs.forEach(f=>f.addEventListener('change',render));
+
+      selectedDate=formatISO(new Date());
+      updateSelectedPanel();
+      render();
+    })();
+  </script>
 </body>
 </html>
