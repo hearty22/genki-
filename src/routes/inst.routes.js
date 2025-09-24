@@ -1,0 +1,38 @@
+import { Router } from "express";
+import {
+  createInstitution,
+  getAllInstitutions,
+  getInstitutionById,
+  updateInstitution,
+  deleteInstitution,
+  uploadInstitutionLogo,
+  searchInstitutions,
+  upload
+} from "../controllers/inst.controller.js";
+
+const instRouter = Router();
+
+// Rutas para instituciones
+
+// Crear una nueva institución
+instRouter.post("/institutions", createInstitution);
+
+// Obtener todas las instituciones
+instRouter.get("/institutions", getAllInstitutions);
+
+// Buscar instituciones por nombre o siglas
+instRouter.get("/institutions/search", searchInstitutions);
+
+// Obtener una institución por ID
+instRouter.get("/institutions/:id", getInstitutionById);
+
+// Actualizar una institución
+instRouter.put("/institutions/:id", updateInstitution);
+
+// Subir logo de institución
+instRouter.post("/institutions/:id/logo", upload.single('logo'), uploadInstitutionLogo);
+
+// Eliminar una institución
+instRouter.delete("/institutions/:id", deleteInstitution);
+
+export default instRouter;
