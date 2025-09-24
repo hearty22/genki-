@@ -42,13 +42,34 @@ document.getElementById("login-form").addEventListener("submit", async (e)=>{
     });
     const data = await res.json();
     if (res.ok) {
-        // console.log(data.token);
-        // console.log("logueado cabro")
-        mensaje.textContent = data.message || "credenciales validas";
-        mensaje.style.color = "green";
-        window.location.href = "./custom.profile.html"
+        try {
+            const token = data.token;
+            const profileRes = await fetch("http://localhost:3000/api/profile", {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+
+            if (profileRes.ok) {
+                const profileData = await profileRes.json();
+                const user = profileData.user;
+
+                if (user.profile_photo_path) {
+                    console.log("✅ Usuario con foto de perfil, redirigiendo al workplace");
+                    window.location.href = "./workplace.html";
+                } else {
+                    console.log("📷 Usuario sin foto de perfil, redirigiendo a custom.profile.html");
+                    window.location.href = "./custom.profile.html";
+                }
+            } else {
+                console.log("No se pudo verificar el perfil, redirigiendo a custom.profile.html");
+                window.location.href = "./custom.profile.html";
+            }
+        } catch (error) {
+            console.error("Error al verificar perfil:", error);
+            window.location.href = "./custom.profile.html";
+        }
     } else {
-        // console.log("error mi cabro")
         mensaje.textContent = data.message || data.error || "credenciales invalidas"
         mensaje.style.color = "red"
     }
@@ -57,7 +78,6 @@ document.getElementById("login-form").addEventListener("submit", async (e)=>{
 document.getElementById("show-login").onclick = async ()=>{
     document.getElementById("login-form-container").classList.add("active");
     document.getElementById("register-form-container").classList.remove("active");
-    // this.classList.add("active")
     document.getElementById("show-register").classList.remove("active");
 };
 document.getElementById("show-register").onclick = async ()=>{

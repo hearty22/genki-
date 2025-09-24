@@ -45,7 +45,53 @@ function decodeJwt(token) {
 };
 const user = decodeJwt(token);
 
+if (!user) {
+    alert("No se pudo obtener la información del usuario. Redirigiendo...");
+    window.location.href = 'index.html';
+    throw new Error("Token inválido");
+}
+
 document.getElementById("username").textContent = user.user_name;
+
+// ✅ Función para verificar si el usuario ya tiene foto de perfil
+async function checkExistingProfile() {
+    try {
+        const response = await fetch("/api/profile", {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        });
+
+        if (response.ok) {
+            const data = await response.json();
+            const userData = data.user;
+
+            // ✅ Si el usuario ya tiene foto de perfil, mostrarla
+            if (userData.profile_photo_path) {
+                const currentPFP = document.getElementById('currentPFP');
+                const labelSpan = document.querySelector('.custom-file-label span');
+
+                // Mostrar la foto existente
+                currentPFP.src = `/${userData.profile_photo_path}`;
+                currentPFP.alt = `Foto de ${userData.user_name}`;
+
+                // Cambiar el texto del label
+                labelSpan.textContent = '📷 Cambiar Foto de Perfil';
+
+                console.log("✅ Foto de perfil existente cargada:", userData.profile_photo_path);
+            } else {
+                console.log("📷 Usuario sin foto de perfil, mostrando formulario");
+            }
+        } else {
+            console.log("Error al verificar perfil existente:", response.status);
+        }
+    } catch (error) {
+        console.error("Error al verificar perfil existente:", error);
+    }
+}
+
+// ✅ Cargar la foto existente cuando se carga la página
+document.addEventListener('DOMContentLoaded', checkExistingProfile);
 //--------------------------------------------------------------------------------------------------------
 //parte logica para cargar las fotos de perfiles a la base de datos
 

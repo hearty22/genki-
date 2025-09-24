@@ -28,4 +28,4 @@ export const usersModel =  sequelize.define("users",{
         type: DataTypes.STRING(),
         allowNull: true
     }
-},{timestamps:false});
+},{timestamps:true});
