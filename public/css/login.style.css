@@ -1,10 +1,10 @@
-/* Fondo degradado suave con la paleta del index */
+/* Fondo degradado suave con la paleta del workplace */
 body {
   min-height: 100vh;
   margin: 0;
   font-family: 'Roboto', sans-serif;
-  background: linear-gradient(120deg, #f7fff7 0%, #ffe66d 100%);
-  color: #22223b;
+  background: linear-gradient(135deg, #9C27B0 0%, #E1BEE7 50%, #F3E5F5 100%);
+  color: #424242;
 }
 
 /* Centrado de los formularios */
@@ -20,7 +20,7 @@ body {
   position: relative;
   background: #fff;
   border-radius: 24px;
-  box-shadow: 0 8px 32px rgba(255, 107, 107, 0.12);
+  box-shadow: 0 8px 32px rgba(156, 39, 176, 0.15);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -29,7 +29,7 @@ body {
   max-width: 400px;
   width: 100%;
   overflow: hidden;
-  min-height: 90vh; 
+  min-height: 90vh;
 }
 
 /* Toggle de formularios */
@@ -40,8 +40,8 @@ body {
 
 .toggle-btn {
   flex: 1;
-  background: #f7fff7;
-  color: #ff6b6b;
+  background: #F3E5F5;
+  color: #9C27B0;
   border: none;
   border-bottom: 3px solid transparent;
   padding: 18px 0;
@@ -53,17 +53,14 @@ body {
 
 .toggle-btn.active,
 .toggle-btn:hover {
-  background: #ffe66d;
-  color: #22223b;
-  border-bottom: 3px solid #ff6b6b;
+  background: #E1BEE7;
+  color: #6A1B9A;
+  border-bottom: 3px solid #9C27B0;
 }
 
 /* Contenedores de formularios */
 #login-form-container,
 #register-form-container {
-  /* width: 100%;
-  box-sizing: border-box;
-  display: none; */
   padding: 36px 32px 24px 32px;
   opacity: 0;
   transform: translateY(30px);
@@ -72,7 +69,7 @@ body {
   position: absolute;
   width: 100%;
   left: 0;
-  top: 80px; /* Ajusta según tu diseño */
+  top: 80px;
   z-index: 1;
   background: #fff;
   border-radius: 0 0 24px 24px;
@@ -90,7 +87,7 @@ body {
 
 h2 {
   margin-bottom: 24px;
-  color: #ff6b6b;
+  color: #9C27B0;
   font-weight: 700;
   letter-spacing: 1px;
   text-align: center;
@@ -106,25 +103,26 @@ form {
 input[type="text"],
 input[type="password"] {
   padding: 14px 18px;
-  border: 1.5px solid #4ecdc4;
+  border: 1.5px solid #E1BEE7;
   border-radius: 10px;
-  background: #f7fff7;
+  background: #F3E5F5;
   font-size: 16px;
-  color: #22223b;
+  color: #424242;
   transition: border 0.2s, box-shadow 0.2s;
-  box-shadow: 0 2px 8px rgba(78, 205, 196, 0.04);
+  box-shadow: 0 2px 8px rgba(156, 39, 176, 0.08);
 }
+
 input[type="text"]:focus,
 input[type="password"]:focus {
   outline: none;
-  border: 2px solid #ff6b6b;
+  border: 2px solid #9C27B0;
   background: #fff;
-  box-shadow: 0 0 0 2px #ffe66d;
+  box-shadow: 0 0 0 2px rgba(156, 39, 176, 0.2);
 }
 
 input[type="submit"] {
-  background: linear-gradient(90deg, #ff6b6b 0%, #ffe66d 100%);
-  color: #22223b;
+  background: linear-gradient(90deg, #9C27B0 0%, #6A1B9A 100%);
+  color: #fff;
   border: none;
   border-radius: 10px;
   padding: 14px;
@@ -134,11 +132,11 @@ input[type="submit"] {
   transition: background 0.2s, transform 0.1s;
   margin-top: 10px;
   letter-spacing: 1px;
-  box-shadow: 0 2px 8px rgba(255, 107, 107, 0.08);
+  box-shadow: 0 2px 8px rgba(156, 39, 176, 0.2);
 }
 
 input[type="submit"]:hover {
-  background: linear-gradient(90deg, #ffe66d 0%, #ff6b6b 100%);
+  background: linear-gradient(90deg, #6A1B9A 0%, #9C27B0 100%);
   color: #fff;
   transform: translateY(-2px) scale(1.03);
 }
@@ -149,7 +147,7 @@ input[type="submit"]:hover {
   font-weight: 500;
   min-height: 24px;
   text-align: center;
-  color: #ff6b6b;
+  color: #9C27B0;
 }
 
 @media (max-width: 500px) {

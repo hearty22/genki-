@@ -1,19 +1,16 @@
-/* Fondo suave y centrado */
+/* Fondo suave con la paleta del workplace */
 body {
   min-height: 100vh;
   margin: 0;
   font-family: 'Roboto', sans-serif;
-  background: linear-gradient(120deg, #f7fff7 0%, #ffe66d 100%);
-  color: #22223b;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  background: linear-gradient(135deg, #9C27B0 0%, #E1BEE7 50%, #F3E5F5 100%);
+  color: #424242;
 }
 
 .container {
   background: #fff;
   border-radius: 24px;
-  box-shadow: 0 8px 32px rgba(255, 107, 107, 0.12);
+  box-shadow: 0 8px 32px rgba(156, 39, 176, 0.15);
   padding: 40px 32px 32px 32px;
   max-width: 350px;
   width: 100%;
@@ -24,7 +21,7 @@ body {
 
 h1 {
   font-size: 1.5rem;
-  color: #ff6b6b;
+  color: #9C27B0;
   margin-bottom: 28px;
   text-align: center;
   font-weight: 700;
@@ -40,11 +37,11 @@ h1 {
 .pfp-preview {
   width: 120px;
   height: 120px;
-  border: 4px solid #4ecdc4;
+  border: 4px solid #9C27B0;
   border-radius: 50%;
   overflow: hidden;
   margin-bottom: 16px;
-  background: #f7fff7;
+  background: #F3E5F5;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -62,7 +59,7 @@ h1 {
   font-size: 1.1rem;
   font-weight: 600;
   margin-bottom: 18px;
-  color: #22223b;
+  color: #424242;
   text-align: center;
 }
 
@@ -76,7 +73,7 @@ h1 {
 .color-picker-section label {
   font-size: 0.95rem;
   margin-bottom: 6px;
-  color: #4ecdc4;
+  color: #9C27B0;
   font-weight: 500;
 }
 
@@ -87,7 +84,7 @@ input[type="color"] {
   background: none;
   cursor: pointer;
   border-radius: 50%;
-  box-shadow: 0 2px 8px rgba(78, 205, 196, 0.08);
+  box-shadow: 0 2px 8px rgba(156, 39, 176, 0.08);
   margin-bottom: 8px;
 }
 
@@ -101,7 +98,7 @@ form {
 form label {
   font-size: 0.95rem;
   margin-bottom: 6px;
-  color: #ff6b6b;
+  color: #9C27B0;
   font-weight: 500;
 }
 
@@ -112,29 +109,29 @@ input[type="file"] {
 }
 .custom-file-label {
   display: inline-block;
-  background: linear-gradient(90deg, #4ecdc4 0%, #ffe66d 100%);
-  color: #22223b;
+  background: linear-gradient(90deg, #9C27B0 0%, #E1BEE7 100%);
+  color: #fff;
   border-radius: 8px;
   padding: 10px 22px;
   font-size: 1rem;
   font-weight: 600;
   cursor: pointer;
   margin-bottom: 18px;
-  box-shadow: 0 2px 8px rgba(78, 205, 196, 0.08);
+  box-shadow: 0 2px 8px rgba(156, 39, 176, 0.15);
   transition: background 0.2s, color 0.2s, transform 0.1s;
   border: none;
   text-align: center;
 }
 .custom-file-label:hover {
-  background: linear-gradient(90deg, #ffe66d 0%, #4ecdc4 100%);
-  color: #fff;
+  background: linear-gradient(90deg, #E1BEE7 0%, #9C27B0 100%);
+  color: #424242;
   transform: translateY(-2px) scale(1.03);
 }
 
 
 input[type="submit"] {
-  background: linear-gradient(90deg, #ff6b6b 0%, #ffe66d 100%);
-  color: #22223b;
+  background: linear-gradient(90deg, #9C27B0 0%, #6A1B9A 100%);
+  color: #fff;
   border: none;
   border-radius: 10px;
   padding: 12px 0;
@@ -144,11 +141,11 @@ input[type="submit"] {
   cursor: pointer;
   transition: background 0.2s, color 0.2s, transform 0.1s;
   letter-spacing: 1px;
-  box-shadow: 0 2px 8px rgba(255, 107, 107, 0.08);
+  box-shadow: 0 2px 8px rgba(156, 39, 176, 0.15);
 }
 
 input[type="submit"]:hover {
-  background: linear-gradient(90deg, #ffe66d 0%, #ff6b6b 100%);
+  background: linear-gradient(90deg, #6A1B9A 0%, #9C27B0 100%);
   color: #fff;
   transform: translateY(-2px) scale(1.03);
 }
