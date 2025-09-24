@@ -293,7 +293,6 @@ body.dark .switch::before{
 
 .home .text {
     font-size: 30px;
-    font-weight: 500;
     color: var(--text-color);
     padding: 12px 60px;
 }
@@ -302,14 +301,10 @@ body.dark .switch::before{
     left: 78px;
     height: 100vh;
     width: calc(100% - 78px);
+    padding: 20px;
 }
 
-body.dark .home .text {
-    color: var(--text-color);
-}
-
-/* navbar
- */
+/* navbar */
 
 .navbar {
     width: calc(100% - 250px);
@@ -464,8 +459,6 @@ hr {
     min-height: calc(100vh - 60px);
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
     width: 100%;
     padding-top: 0;
     box-sizing: border-box;
@@ -475,6 +468,7 @@ hr {
     width: calc(100% - 250px);
     background-color: var(--body-color);
     transition: var(--tran-05);
+    padding: 20px;
 }
 
 .inicio {
@@ -603,7 +597,6 @@ hr {
     .sidebar {
         width: 200px;
     }
-
     .sidebar.close {
         width: 70px;
     }
@@ -611,16 +604,12 @@ hr {
     .sidebar.sidebar.close ~ .home {
         left: 70px;
         width: calc(100% - 70px);
+        padding: 20px;
     }
 
     .sidebar.sidebar.close ~ .navbar {
         width: calc(100% - 70px);
         margin-left: 70px;
-    }
-
-    .navbar {
-        width: calc(100% - 200px);
-        margin-left: 200px;
     }
 
     .inicio {
