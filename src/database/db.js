@@ -1,7 +1,7 @@
 
 import { sequelize } from "./database.js";
 
-const MAX_RETRY_ATTEMPTS = 3;
+const MAX_RETRY_ATTEMPTS = 5;
 const RETRY_DELAY_MS = 2000;
 
 const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
