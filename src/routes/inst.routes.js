@@ -16,25 +16,25 @@ const instRouter = Router();
 // Todas las rutas de instituciones requieren autenticación
 
 // Crear una nueva institución
-instRouter.post("/institutions", authMiddleware, createInstitution);
+instRouter.post("/institutions", createInstitution);
 
 // Obtener todas las instituciones del usuario
-instRouter.get("/institutions", authMiddleware, getAllInstitutions);
+instRouter.get("/institutions", getAllInstitutions);
 
 // Buscar instituciones por nombre o siglas del usuario
-instRouter.get("/institutions/search", authMiddleware, searchInstitutions);
+instRouter.get("/institutions/search", searchInstitutions);
 
 // Obtener una institución por ID (solo si pertenece al usuario)
-instRouter.get("/institutions/:id", authMiddleware, getInstitutionById);
+instRouter.get("/institutions/:id", getInstitutionById);
 
 // Actualizar una institución (solo si pertenece al usuario)
-instRouter.put("/institutions/:id", authMiddleware, updateInstitution);
+instRouter.put("/institutions/:id", updateInstitution);
 
 // Subir logo de institución (solo si pertenece al usuario)
-instRouter.post("/institutions/:id/logo", authMiddleware, upload.single('logo'), uploadInstitutionLogo);
+instRouter.post("/institutions/:id/logo", upload.single('logo'), uploadInstitutionLogo);
 
 // Eliminar una institución (solo si pertenece al usuario)
-instRouter.delete("/institutions/:id", authMiddleware, deleteInstitution);
+instRouter.delete("/institutions/:id", deleteInstitution);
 
 export default instRouter;
 

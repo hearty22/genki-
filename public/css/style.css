@@ -210,11 +210,16 @@
             position: relative;
             display: flex;
             justify-content: center;
+            align-items: center;
+            min-height: 400px;
         }
 
         .dashboard-img {
             width: 100%;
             max-width: 600px;
+            height: auto;
+            max-height: 500px;
+            object-fit: contain;
             border-radius: 20px;
             box-shadow: 0 25px 50px -12px var(--shadow);
             border: 8px solid var(--white);
@@ -564,16 +569,26 @@
         @media (max-width: 992px) {
             .hero-content {
                 flex-direction: column;
+                gap: 40px;
             }
             
             .hero-text {
                 padding-right: 0;
-                margin-bottom: 40px;
+                margin-bottom: 0;
                 text-align: center;
             }
             
             .hero-buttons {
                 justify-content: center;
+            }
+            
+            .hero-image {
+                min-height: 300px;
+            }
+            
+            .dashboard-img {
+                max-width: 500px;
+                max-height: 400px;
             }
             
             .steps-line {
@@ -618,6 +633,15 @@
                 text-align: center;
             }
             
+            .hero-image {
+                min-height: 250px;
+            }
+            
+            .dashboard-img {
+                max-width: 400px;
+                max-height: 300px;
+            }
+            
             .step {
                 margin-bottom: 40px;
             }
@@ -642,6 +666,15 @@
             
             .feature-card {
                 padding: 25px 15px;
+            }
+            
+            .hero-image {
+                min-height: 200px;
+            }
+            
+            .dashboard-img {
+                max-width: 300px;
+                max-height: 250px;
             }
         }
 
