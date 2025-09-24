@@ -10,7 +10,7 @@ export const generateToken = (user , res)=>{
             
         })
 
-        const token = jwt.sign(payload, process.env.JWT, {expiresIn:"1h"});
+        const token = jwt.sign(payload, process.env.JWT_SEC, {expiresIn:"1h"});
 
          res.cookie("token", token , {
             httpOnly: false,
@@ -26,7 +26,7 @@ export const generateToken = (user , res)=>{
 };
 export const verifyToken = (req) => {
     try {
-        const decoded = jwt.verify(req.cookies.token, process.env.JWT)
+        const decoded = jwt.verify(req.cookies.token, process.env.JWT_SEC)
         return decoded;
     } catch (error) {
         throw new Error("error en validar el token");
