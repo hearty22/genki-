@@ -46,7 +46,6 @@ document.getElementById("login-form").addEventListener("submit", async (e)=>{
         // console.log("logueado cabro")
         mensaje.textContent = data.message || "credenciales validas";
         mensaje.style.color = "green";
-        localStorage.setItem("token", data.token)
         window.location.href = "./custom.profile.html"
     } else {
         // console.log("error mi cabro")

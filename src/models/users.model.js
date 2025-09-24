@@ -20,8 +20,8 @@ export const usersModel =  sequelize.define("users",{
         type: DataTypes.STRING(200),
         allowNull: false
     },
-    profile_photo:{
-        type: DataTypes.BLOB("long"),
+    profile_photo_path:{
+        type: DataTypes.STRING(500),
         allowNull: true
     },
     gender:{

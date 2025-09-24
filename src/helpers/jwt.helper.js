@@ -6,13 +6,14 @@ export const generateToken = (user , res)=>{
         const payload = ({
             id: user.id,
             user_name: user.user_name ,
+            gender: user.gender
             
         })
 
         const token = jwt.sign(payload, process.env.JWT, {expiresIn:"1h"});
 
          res.cookie("token", token , {
-            httpOnly: true,
+            httpOnly: false,
             secure: false, // solo por HTTPS
             sameSite: "strict",
             maxAge: 60 * 60 * 1000 // 1 hora
