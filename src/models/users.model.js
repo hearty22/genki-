@@ -32,9 +32,8 @@ export const usersModel =  sequelize.define("users",{
 
 // Relaciones
 usersModel.associate = (models) => {
-    usersModel.belongsToMany(models.instModel, {
-        through: models.userInstitutionModel,
+    usersModel.hasMany(models.instModel, {
         foreignKey: 'user_id',
-        otherKey: 'institution_id'
+        as: 'institutions'
     });
 };

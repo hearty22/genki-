@@ -98,13 +98,14 @@
 /* Logo de la institución */
 .institution-logo {
     width: 100%;
-    height: 120px;
+    height: 100%;
     object-fit: cover;
     border-radius: 8px;
-    margin: 15px 0;
-    background: rgba(255, 255, 255, 0.1);
-    padding: 5px;
     transition: transform 0.3s ease;
+    background-image: url('../img/default-logo-instituciones.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
 }
 
 .institution-card:hover .institution-logo {

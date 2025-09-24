@@ -55,17 +55,23 @@ export const createInstitution = async (req, res) => {
       return res.status(400).json({ message: "Campo requerido: name" });
     }
 
-    // Verificar si ya existe una institución con el mismo nombre
-    console.log("🔍 Verificando si existe institución con nombre:", name);
-    const existingInstitution = await instModel.findOne({ where: { name } });
+    // Verificar si ya existe una institución con el mismo nombre para este usuario
+    console.log("🔍 Verificando si existe institución con nombre:", name, "para usuario:", userId);
+    const existingInstitution = await instModel.findOne({ 
+      where: { 
+        name,
+        user_id: userId 
+      } 
+    });
     if (existingInstitution) {
-      console.log("❌ Error: institución ya existe");
-      return res.status(400).json({ message: "Ya existe una institución con ese nombre" });
+      console.log("❌ Error: institución ya existe para este usuario");
+      return res.status(400).json({ message: "Ya tienes una institución con ese nombre" });
     }
 
     // Crear la nueva institución
     console.log("🏗️ Creando nueva institución...");
     const newInstitution = await instModel.create({
+      user_id: userId,
       name,
       siglas,
       notas,
@@ -75,17 +81,6 @@ export const createInstitution = async (req, res) => {
     });
 
     console.log("✅ Institución creada con ID:", newInstitution.id_institucion);
-
-    // Asignar automáticamente al usuario creador como miembro con rol de Administrador
-    console.log("👥 Asignando usuario como administrador...");
-    await userInstitutionModel.create({
-      user_id: userId,
-      institution_id: newInstitution.id_institucion,
-      role: 'Administrador',
-      is_active: true
-    });
-
-    console.log("✅ Usuario asignado exitosamente");
 
     res.status(201).json({
       message: "Institución creada exitosamente",
@@ -108,18 +103,24 @@ export const createInstitution = async (req, res) => {
   }
 };
 
-// Obtener todas las instituciones
+// Obtener todas las instituciones del usuario actual
 export const getAllInstitutions = async (req, res) => {
   try {
-    console.log("🔍 Buscando todas las instituciones activas...");
+    const token = verifyToken(req);
+    const userId = token.id;
+
+    console.log("🔍 Buscando instituciones del usuario:", userId);
 
     const institutions = await instModel.findAll({
-      where: { is_active: true },
+      where: { 
+        user_id: userId,
+        is_active: true 
+      },
       attributes: ['id_institucion', 'name', 'siglas', 'logo', 'address', 'nivel', 'createdAt'],
       order: [['name', 'ASC']]
     });
 
-    console.log("✅ Encontradas", institutions.length, "instituciones activas");
+    console.log("✅ Encontradas", institutions.length, "instituciones del usuario");
 
     res.status(200).json({
       message: "Instituciones obtenidas exitosamente",
@@ -128,6 +129,9 @@ export const getAllInstitutions = async (req, res) => {
 
   } catch (error) {
     console.log("❌ Error en getAllInstitutions:", error);
+    if (error.message === "error en validar el token") {
+      return res.status(401).json({error: "Token inválido o expirado"});
+    }
     res.status(500).json({ error: "Error interno al obtener las instituciones" });
   }
 };
@@ -136,14 +140,19 @@ export const getAllInstitutions = async (req, res) => {
 export const getInstitutionById = async (req, res) => {
   try {
     const { id } = req.params;
+    const token = verifyToken(req);
+    const userId = token.id;
 
     const institution = await instModel.findOne({
-      where: { id_institucion: id },
+      where: { 
+        id_institucion: id,
+        user_id: userId 
+      },
       attributes: ['id_institucion', 'name', 'siglas', 'logo', 'notas', 'address', 'nivel', 'createdAt', 'updatedAt']
     });
 
     if (!institution) {
-      return res.status(404).json({ message: "Institución no encontrada" });
+      return res.status(404).json({ message: "Institución no encontrada o no tienes permisos para verla" });
     }
 
     res.status(200).json({
@@ -153,6 +162,9 @@ export const getInstitutionById = async (req, res) => {
 
   } catch (error) {
     console.log(error);
+    if (error.message === "error en validar el token") {
+      return res.status(401).json({error: "Token inválido o expirado"});
+    }
     res.status(500).json({ error: "Error interno al obtener la institución" });
   }
 };
@@ -162,18 +174,30 @@ export const updateInstitution = async (req, res) => {
   try {
     const { id } = req.params;
     const { name, siglas, notas, address, nivel } = req.body;
+    const token = verifyToken(req);
+    const userId = token.id;
 
-    // Verificar si la institución existe
-    const institution = await instModel.findOne({ where: { id_institucion: id } });
+    // Verificar si la institución existe y pertenece al usuario
+    const institution = await instModel.findOne({ 
+      where: { 
+        id_institucion: id,
+        user_id: userId 
+      } 
+    });
     if (!institution) {
-      return res.status(404).json({ message: "Institución no encontrada" });
+      return res.status(404).json({ message: "Institución no encontrada o no tienes permisos para editarla" });
     }
 
-    // Si se está actualizando el nombre, verificar que no exista otra institución con ese nombre
+    // Si se está actualizando el nombre, verificar que no exista otra institución con ese nombre para este usuario
     if (name && name !== institution.name) {
-      const existingInstitution = await instModel.findOne({ where: { name } });
+      const existingInstitution = await instModel.findOne({ 
+        where: { 
+          name,
+          user_id: userId 
+        } 
+      });
       if (existingInstitution) {
-        return res.status(400).json({ message: "Ya existe otra institución con ese nombre" });
+        return res.status(400).json({ message: "Ya tienes otra institución con ese nombre" });
       }
     }
 
@@ -193,6 +217,9 @@ export const updateInstitution = async (req, res) => {
 
   } catch (error) {
     console.log(error);
+    if (error.message === "error en validar el token") {
+      return res.status(401).json({error: "Token inválido o expirado"});
+    }
     res.status(500).json({ error: "Error interno al actualizar la institución" });
   }
 };
@@ -201,11 +228,18 @@ export const updateInstitution = async (req, res) => {
 export const uploadInstitutionLogo = async (req, res) => {
   try {
     const { id } = req.params;
+    const token = verifyToken(req);
+    const userId = token.id;
 
-    // Verificar si la institución existe
-    const institution = await instModel.findOne({ where: { id_institucion: id } });
+    // Verificar si la institución existe y pertenece al usuario
+    const institution = await instModel.findOne({ 
+      where: { 
+        id_institucion: id,
+        user_id: userId 
+      } 
+    });
     if (!institution) {
-      return res.status(404).json({ message: "Institución no encontrada" });
+      return res.status(404).json({ message: "Institución no encontrada o no tienes permisos para editarla" });
     }
 
     // Verificar si se subió un archivo
@@ -235,6 +269,9 @@ export const uploadInstitutionLogo = async (req, res) => {
 
   } catch (error) {
     console.log(error);
+    if (error.message === "error en validar el token") {
+      return res.status(401).json({error: "Token inválido o expirado"});
+    }
     if (error.message === 'Solo se permiten archivos de imagen') {
       return res.status(400).json({ error: error.message });
     }
@@ -246,11 +283,18 @@ export const uploadInstitutionLogo = async (req, res) => {
 export const deleteInstitution = async (req, res) => {
   try {
     const { id } = req.params;
+    const token = verifyToken(req);
+    const userId = token.id;
 
-    // Verificar si la institución existe
-    const institution = await instModel.findOne({ where: { id_institucion: id } });
+    // Verificar si la institución existe y pertenece al usuario
+    const institution = await instModel.findOne({ 
+      where: { 
+        id_institucion: id,
+        user_id: userId 
+      } 
+    });
     if (!institution) {
-      return res.status(404).json({ message: "Institución no encontrada" });
+      return res.status(404).json({ message: "Institución no encontrada o no tienes permisos para eliminarla" });
     }
 
     // Si la institución tiene un logo, eliminar el archivo
@@ -270,14 +314,19 @@ export const deleteInstitution = async (req, res) => {
 
   } catch (error) {
     console.log(error);
+    if (error.message === "error en validar el token") {
+      return res.status(401).json({error: "Token inválido o expirado"});
+    }
     res.status(500).json({ error: "Error interno al eliminar la institución" });
   }
 };
 
-// Buscar instituciones por nombre o siglas
+// Buscar instituciones por nombre o siglas del usuario actual
 export const searchInstitutions = async (req, res) => {
   try {
     const { query } = req.query;
+    const token = verifyToken(req);
+    const userId = token.id;
 
     if (!query) {
       return res.status(400).json({ message: "Debe proporcionar un término de búsqueda" });
@@ -285,6 +334,7 @@ export const searchInstitutions = async (req, res) => {
 
     const institutions = await instModel.findAll({
       where: {
+        user_id: userId,
         [Op.or]: [
           { name: { [Op.like]: `%${query}%` } },
           { siglas: { [Op.like]: `%${query}%` } }
@@ -301,6 +351,9 @@ export const searchInstitutions = async (req, res) => {
 
   } catch (error) {
     console.log(error);
+    if (error.message === "error en validar el token") {
+      return res.status(401).json({error: "Token inválido o expirado"});
+    }
     res.status(500).json({ error: "Error interno al buscar instituciones" });
   }
 };

@@ -474,8 +474,8 @@ hr {
 /* Área principal del workplace - Grid Layout perfecto */
 .inicio {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-    gap: 24px;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 16px;
     margin: 20px auto;
     padding: 0 20px;
     max-width: 1400px;
@@ -487,7 +487,7 @@ hr {
 .inicio img {
     object-fit: cover;
     width: 100%;
-    height: 120px;
+    height: 100%;
     border-radius: 8px;
     margin-bottom: 0;
     box-shadow: 0 1px 4px rgba(0,0,0,0.07);
@@ -519,7 +519,7 @@ hr {
 .clase {
     background: rgba(255, 255, 255, 0.95);
     border-radius: 15px;
-    padding: 24px;
+    padding: 20px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
     transition: all 0.3s ease;
     position: relative;
@@ -528,8 +528,8 @@ hr {
     backdrop-filter: blur(10px);
     cursor: pointer;
     width: 100%;
-    height: 320px;
-    max-width: 320px;
+    height: 280px;
+    max-width: 280px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -579,11 +579,11 @@ hr {
 /* Contenedor de imagen - Tamaño fijo */
 .institution-logo-container {
     width: 100%;
-    height: 140px;
-    margin-bottom: 16px;
+    height: 100px;
+    margin-bottom: 14px;
     border-radius: 8px;
     overflow: hidden;
-    background: rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.1) url('../img/default-logo-instituciones.png') center/cover no-repeat;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -595,6 +595,13 @@ hr {
     height: 100%;
     object-fit: cover;
     transition: transform 0.3s ease;
+    background-image: url('../img/default-logo-instituciones.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 8px;
+    display: block;
+    margin: 0 auto;
 }
 
 .clase:hover .institution-logo {
@@ -684,7 +691,7 @@ hr {
 .claseagregar {
     background: linear-gradient(135deg, var(--primary-color), #667eea);
     border-radius: 15px;
-    padding: 40px 20px;
+    padding: 35px 20px;
     text-align: center;
     cursor: pointer;
     transition: all 0.3s ease;
@@ -694,8 +701,8 @@ hr {
     align-items: center;
     justify-content: center;
     width: 100%;
-    height: 320px;
-    max-width: 320px;
+    height: 280px;
+    max-width: 280px;
     border: 2px dashed rgba(255, 255, 255, 0.4);
     position: relative;
     overflow: hidden;
@@ -1102,59 +1109,21 @@ hr {
     .inicio {
         grid-template-columns: 1fr;
         padding: 0 15px;
-        gap: 20px;
+        gap: 14px;
         justify-items: center;
     }
 
     .clase {
         width: 100%;
-        max-width: 300px;
-        height: 300px;
-        padding: 20px;
-    }
-
-    .claseagregar {
-        width: 100%;
-        max-width: 300px;
-        height: 300px;
-        padding: 30px 20px;
-    }
-
-    .claseagregar i {
-        font-size: 3em;
-    }
-
-    .institution-logo-container {
-        height: 120px;
-    }
-
-    .instituto-titulo {
-        font-size: 1.1em;
-    }
-
-    .inicio img {
-        height: 100px;
-    }
-}
-
-@media (max-width: 480px) {
-    .inicio {
-        grid-template-columns: 1fr;
-        padding: 0 10px;
-        gap: 18px;
-    }
-
-    .clase {
-        width: 100%;
-        max-width: 280px;
-        height: 280px;
+        max-width: 260px;
+        height: 260px;
         padding: 18px;
     }
 
     .claseagregar {
         width: 100%;
-        max-width: 280px;
-        height: 280px;
+        max-width: 260px;
+        height: 260px;
         padding: 25px 15px;
     }
 
@@ -1162,24 +1131,65 @@ hr {
         font-size: 2.5em;
     }
 
-    .institution-logo-container {
-        height: 100px;
+    .institution-logo {
+        height: 80px;
     }
 
     .instituto-titulo {
         font-size: 1em;
     }
+}
 
-    .inicio img {
+@media (max-width: 480px) {
+    .claseagregar i {
+        font-size: 2.5em;
+    }
+
+    .institution-logo {
         height: 80px;
+    }
+
+    .instituto-titulo {
+        font-size: 1em;
+    }
+    .inicio img {
+        height: 70px;
     }
 }
 
 /* Media query para tablets */
 @media (min-width: 769px) and (max-width: 1024px) {
     .inicio {
+        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+        gap: 14px;
+    }
+
+    .clase, .claseagregar {
+        max-width: 260px;
+        height: 260px;
+    }
+}
+
+/* Media query para desktop grande */
+@media (min-width: 1200px) {
+    .inicio {
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 18px;
+        max-width: 1600px;
+    }
+
+    .clase, .claseagregar {
+        max-width: 280px;
+        height: 280px;
+    }
+}
+
+/* Media query para desktop extra grande */
+@media (min-width: 1600px) {
+    .inicio {
         grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-        gap: 22px;
+        gap: 20px;
+        max-width: 1800px;
     }
 
     .clase, .claseagregar {
@@ -1188,44 +1198,16 @@ hr {
     }
 }
 
-/* Media query para desktop grande */
-@media (min-width: 1200px) {
-    .inicio {
-        grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
-        gap: 28px;
-        max-width: 1600px;
-    }
-
-    .clase, .claseagregar {
-        max-width: 340px;
-        height: 340px;
-    }
-}
-
-/* Media query para desktop extra grande */
-@media (min-width: 1600px) {
-    .inicio {
-        grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
-        gap: 32px;
-        max-width: 1800px;
-    }
-
-    .clase, .claseagregar {
-        max-width: 360px;
-        height: 360px;
-    }
-}
-
 /* Media query para desktop ultra grande */
 @media (min-width: 2000px) {
     .inicio {
-        grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
-        gap: 36px;
+        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+        gap: 22px;
         max-width: 2000px;
     }
 
     .clase, .claseagregar {
-        max-width: 380px;
-        height: 380px;
+        max-width: 320px;
+        height: 320px;
     }
 }

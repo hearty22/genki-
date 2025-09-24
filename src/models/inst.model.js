@@ -6,6 +6,14 @@ export const instModel = sequelize.define("instituciones",{
         primaryKey: true,
         autoIncrement: true
     },
+    user_id: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        references: {
+            model: 'users',
+            key: 'id'
+        }
+    },
     name: {
         type: DataTypes.STRING(255),
         allowNull: false
@@ -40,9 +48,8 @@ export const instModel = sequelize.define("instituciones",{
 
 // Relaciones
 instModel.associate = (models) => {
-    instModel.belongsToMany(models.usersModel, {
-        through: models.userInstitutionModel,
-        foreignKey: 'institution_id',
-        otherKey: 'user_id'
+    instModel.belongsTo(models.usersModel, {
+        foreignKey: 'user_id',
+        as: 'owner'
     });
 };

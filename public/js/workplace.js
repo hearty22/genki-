@@ -79,7 +79,7 @@
         if (parts.length === 2) return parts.pop().split(';').shift();
     }
 
-    // ✅ Cargar instituciones disponibles
+    // ✅ Cargar instituciones del usuario actual
     async function loadAllInstitutions() {
         try {
             console.log("🔄 Iniciando carga de instituciones...");
@@ -93,8 +93,8 @@
                 return;
             }
 
-            console.log("🌐 Haciendo petición a /api/all-institutions");
-            const response = await fetch("/api/all-institutions", {
+            console.log("🌐 Haciendo petición a /api/institutions");
+            const response = await fetch("/api/institutions", {
                 headers: {
                     'Authorization': `Bearer ${token}`,
                     'Content-Type': 'application/json'
@@ -117,31 +117,6 @@
                 const institutions = data.institutions;
                 console.log("🏫 Número de instituciones:", institutions.length);
 
-                // Obtener las instituciones del usuario
-                const userResponse = await fetch("/api/institutions", {
-                    headers: {
-                        'Authorization': `Bearer ${token}`,
-                        'Content-Type': 'application/json'
-                    }
-                });
-
-                console.log("📡 Respuesta de instituciones del usuario:", userResponse.status);
-
-                let userInstitutions = [];
-                if (userResponse.ok) {
-                    const userData = await userResponse.json();
-                    userInstitutions = userData.institutions;
-                    console.log("👤 Instituciones del usuario:", userInstitutions.length);
-                } else {
-                    console.log("⚠️ Error al obtener instituciones del usuario:", userResponse.status);
-                }
-
-                // Crear mapa de instituciones del usuario para acceso rápido
-                const userInstitutionMap = new Map();
-                userInstitutions.forEach(inst => {
-                    userInstitutionMap.set(inst.id_institucion, inst);
-                });
-
                 // Actualizar la sección de instituciones
                 const institutionsContainer = document.querySelector('.inicio');
 
@@ -149,13 +124,13 @@
                     console.log("📭 No hay instituciones disponibles");
                     institutionsContainer.innerHTML = `
                         <div class="no-institutions">
-                            <p>No hay instituciones disponibles aún.</p>
-                            <p>¡Sé el primero en crear una!</p>
+                            <p>No tienes instituciones aún.</p>
+                            <p>¡Crea tu primera institución para comenzar!</p>
                         </div>
                         <div class="claseagregar" onclick="showCreateInstitutionModal()">
                             <i class="bx bx-plus"></i>
                             <hr>
-                            <div class="text">Crear primera institución</div>
+                            <div class="text">Crear mi primera institución</div>
                         </div>
                     `;
                 } else {
@@ -163,19 +138,16 @@
                     let institutionsHTML = '';
 
                     institutions.forEach(institution => {
-                        const userInst = userInstitutionMap.get(institution.id_institucion);
-                        const isJoined = !!userInst;
-
                         institutionsHTML += `
-                            <div class="clase${isJoined ? ' joined' : ''}" data-institution-id="${institution.id_institucion}">
-                                <a href="#" ${isJoined ? `onclick="goToInstitution(${institution.id_institucion})"` : `onclick="joinInstitution(${institution.id_institucion})"`}>
+                            <div class="clase" data-institution-id="${institution.id_institucion}">
+                                <a href="#" onclick="goToInstitution(${institution.id_institucion})">
                                     <div class="institution-logo-container">
-                                        ${institution.logo ? `<img src="/${institution.logo}" alt="${institution.name}" class="institution-logo">` : `<img src="https://via.placeholder.com/300x150?text=${encodeURIComponent(institution.name)}" alt="${institution.name}" class="institution-logo">`}
+                                        ${institution.logo ? `<img src="/${institution.logo}" alt="${institution.name}" class="institution-logo">` : `<img src="./img/default-logo-instituciones.png" alt="${institution.name}" class="institution-logo">`}
                                     </div>
                                     <div class="instituto-titulo">${institution.name}</div>
                                     ${institution.nivel ? `<div class="nivel">${institution.nivel}</div>` : ''}
                                     <div class="instituto-info">
-                                        ${isJoined ? `<span class="status joined">✓ Miembro</span>` : `<span class="status available">Disponible</span>`}
+                                        <span class="status joined">✓ Mi Institución</span>
                                     </div>
                                 </a>
                             </div>
@@ -186,7 +158,7 @@
                         <div class="claseagregar" onclick="showCreateInstitutionModal()">
                             <i class="bx bx-plus"></i>
                             <hr>
-                            <div class="text">Crear institución</div>
+                            <div class="text">Crear nueva institución</div>
                         </div>
                     `;
 
@@ -218,7 +190,7 @@
                 <div id="institutionModal" class="modal">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h2>Crear Nueva Institución</h2>
+                            <h2>Crear Mi Nueva Institución</h2>
                             <span class="close" onclick="closeInstitutionModal()">&times;</span>
                         </div>
                         <div class="modal-body">
@@ -413,15 +385,13 @@
 
                     .institution-logo {
                         width: 100%;
-                        height: 120px;
+                        height: 100%;
                         object-fit: cover;
-                        border-radius: 8px;
-                        margin-bottom: 15px;
                         transition: transform 0.3s ease;
                     }
 
-                    .institution-logo:hover {
-                        transform: scale(1.02);
+                    .clase:hover .institution-logo {
+                        transform: scale(1.05);
                     }
 
                     .instituto-titulo {
@@ -509,6 +479,10 @@
                         font-size: 1.1em;
                         opacity: 0.8;
                     }
+
+                    .no-institutions .claseagregar {
+                        margin-top: 30px;
+                    }
                 </style>
             `;
             document.head.insertAdjacentHTML('beforeend', styles);
@@ -546,7 +520,7 @@
                 });
 
                 if (response.ok) {
-                    alert('Institución creada exitosamente');
+                    alert('✅ ¡Institución creada exitosamente!\n\nAhora puedes gestionarla completamente.');
                     closeInstitutionModal();
                     loadAllInstitutions(); // Recargar las instituciones
                 } else {
@@ -568,45 +542,14 @@
         }
     });
 
-    // ✅ Funciones para unirse a instituciones y navegar
-    async function joinInstitution(institutionId) {
-        try {
-            const token = getCookie('token') || localStorage.getItem("token");
-
-            if (!token) {
-                alert('No se encontró token de autenticación');
-                return;
-            }
-
-            const response = await fetch("/api/institutions", {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`
-                },
-                body: JSON.stringify({
-                    institutionId: institutionId,
-                    role: 'Estudiante' // Rol por defecto
-                })
-            });
-
-            if (response.ok) {
-                alert('Te has unido a la institución exitosamente');
-                loadAllInstitutions(); // Recargar las instituciones
-            } else {
-                const errorData = await response.json();
-                alert('Error al unirte a la institución: ' + errorData.message);
-            }
-        } catch (error) {
-            console.error('Error:', error);
-            alert('Error al procesar la solicitud');
-        }
-    }
-
+    // ✅ Funciones para navegar a instituciones
     function goToInstitution(institutionId) {
+        // Guardar la institución seleccionada en localStorage para usarla en otras páginas
+        localStorage.setItem('selectedInstitutionId', institutionId);
+        console.log('🏫 Navegando a institución:', institutionId);
         // Aquí puedes redirigir a una página específica de la institución
-        console.log('Navegando a institución:', institutionId);
-        // Por ejemplo: window.location.href = `/institution/${institutionId}`;
+        // Por ejemplo: window.location.href = `/institution-dashboard.html?id=${institutionId}`;
+        alert(`🏫 Entrando a institución (ID: ${institutionId})\n\nEn una implementación completa, aquí se redirigiría a la página de gestión de la institución.`);
     }
 
     // ✅ Inicializar cuando se carga la página
