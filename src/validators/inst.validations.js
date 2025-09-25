@@ -59,7 +59,7 @@ export const createInstitutionValidator = [
     // Validación del nivel (opcional)
     body('nivel')
         .optional()
-        .isIn(['Inicial', 'Primaria', 'Secundaria', 'Terciaria', 'Universitaria', 'Otro']).withMessage('El nivel debe ser: Inicial, Primaria, Secundaria, Terciaria, Universitaria u Otro'),
+        .isIn(['Inicial', 'Primaria', 'Secundaria', 'Terciaria', 'Universitaria', 'Posgrado']).withMessage('El nivel debe ser: Inicial, Primaria, Secundaria, Terciaria, Universitaria, Posgrado u Otro'),
 
     // Validación de las notas (opcional)
     body('notas')

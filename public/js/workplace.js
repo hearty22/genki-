@@ -141,16 +141,7 @@ try {
                     <div class="clase" data-institution-id="${institution.id_institucion}">
                         <a href="#" onclick="goToInstitution(${institution.id_institucion})">
                             <div class="institution-logo-container">
-                                ${institution.logo ? `<img src="/${institution.logo}" alt="${institution.name}" class="institution-logo">` : `
-                                <div class="default-institution-logo">
-                                    <div class="logo-icon">
-                                        <i class="bx bx-graduation"></i>
-                                    </div>
-                                    <div class="logo-text">
-                                        <span class="logo-letter">${institution.name.charAt(0).toUpperCase()}</span>
-                                    </div>
-                                </div>
-                                `}
+                                <div class="logo-letter">${institution.name.charAt(0).toUpperCase()}</div>
                             </div>
                             <div class="instituto-titulo">${institution.name}</div>
                             ${institution.nivel ? `<div class="nivel">${institution.nivel}</div>` : ''}
@@ -542,8 +533,8 @@ if (!document.getElementById('modalStyles')) {
             }
 
             .claseagregar {
-                background: rgba(255, 255, 255, 0.05);
-                border: 2px dashed rgba(156, 39, 176, 0.3);
+                background: linear-gradient(135deg, var(--primary-color), #667eea);
+                border: 2px dashed rgba(255, 255, 255, 0.3);
                 transition: all 0.3s ease;
                 cursor: pointer;
                 position: relative;
@@ -554,18 +545,20 @@ if (!document.getElementById('modalStyles')) {
                 justify-content: center;
                 min-height: 200px;
                 padding: 20px;
+                color: white;
+                text-align: center;
             }
 
             .claseagregar:hover {
-                background: rgba(156, 39, 176, 0.1);
-                border-color: var(--primary-color);
+                background: linear-gradient(135deg, #667eea, var(--primary-color));
+                border-color: rgba(255, 255, 255, 0.5);
                 transform: translateY(-2px);
-                box-shadow: 0 4px 15px rgba(156, 39, 176, 0.2);
+                box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
             }
 
             .claseagregar i {
                 font-size: 3em;
-                color: var(--primary-color);
+                color: white;
                 margin-bottom: 15px;
                 transition: transform 0.3s ease;
             }
@@ -576,7 +569,7 @@ if (!document.getElementById('modalStyles')) {
 
             .claseagregar .text {
                 text-align: center;
-                color: var(--primary-color);
+                color: white;
                 font-weight: 500;
                 margin-top: 10px;
             }
@@ -584,7 +577,7 @@ if (!document.getElementById('modalStyles')) {
             .claseagregar hr {
                 width: 60%;
                 border: none;
-                border-top: 1px solid rgba(156, 39, 176, 0.3);
+                border-top: 1px solid rgba(255, 255, 255, 0.3);
                 margin: 10px 0;
             }
 

@@ -583,11 +583,39 @@ hr {
     margin-bottom: 14px;
     border-radius: 8px;
     overflow: hidden;
-    background: rgba(255, 255, 255, 0.1) url('../img/default-logo-instituciones.png') center/cover no-repeat;
+    background: linear-gradient(135deg, var(--primary-color), #667eea);
     display: flex;
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
+    position: relative;
+}
+
+.institution-logo-container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(45deg, transparent 30%, rgba(255, 255, 255, 0.1) 50%, transparent 70%);
+    transform: translateX(-100%);
+    transition: transform 0.6s;
+    z-index: 1;
+}
+
+.institution-logo-container:hover::before {
+    transform: translateX(100%);
+}
+
+.institution-logo-container .logo-letter {
+    position: relative;
+    z-index: 2;
+    color: white;
+    font-size: 2.5em;
+    font-weight: 700;
+    font-family: 'Poppins', sans-serif;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
 .institution-logo {
@@ -595,10 +623,6 @@ hr {
     height: 100%;
     object-fit: cover;
     transition: transform 0.3s ease;
-    background-image: url('../img/default-logo-instituciones.png');
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
     border-radius: 8px;
     display: block;
     margin: 0 auto;

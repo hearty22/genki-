@@ -102,10 +102,6 @@
     object-fit: cover;
     border-radius: 8px;
     transition: transform 0.3s ease;
-    background-image: url('../img/default-logo-instituciones.png');
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
 }
 
 .institution-card:hover .institution-logo {
