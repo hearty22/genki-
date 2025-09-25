@@ -43,30 +43,23 @@ export const createInstitution = async (req, res) => {
     console.log("🔄 Intentando crear institución...");
     console.log("📦 Datos recibidos:", req.body);
 
-    const token = verifyToken(req);
-    const userId = token.id;
+    const token = req.cookies?.token;
+    if (!token) {
+      return res.status(401).json({
+        success: false,
+        error: "Token inválido o expirado"
+      });
+    }
+
+    const jwt = (await import('jsonwebtoken')).default;
+    const decodedToken = jwt.verify(token, process.env.JWT_SEC);
+    const userId = decodedToken.id;
     const { name, siglas, notas, address, nivel } = req.body;
 
     console.log("👤 Usuario ID:", userId);
 
-    // Validación de campos requeridos
-    if (!name) {
-      console.log("❌ Error: nombre requerido");
-      return res.status(400).json({ message: "Campo requerido: name" });
-    }
-
-    // Verificar si ya existe una institución con el mismo nombre para este usuario
-    console.log("🔍 Verificando si existe institución con nombre:", name, "para usuario:", userId);
-    const existingInstitution = await instModel.findOne({ 
-      where: { 
-        name,
-        user_id: userId 
-      } 
-    });
-    if (existingInstitution) {
-      console.log("❌ Error: institución ya existe para este usuario");
-      return res.status(400).json({ message: "Ya tienes una institución con ese nombre" });
-    }
+    // Las validaciones básicas ya se manejaron en el middleware
+    // Solo necesitamos crear la institución
 
     // Crear la nueva institución
     console.log("🏗️ Creando nueva institución...");
@@ -83,6 +76,7 @@ export const createInstitution = async (req, res) => {
     console.log("✅ Institución creada con ID:", newInstitution.id_institucion);
 
     res.status(201).json({
+      success: true,
       message: "Institución creada exitosamente",
       institution: {
         id: newInstitution.id_institucion,
@@ -96,10 +90,28 @@ export const createInstitution = async (req, res) => {
   } catch (error) {
     console.log("❌ Error en createInstitution:", error);
     console.log("❌ Error stack:", error.stack);
-    if (error.message === "error en validar el token") {
-      return res.status(401).json({error: "Token inválido o expirado"});
+
+    // Si es un error de validación de express-validator
+    if (error.errors) {
+      return res.status(400).json({
+        success: false,
+        message: "Errores de validación",
+        errors: error.errors
+      });
     }
-    res.status(500).json({ error: "Error interno al crear la institución", details: error.message });
+
+    if (error.message === "error en validar el token") {
+      return res.status(401).json({
+        success: false,
+        error: "Token inválido o expirado"
+      });
+    }
+
+    res.status(500).json({
+      success: false,
+      error: "Error interno al crear la institución",
+      details: error.message
+    });
   }
 };
 
@@ -108,7 +120,6 @@ export const getAllInstitutions = async (req, res) => {
   try {
     const token = verifyToken(req);
     console.log("🚀 Token encontrado:", token);
-    const userId = token.id;
 
     console.log("🔍 Buscando instituciones del usuario:", userId);
 

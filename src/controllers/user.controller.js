@@ -47,24 +47,38 @@ export const upload = multer({
 export const createUser = async (req, res)=>{
     try {
         const {user_name, email, password, gender}  = req.body
-        if(!user_name){return res.status(400).json({message:"campo no rellenado: user_name"})}
-        if(!email){return res.status(400).json({message:"campo no rellenado: email"})}
-        if(!password){return res.status(400).json({message:"campo no rellenado: password"})}
-        if(!gender){return res.status(400).json({message:"campo no rellenado: genero"})}
 
-        const emailexist = await usersModel.findOne({where: {email}})
-        if(emailexist){return res.status(400).json({message:"el email ingresado ya esta asociado "})};
+        // Las validaciones básicas ya se manejaron en el middleware
+        // Solo necesitamos verificar que no haya errores de validación
 
         const hashpassword = await hashPassword(password);
 
         const newUser = new usersModel({user_name, email, password: hashpassword, gender})
-        newUser.save()
-        res.status(201).json({message:`usuario creado: ${newUser}`});
+        await newUser.save()
+
+        res.status(201).json({
+            success: true,
+            message: `Usuario creado exitosamente`,
+            user: {
+                id: newUser.id,
+                user_name: newUser.user_name,
+                email: newUser.email,
+                gender: newUser.gender
+            }
+        });
 
     } catch (error) {
         console.log(error);
-        res.status(500).json({error: "error interno al crear el usuario"});
 
+        // Si es un error de validación de express-validator
+        if (error.errors) {
+            return res.status(400).json({
+                message: "Errores de validación",
+                errors: error.errors
+            });
+        }
+
+        res.status(500).json({error: "Error interno al crear el usuario"});
     }
 }
 
@@ -72,24 +86,47 @@ export const createUser = async (req, res)=>{
 export const loginUser = async (req, res)=>{
     try {
         const {email, password} = req.body
-        if(!email){ return res.status(400).json({message:"campo no rellenado: email"})}
-        if(!password){ return res.status(400).json({message: "campo no rellenado: contraseña"})}
 
+        // Las validaciones básicas ya se manejaron en el middleware
         const user = await usersModel.findOne({
             where:{
                 email:email
             }})
-        if(!user){return res.status(400).json({message:"credenciales invalidas"})}
+        if(!user){return res.status(400).json({
+            success: false,
+            message: "Credenciales inválidas"
+        })}
 
         const passMatch = await comparePassword(password, user.password)
-        if(!passMatch){return res.status(401).json({message: "credenciales invalidas"})}
+        if(!passMatch){return res.status(401).json({
+            success: false,
+            message: "Credenciales inválidas"
+        })}
+
         generateToken(user, res);
 
-        res.status(200).json({user: {name: user.user_name, email:user.email}});
+        res.status(200).json({
+            success: true,
+            message: "Login exitoso",
+            user: {
+                id: user.id,
+                name: user.user_name,
+                email: user.email
+            }
+        });
 
     } catch (error) {
         console.log(error);
-        res.status(500).json({error: "error interno al iniciar sesión"})
+
+        // Si es un error de validación de express-validator
+        if (error.errors) {
+            return res.status(400).json({
+                message: "Errores de validación",
+                errors: error.errors
+            });
+        }
+
+        res.status(500).json({error: "Error interno al iniciar sesión"})
     }
 }
 
