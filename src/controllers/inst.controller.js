@@ -107,6 +107,7 @@ export const createInstitution = async (req, res) => {
 export const getAllInstitutions = async (req, res) => {
   try {
     const token = verifyToken(req);
+    console.log("🚀 Token encontrado:", token);
     const userId = token.id;
 
     console.log("🔍 Buscando instituciones del usuario:", userId);

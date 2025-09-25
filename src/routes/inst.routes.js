@@ -9,7 +9,6 @@ import {
   searchInstitutions,
   upload
 } from "../controllers/inst.controller.js";
-import { authMiddleware } from "../middlewares/auth.js";
 
 const instRouter = Router();
 
