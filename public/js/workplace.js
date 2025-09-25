@@ -30,7 +30,7 @@
                 // ✅ Obtener información completa del perfil del servidor
                 const response = await fetch("/api/profile", {
                     headers: {
-                        'Authorization': `Bearer ${token}`
+                        'Content-Type': 'application/json'
                     }
                 });
 
@@ -96,7 +96,6 @@
             console.log("🌐 Haciendo petición a /api/institutions");
             const response = await fetch("/api/institutions", {
                 headers: {
-                    'Authorization': `Bearer ${token}`,
                     'Content-Type': 'application/json'
                 }
             });
@@ -194,6 +193,7 @@
                             <span class="close" onclick="closeInstitutionModal()">&times;</span>
                         </div>
                         <div class="modal-body">
+                            <div id="errorMessages" class="error-container" style="display: none;"></div>
                             <form id="institutionForm">
                                 <div class="form-group">
                                     <label for="institutionName">Nombre de la Institución *</label>
@@ -232,6 +232,9 @@
             addModalStyles();
         }
 
+        // Limpiar errores cuando se abre el modal
+        clearErrorMessages();
+
         document.getElementById('institutionModal').style.display = 'block';
     }
 
@@ -240,6 +243,40 @@
         if (modal) {
             modal.style.display = 'none';
             document.getElementById('institutionForm').reset();
+            clearErrorMessages();
+        }
+    }
+
+    // ✅ Función para limpiar mensajes de error
+    function clearErrorMessages() {
+        const errorContainer = document.getElementById('errorMessages');
+        if (errorContainer) {
+            errorContainer.style.display = 'none';
+            errorContainer.innerHTML = '';
+        }
+    }
+
+    // ✅ Función para mostrar mensajes de error
+    function showErrorMessages(errors) {
+        const errorContainer = document.getElementById('errorMessages');
+        if (errorContainer) {
+            let errorHtml = '<ul>';
+            if (Array.isArray(errors)) {
+                errors.forEach(error => {
+                    errorHtml += `<li>${error}</li>`;
+                });
+            } else if (typeof errors === 'object' && errors.message) {
+                errorHtml += `<li>${errors.message}</li>`;
+            } else {
+                errorHtml += `<li>${errors}</li>`;
+            }
+            errorHtml += '</ul>';
+
+            errorContainer.innerHTML = errorHtml;
+            errorContainer.style.display = 'block';
+
+            // Hacer scroll hacia arriba para mostrar los errores
+            errorContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
     }
 
@@ -483,6 +520,30 @@
                     .no-institutions .claseagregar {
                         margin-top: 30px;
                     }
+
+                    .error-container {
+                        background: rgba(244, 67, 54, 0.1);
+                        border: 1px solid rgba(244, 67, 54, 0.3);
+                        border-radius: 8px;
+                        padding: 15px;
+                        margin-bottom: 20px;
+                        color: #f44336;
+                        font-size: 14px;
+                        line-height: 1.4;
+                    }
+
+                    .error-container ul {
+                        margin: 0;
+                        padding-left: 20px;
+                    }
+
+                    .error-container li {
+                        margin-bottom: 5px;
+                    }
+
+                    .error-container li:last-child {
+                        margin-bottom: 0;
+                    }
                 </style>
             `;
             document.head.insertAdjacentHTML('beforeend', styles);
@@ -493,6 +554,9 @@
     document.addEventListener('submit', async function(e) {
         if (e.target.id === 'institutionForm') {
             e.preventDefault();
+
+            // Limpiar mensajes de error anteriores
+            clearErrorMessages();
 
             const formData = new FormData(e.target);
             const institutionData = {
@@ -506,15 +570,14 @@
                 const token = getCookie('token') || localStorage.getItem("token");
 
                 if (!token) {
-                    alert('No se encontró token de autenticación');
+                    showErrorMessages('No se encontró token de autenticación');
                     return;
                 }
 
                 const response = await fetch("/api/create-institution", {
                     method: 'POST',
                     headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${token}`
+                        'Content-Type': 'application/json'
                     },
                     body: JSON.stringify(institutionData)
                 });
@@ -525,11 +588,23 @@
                     loadAllInstitutions(); // Recargar las instituciones
                 } else {
                     const errorData = await response.json();
-                    alert('Error al crear la institución: ' + errorData.message);
+
+                    // Mostrar errores específicos del backend
+                    if (errorData.message) {
+                        if (Array.isArray(errorData.message)) {
+                            showErrorMessages(errorData.message);
+                        } else {
+                            showErrorMessages(errorData.message);
+                        }
+                    } else if (errorData.error) {
+                        showErrorMessages(errorData.error);
+                    } else {
+                        showErrorMessages('Error desconocido al crear la institución');
+                    }
                 }
             } catch (error) {
                 console.error('Error:', error);
-                alert('Error al procesar la solicitud');
+                showErrorMessages('Error de conexión. Verifica tu conexión a internet.');
             }
         }
     });
