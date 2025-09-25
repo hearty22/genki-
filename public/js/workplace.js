@@ -141,7 +141,16 @@ try {
                     <div class="clase" data-institution-id="${institution.id_institucion}">
                         <a href="#" onclick="goToInstitution(${institution.id_institucion})">
                             <div class="institution-logo-container">
-                                ${institution.logo ? `<img src="/${institution.logo}" alt="${institution.name}" class="institution-logo">` : `<img src="./img/default-logo-instituciones.png" alt="${institution.name}" class="institution-logo">`}
+                                ${institution.logo ? `<img src="/${institution.logo}" alt="${institution.name}" class="institution-logo">` : `
+                                <div class="default-institution-logo">
+                                    <div class="logo-icon">
+                                        <i class="bx bx-graduation"></i>
+                                    </div>
+                                    <div class="logo-text">
+                                        <span class="logo-letter">${institution.name.charAt(0).toUpperCase()}</span>
+                                    </div>
+                                </div>
+                                `}
                             </div>
                             <div class="instituto-titulo">${institution.name}</div>
                             ${institution.nivel ? `<div class="nivel">${institution.nivel}</div>` : ''}
@@ -427,8 +436,68 @@ if (!document.getElementById('modalStyles')) {
                 transition: transform 0.3s ease;
             }
 
+            .default-institution-logo {
+                width: 100%;
+                height: 100%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                background: linear-gradient(135deg, var(--primary-color), #667eea);
+                border-radius: 15px;
+                position: relative;
+                overflow: hidden;
+                transition: all 0.3s ease;
+                box-shadow: 0 4px 15px rgba(156, 39, 176, 0.2);
+            }
+
+            .default-institution-logo::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background: linear-gradient(45deg, transparent 30%, rgba(255, 255, 255, 0.1) 50%, transparent 70%);
+                transform: translateX(-100%);
+                transition: transform 0.6s;
+                z-index: 1;
+            }
+
+            .default-institution-logo:hover::before {
+                transform: translateX(100%);
+            }
+
+            .logo-icon {
+                position: absolute;
+                top: 15px;
+                right: 15px;
+                color: rgba(255, 255, 255, 0.8);
+                font-size: 18px;
+                z-index: 2;
+            }
+
+            .logo-text {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                z-index: 2;
+            }
+
+            .logo-letter {
+                color: white;
+                font-size: 2.5em;
+                font-weight: 700;
+                font-family: 'Poppins', sans-serif;
+                text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+            }
+
             .clase:hover .institution-logo {
                 transform: scale(1.05);
+            }
+
+            .clase:hover .default-institution-logo {
+                transform: scale(1.05);
+                box-shadow: 0 8px 25px rgba(156, 39, 176, 0.4);
             }
 
             .instituto-titulo {
@@ -472,9 +541,51 @@ if (!document.getElementById('modalStyles')) {
                 border-color: rgba(33, 150, 243, 0.3);
             }
 
-            .clase {
+            .claseagregar {
+                background: rgba(255, 255, 255, 0.05);
+                border: 2px dashed rgba(156, 39, 176, 0.3);
+                transition: all 0.3s ease;
+                cursor: pointer;
                 position: relative;
                 overflow: hidden;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                min-height: 200px;
+                padding: 20px;
+            }
+
+            .claseagregar:hover {
+                background: rgba(156, 39, 176, 0.1);
+                border-color: var(--primary-color);
+                transform: translateY(-2px);
+                box-shadow: 0 4px 15px rgba(156, 39, 176, 0.2);
+            }
+
+            .claseagregar i {
+                font-size: 3em;
+                color: var(--primary-color);
+                margin-bottom: 15px;
+                transition: transform 0.3s ease;
+            }
+
+            .claseagregar:hover i {
+                transform: scale(1.1);
+            }
+
+            .claseagregar .text {
+                text-align: center;
+                color: var(--primary-color);
+                font-weight: 500;
+                margin-top: 10px;
+            }
+
+            .claseagregar hr {
+                width: 60%;
+                border: none;
+                border-top: 1px solid rgba(156, 39, 176, 0.3);
+                margin: 10px 0;
             }
 
             .clase::before {
