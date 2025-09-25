@@ -1,18 +1,18 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./css/w.css">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Raleway:wght@300;400;600;700&display=swap" rel="stylesheet">
-    <title>Menú principal</title>
+    <title>GENKI! - Workplace</title>
 </head>
 <body>
     <nav class="sidebar close">
         <header>
             <div class="text logo">
-                <span class="genki">GENKI!</span>
+                <span class="genki">GEN<span>KI!</span></span>
                 <span class="workplace">Workplace</span>
             </div>
             <i class="bx bx-menu toggle"></i>
@@ -25,62 +25,53 @@
                 </li>
                 <ul class="menu-links">
                     <li class="nav-link">
-                        <a href="#">
+                        <a href="#" onclick="showSection('dashboard')">
                             <i class="bx bx-home-alt icon"></i>
                             <span class="text nav-text">Dashboard</span>
                         </a>
                     </li>
                     <li class="nav-link">
-                        <a href="#">
-                            <i class="bx bx-home-alt icon"></i>
-                            <span class="text nav-text">Dashboard</span>
+                        <a href="./calendar.html">
+                            <i class="bx bx-calendar-alt icon"></i>
+                            <span class="text nav-text">Calendario</span>
                         </a>
                     </li>
                     <li class="nav-link">
-                        <a href="#">
-                            <i class="bx bx-home-alt icon"></i>
-                            <span class="text nav-text">Dashboard</span>
+                        <a href="./profile-dashboard.html">
+                            <i class="bx bx-user icon"></i>
+                            <span class="text nav-text">Mi Perfil</span>
                         </a>
                     </li>
                     <li class="nav-link">
-                        <a href="#">
-                            <i class="bx bx-home-alt icon"></i>
-                            <span class="text nav-text">Dashboard</span>
+                        <a href="./institution-dashboard.html">
+                            <i class="bx bx-building icon"></i>
+                            <span class="text nav-text">Instituciones</span>
                         </a>
                     </li>
                 </ul>
             </div>
             <div class="bottom-content">
-                <li class="">
-                    <a href="index.html">
-                        <i class="bx bx-log-out icon"></i>
-                        <span class="text nav-text">Salir</span >
-                        </a>
-                    </li>
-                    <li class="mode">
-                        <div class="sun-moon">
-                            <i class="bx bx-moon icon moon"></i>
-                            <i class="bx bx-sun icon sun"></i>
-                        </div>
-                        <span class="mode-text text">Modo Oscuro</span>
-                        <div class="toggle-switch">
-                            <span class="switch"></span>
-                        </div>
-                    </li>
+                <li class="mode">
+                    <div class="sun-moon">
+                        <i class="bx bx-moon icon moon"></i>
+                        <i class="bx bx-sun icon sun"></i>
+                    </div>
+                    <span class="mode-text text">Modo Oscuro</span>
+                    <div class="toggle-switch">
+                        <span class="switch"></span>
+                    </div>
+                </li>
             </div>
         </div>
     </nav>
+
     <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
     <div class="navbar">
         <div class="mobile-menu-toggle" id="mobileMenuToggle">
             <i class="bx bx-menu"></i>
         </div>
         <ul>
-            <li class="calendario">
-                <a href="./calendar.html">
-                    <i class="bx bx-calendar-alt"></i>
-                </a>
-            </li>
             <li class="profile" id="profileBtn">
                 <i class="bx bx-user-circle"></i>
                 <div class="profile-dropdown" id="profileDropdown">
@@ -88,7 +79,7 @@
                         <div class="profile-pic">
                             <img src="" alt="Mi perfil" id="profile-picture">
                         </div>
-                        <div class="pd-name"><strong>Nombre Apellido</strong></div>
+                        <div class="pd-name"><strong id="profileName">Nombre</strong></div>
                     </div>
                     <hr>
                     <a href="./profile-dashboard.html" class="pd-link">
@@ -104,15 +95,26 @@
             </li>
         </ul>
     </div>
+
     <section class="home">
         <div class="bienvenida">
             <h1>Bienvenido de vuelta, <span class="nombre" id="username"></span>!</h1>
         </div>
+
+        <!-- Loading indicator -->
+        <div id="loadingContainer" class="loading-container" style="display: none;">
+            <div class="loading-spinner">
+                <div class="spinner"></div>
+                <p>Cargando tu información...</p>
+            </div>
+        </div>
+
         <div class="inicio" id="institutionsContainer">
             <!-- Las instituciones se cargarán dinámicamente aquí -->
         </div>
-</section>
-    <script src="./js/script.js"></script>
+    </section>
+
     <script src="./js/workplace.js"></script>
+    <script src="./js/loading.js"></script>
 </body>
 </html>

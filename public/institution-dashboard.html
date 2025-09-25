@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GENKI! - Dashboard Institución</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Raleway:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="./css/w.css">
+    <link rel="stylesheet" href="./css/institution-dashboard.css">
+</head>
+<body>
+    <nav class="sidebar close">
+        <header>
+            <div class="text logo">
+                <span class="genki">GEN<span>KI!</span></span>
+                <span class="workplace">Institución</span>
+            </div>
+            <i class="bx bx-menu toggle"></i>
+        </header>
+        <div class="menu-bar">
+            <div class="menu">
+                <li class="search-box">
+                    <i class="bx bx-search icon"></i>
+                    <input type="text" placeholder="Buscar..." id="institutionSearch">
+                </li>
+                <ul class="menu-links">
+                    <li class="nav-link">
+                        <a href="#" onclick="showSection('dashboard')" class="active">
+                            <i class="bx bx-home-alt icon"></i>
+                            <span class="text nav-text">Dashboard</span>
+                        </a>
+                    </li>
+                    <li class="nav-link">
+                        <a href="#" onclick="showSection('calendar')">
+                            <i class="bx bx-calendar-alt icon"></i>
+                            <span class="text nav-text">Calendario</span>
+                        </a>
+                    </li>
+                    <li class="nav-link">
+                        <a href="#" onclick="showSection('students')">
+                            <i class="bx bx-user icon"></i>
+                            <span class="text nav-text">Estudiantes</span>
+                        </a>
+                    </li>
+                    <li class="nav-link">
+                        <a href="#" onclick="showSection('teachers')">
+                            <i class="bx bx-chalkboard icon"></i>
+                            <span class="text nav-text">Docentes</span>
+                        </a>
+                    </li>
+                    <li class="nav-link">
+                        <a href="#" onclick="showSection('reports')">
+                            <i class="bx bx-chart-line icon"></i>
+                            <span class="text nav-text">Reportes</span>
+                        </a>
+                    </li>
+                    <li class="nav-link">
+                        <a href="#" onclick="showSection('settings')">
+                            <i class="bx bx-cog icon"></i>
+                            <span class="text nav-text">Configuración</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <div class="bottom-content">
+                <li class="">
+                    <a href="./workplace.html">
+                        <i class="bx bx-arrow-back icon"></i>
+                        <span class="text nav-text">Volver</span>
+                    </a>
+                </li>
+                <li class="mode">
+                    <div class="sun-moon">
+                        <i class="bx bx-moon icon moon"></i>
+                        <i class="bx bx-sun icon sun"></i>
+                    </div>
+                    <span class="mode-text text">Modo Oscuro</span>
+                    <div class="toggle-switch">
+                        <span class="switch"></span>
+                    </div>
+                </li>
+            </div>
+        </div>
+    </nav>
+
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <div class="navbar">
+        <div class="mobile-menu-toggle" id="mobileMenuToggle" onclick="toggleMobileSidebar()">
+            <i class="bx bx-menu"></i>
+        </div>
+        <ul>
+            <li class="institution-info">
+                <div id="institutionName">Cargando...</div>
+                <div id="institutionDetails" class="small"></div>
+            </li>
+            <li class="profile" id="profileBtn">
+                <i class="bx bx-user-circle"></i>
+                <div class="profile-dropdown" id="profileDropdown">
+                    <div class="pd-header">
+                        <div class="profile-pic">
+                            <img src="" alt="Mi perfil" id="profile-picture">
+                        </div>
+                        <div class="pd-name"><strong id="profileName">Nombre</strong></div>
+                    </div>
+                    <hr>
+                    <a href="./profile-dashboard.html" class="pd-link">
+                        <i class="bx bx-user"></i>
+                        <span class="text-profile">Tu perfil</span>
+                    </a>
+                    <a href="#" class="pd-link">
+                        <i class="bx bx-cog"></i>
+                        <span class="text-profile">Configuración</span>
+                    </a>
+                    <button class="button-logout">Cerrar sesión</button>
+                </div>
+            </li>
+        </ul>
+    </div>
+
+    <section class="home">
+        <!-- Dashboard Section -->
+        <div id="dashboard-section" class="section active">
+            <div class="bienvenida">
+                <h1>Dashboard de <span id="institutionTitle">Institución</span></h1>
+                <p>Gestión completa de tu institución educativa</p>
+            </div>
+
+            <div class="dashboard-grid">
+                <div class="dashboard-card">
+                    <div class="card-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div class="card-content">
+                        <h3 id="students-count">0</h3>
+                        <p>Estudiantes</p>
+                    </div>
+                </div>
+
+                <div class="dashboard-card">
+                    <div class="card-icon">
+                        <i class="fas fa-chalkboard-teacher"></i>
+                    </div>
+                    <div class="card-content">
+                        <h3 id="teachers-count">0</h3>
+                        <p>Docentes</p>
+                    </div>
+                </div>
+
+                <div class="dashboard-card">
+                    <div class="card-icon">
+                        <i class="fas fa-calendar-alt"></i>
+                    </div>
+                    <div class="card-content">
+                        <h3 id="events-count">0</h3>
+                        <p>Eventos</p>
+                    </div>
+                </div>
+
+                <div class="dashboard-card">
+                    <div class="card-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <div class="card-content">
+                        <h3 id="reports-count">0</h3>
+                        <p>Reportes</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="recent-activity">
+                <h2>Actividad Reciente</h2>
+                <div id="recentActivity" class="activity-list">
+                    <div class="loading">Cargando actividad...</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Calendar Section -->
+        <div id="calendar-section" class="section">
+            <div class="bienvenida">
+                <h1>Calendario Institucional</h1>
+                <p>Gestión de eventos y actividades</p>
+            </div>
+            <div class="calendar-wrapper">
+                <iframe id="calendarFrame" src="./calendar.html"
+                        style="width: 100%; height: 80vh; border: none; border-radius: 15px;"
+                        title="Calendario Institucional">
+                </iframe>
+            </div>
+        </div>
+
+        <!-- Students Section -->
+        <div id="students-section" class="section">
+            <div class="bienvenida">
+                <h1>Gestión de Estudiantes</h1>
+                <p>Administrar estudiantes de la institución</p>
+            </div>
+            <div class="management-container">
+                <button class="btn-primary" onclick="showAddStudentModal()">
+                    <i class="fas fa-plus"></i> Agregar Estudiante
+                </button>
+                <div id="studentsList" class="management-list">
+                    <div class="loading">Cargando estudiantes...</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Teachers Section -->
+        <div id="teachers-section" class="section">
+            <div class="bienvenida">
+                <h1>Gestión de Docentes</h1>
+                <p>Administrar docentes de la institución</p>
+            </div>
+            <div class="management-container">
+                <button class="btn-primary" onclick="showAddTeacherModal()">
+                    <i class="fas fa-plus"></i> Agregar Docente
+                </button>
+                <div id="teachersList" class="management-list">
+                    <div class="loading">Cargando docentes...</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Reports Section -->
+        <div id="reports-section" class="section">
+            <div class="bienvenida">
+                <h1>Reportes</h1>
+                <p>Análisis y estadísticas de la institución</p>
+            </div>
+            <div class="reports-container">
+                <div class="report-card">
+                    <div class="report-icon">
+                        <i class="fas fa-clipboard-list"></i>
+                    </div>
+                    <h3>Reporte de Asistencia</h3>
+                    <p>Ver estadísticas de asistencia de estudiantes</p>
+                    <button class="btn-secondary" onclick="generateAttendanceReport()">
+                        <i class="fas fa-download"></i> Generar Reporte
+                    </button>
+                </div>
+                <div class="report-card">
+                    <div class="report-icon">
+                        <i class="fas fa-chart-bar"></i>
+                    </div>
+                    <h3>Reporte Académico</h3>
+                    <p>Ver rendimiento académico y calificaciones</p>
+                    <button class="btn-secondary" onclick="generateAcademicReport()">
+                        <i class="fas fa-download"></i> Generar Reporte
+                    </button>
+                </div>
+                <div class="report-card">
+                    <div class="report-icon">
+                        <i class="fas fa-dollar-sign"></i>
+                    </div>
+                    <h3>Reporte Financiero</h3>
+                    <p>Ver información financiera y presupuestos</p>
+                    <button class="btn-secondary" onclick="generateFinancialReport()">
+                        <i class="fas fa-download"></i> Generar Reporte
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Settings Section -->
+        <div id="settings-section" class="section">
+            <div class="bienvenida">
+                <h1>Configuración de Institución</h1>
+                <p>Administrar configuración general</p>
+            </div>
+            <div class="settings-container">
+                <div class="settings-card">
+                    <div class="settings-icon">
+                        <i class="fas fa-info-circle"></i>
+                    </div>
+                    <h3>Información General</h3>
+                    <p>Editar información básica de la institución</p>
+                    <button class="btn-primary" onclick="editInstitutionInfo()">
+                        <i class="fas fa-edit"></i> Editar Información
+                    </button>
+                </div>
+                <div class="settings-card">
+                    <div class="settings-icon">
+                        <i class="fas fa-cogs"></i>
+                    </div>
+                    <h3>Configuración del Sistema</h3>
+                    <p>Configurar parámetros del sistema</p>
+                    <button class="btn-primary" onclick="systemSettings()">
+                        <i class="fas fa-cogs"></i> Configuración del Sistema
+                    </button>
+                </div>
+                <div class="settings-card">
+                    <div class="settings-icon">
+                        <i class="fas fa-users-cog"></i>
+                    </div>
+                    <h3>Usuarios y Permisos</h3>
+                    <p>Gestionar usuarios y permisos de acceso</p>
+                    <button class="btn-primary" onclick="manageUsers()">
+                        <i class="fas fa-users-cog"></i> Gestionar Usuarios
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script src="./js/institution-dashboard.js"></script>
+</body>
+</html>
