@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 const body = document.querySelector("body");
 const sidebar = body.querySelector("nav");
 const toggle = body.querySelector(".toggle");
@@ -53,50 +52,47 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 });
 
+// === Calendario ===
+const daysContainer = document.getElementById("days");
+const monthYear = document.getElementById("monthYear");
+const prev = document.getElementById("prev");
+const next = document.getElementById("next");
 
-=======
-document.addEventListener('DOMContentLoaded', () => {
-    const profileBtn = document.getElementById('profileBtn');
-    const profileDropdown = document.getElementById('profileDropdown');
-    if (!profileBtn || !profileDropdown){
-        return;
-    }
-    const openDropdown = () => {
-        profileDropdown.classList.add('open');
-    }
-    const closeDropdown = () => {
-        profileDropdown.classList.remove('open');
-    }
-    const toggleDropdown = (e) => {
-        e && e.stopPropagation();
-        if(profileDropdown.classList.contains('open')) {
-            closeDropdown();
-        } else {
-            openDropdown();
-        }
-    }
-    profileBtn.addEventListener('click', toggleDropdown);
-    profileBtn.addEventListener('keydown', (ev) => {
-        if (ev.key === 'Enter' || ev.key === ' '){
-            ev.preventDefault();
-            toggleDropdown(ev);
-        }
-    });
-    profileDropdown.addEventListener('click', (ev) => {
-        ev.stopPropagation();
-    });
-    document.addEventListener('click', () => {
-        closeDropdown();
-    });
-    document.addEventListener('keydown', (ev) => {
-        if (ev.key === 'Escape'){
-            closeDropdown();
-        }
-    });
-    profileDropdown.querySelectorAll('a, button').forEach(el => {
-        el.addEventListener('click', () => {
-            closeDropdown();
-        })
-    });
-})
->>>>>>> ff2b1501a35b089dd10d52e52d52bb6ac43f78f3
+let date = new Date();
+
+function renderCalendar() {
+  const year = date.getFullYear();
+  const month = date.getMonth();
+
+  const firstDay = new Date(year, month, 1).getDay();
+  const lastDate = new Date(year, month + 1, 0).getDate();
+
+  monthYear.innerText = date.toLocaleDateString("es-ES", { month: "long", year: "numeric" });
+
+  daysContainer.innerHTML = "";
+
+  for (let i = 0; i < firstDay; i++) {
+    daysContainer.innerHTML += `<div></div>`;
+  }
+
+  for (let i = 1; i <= lastDate; i++) {
+    let today = (i === new Date().getDate() && month === new Date().getMonth() && year === new Date().getFullYear())
+      ? "today" : "";
+    daysContainer.innerHTML += `<div class="${today}">${i}</div>`;
+  }
+}
+
+prev.addEventListener("click", () => {
+  date.setMonth(date.getMonth() - 1);
+  renderCalendar();
+});
+
+next.addEventListener("click", () => {
+  date.setMonth(date.getMonth() + 1);
+  renderCalendar();
+});
+
+renderCalendar();
+
+
+

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Planillas</title>
+    <link rel="stylesheet" href="./css/planilla.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Raleway:wght@300;400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <h2>📋 Planilla de Asistencia</h2>
+
+  <div class="acciones">
+    <button onclick="agregarFila()">➕ Agregar Alumno</button>
+    <button onclick="editar()">✏ Editar</button>
+  </div>
+
+  <table id="planilla">
+    <thead>
+      <tr>
+        <th>Alumno</th>
+        <th>Presente</th>
+        <th>Ausente</th>
+        <th>Tardanza</th>
+        <th>Ausente (Justificado)</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Ejemplo Alumno</td>
+        <td class="container">
+            <label>
+                <input type="radio" name:="asistencia1">
+                <span class="checkmark"></span>
+            </label>
+        </td>
+        <td class="container">
+            <label>
+                <input type="radio" name:="asistencia1">
+                <span class="checkmark"></span>
+            </label>
+        </td>
+        <td class="container">
+            <label>
+                <input type="radio" name:="asistencia1">
+                <span class="checkmark"></span>
+            </label>
+        </td>
+        <td class="container">
+            <label>
+                <input type="radio" name:="asistencia1">
+                <span class="checkmark"></span>
+            </label>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</body>
+</html>

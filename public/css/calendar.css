@@ -32,47 +32,47 @@ body.dark {
     --text-color: #CCCCCC;
 }
 
-.calendar {
-    display: flex;
-    align-items: center;
-    border: 3px solid black;
-    border-radius: 5px;
-
-}
-
 .filters {
     display: flex;
     align-items: center;
-    border: 3px solid red;
+    border: 3px solid var(--primary-color);
+    border-radius: 10px;
     flex-direction: column;
     margin: 10px;
     padding: 10px;
     font-size: 25px;
 }
 
-<<<<<<< HEAD
 .right-panel {
     display: flex;
     align-items: center;
-    border: 3px solid red;
+    border: 3px solid var(--primary-color);
     margin: 10px;
     padding: 10px;
 }
 
 .createActivity i {
     font-size: 100px;
-    color: red;
-    border: 3px solid pink;
+    color: var(--primary-color);
 }
 
 .createActivity {
-    border: 3px solid blue;
+    border: 3px dashed var(--primary-color);
+    border-radius: 10px;
     display: flex;
     flex-direction: column;
     align-items: center;
     margin: 10px;
     padding: 10px;
     font-size: 30px;
+    box-shadow: 0 4px 16px rgba(156,39,176,0.18);
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.createActivity:hover {
+    box-shadow: 0 4px 16px rgba(156,39,176,0.18);
+    transform: scale(1.07);
+    transition: transform 0.3s;
 }
 
 /* navbar y perfil */
@@ -337,45 +337,136 @@ hr {
     color: var(--primary-color);
     margin-bottom: 12px;
 }
-=======
-} */
 
-.profile {
-    position: relative;
-    display: inline-block;
+/* === Estilos del calendario === */
+
+.calendar1 {
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  padding: 15px;
+  text-align: center;
+  background: #fff;
+  box-shadow: 0 8px 15px rgba(0,0,0,0.1);
+  display: flex;
+  align-items: flex-end;
 }
 
-.profile-btn {
-    background: none;
-    border: none;
+.calendar {
+  width: 150vh;
+  margin: 20vh;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  padding: 15px;
+  text-align: center;
+  background: #fff;
+  box-shadow: 0 8px 15px rgba(0,0,0,0.1);
+  display: flex;
+  align-items: flex-end;
+}
+.calendar header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.days {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  margin-top: 10px;
+}
+.days div {
+    padding: 10px;
+    border-radius: 5px;
+}
+.days div:hover {
+    background: #eee;
     cursor: pointer;
-    padding: 0;
+}
+.today {
+    background: #007bff;
+    color: #fff;
 }
 
-.profile-btn img {
-    border-radius: 50%;
+.calendar header h2 {
+  flex: 1;
+  text-align: center;
+  font-size: 18px;
+  font-weight: bold;
+  text-transform: capitalize;
 }
 
-.profile-dropdown {
-    display: none;
-    position: absolute;
-    right: 0;
-    background-color: #f9f9f9;
-    min-width: 160px;
-    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-    z-index: 1;
+.weekdays {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  margin-top: 10px;
+  font-weight: bold;
+}
+.weekdays div {
+  text-align: center;
+}
+.days div {
+  text-align: center;
 }
 
-.profile-dropdown a {
-    color: black;
-    padding: 12px 16px;
-    text-decoration: none;
-    display: block;
+.container {
+  display: block;
+  position: relative;
+  padding-left: 35px;
+  margin-bottom: 12px;
+  cursor: pointer;
+  font-size: 22px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
 
-.profile-dropdown a:hover {background-color: #f1f1f1}
-
-.profile-dropdown.open {
-    display: block;
+/* Hide the browser's default radio button */
+.container input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
 }
->>>>>>> ff2b1501a35b089dd10d52e52d52bb6ac43f78f3
+
+/* Create a custom radio button */
+.checkmark {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 25px;
+  width: 25px;
+  background-color: #eee;
+  border-radius: 50%;
+}
+
+/* On mouse-over, add a grey background color */
+.container:hover input ~ .checkmark {
+  background-color: #ccc;
+}
+
+/* When the radio button is checked, add a blue background */
+.container input:checked ~ .checkmark {
+  background-color: #2196F3;
+}
+
+/* Create the indicator (the dot/circle - hidden when not checked) */
+.checkmark:after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+
+/* Show the indicator (dot/circle) when checked */
+.container input:checked ~ .checkmark:after {
+  display: block;
+}
+
+.container .checkmark:after {
+  top: 9px;
+  left: 9px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: white;
+}

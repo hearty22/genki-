@@ -39,7 +39,7 @@
             </li>
         </ul>
     </div>
-    <div class="calendar">
+    <div class="calendar1">
         <div class="left-panel">
             <div class="createActivity">
                 <i class="bx bx-plus"></i>
@@ -47,35 +47,36 @@
             </div>
             <div class="filters">
                 <h1 class="textoEncabezado">Filtros</h1>
-                <label class="container">One
+                <label class="container">Exámenes
                     <input type="checkbox" checked="checked">
                     <span class="checkmark"></span>
                 </label>
-                <label class="container">Two
+                <label class="container">Proyectos
                     <input type="checkbox" checked="checked">
                     <span class="checkmark"></span>
                 </label>
-                <label class="container">Three
+                <label class="container">Actos escolares
                     <input type="checkbox" checked="checked">
                     <span class="checkmark"></span>
                 </label>
             </div>
         </div>
-        <div class="right-panel">
-            <table class="table">
-                <tr>
-                    <th>Hola</th>
-                    <th>Amigos</th>
-                </tr>
-                <tr>
-                    <td>Esta</td>
-                    <td>Es</td>
-                </tr>
-                <tr>
-                    <th>Mi</th>
-                    <th>Tabla</th>
-                </tr>
-            </table>
+        <div class="calendar">
+            <header>
+                <button id="prev">◀</button>
+                <h2 id="monthYear"></h2>
+                <button id="next">▶</button>
+            </header>
+            <div class="weekdays">
+                <div>Lun</div>
+                <div>Mar</div>
+                <div>Mié</div>
+                <div>Jue</div>
+                <div>Vie</div>
+                <div>Sáb</div>
+                <div>Dom</div>
+            </div>
+            <div class="days" id="days"></div>
         </div>
     </div>
     <script src="./js/script.js"></script>
