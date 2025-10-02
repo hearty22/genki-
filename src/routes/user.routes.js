@@ -14,7 +14,7 @@ userRouter.post("/login", loginUserValidator, validator, loginUser);
 userRouter.get("/profile", getProfile);
 userRouter.post("/profile", upload.single('profile_photo'), Profile);
 userRouter.delete("/profile", authMiddleware, deleteProfilePhoto);
-userRouter.get("/institutions", getUserInstitutions);
+
 userRouter.get("/test-institutions", authMiddleware, testInstitutions);
 
 export default userRouter;
