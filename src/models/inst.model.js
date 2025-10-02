@@ -1,19 +1,19 @@
 import { sequelize } from "../database/database.js";
 import { DataTypes } from "sequelize";
 export const instModel = sequelize.define("instituciones",{
-    id_institucion:{
+    id:{
         type: DataTypes.INTEGER,
         primaryKey: true,
         autoIncrement: true
     },
-    user_id: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-        references: {
-            model: 'users',
-            key: 'id'
-        }
-    },
+    // user_id: {
+    //     type: DataTypes.INTEGER,
+    //     allowNull: false,
+    //     references: {
+    //         model: 'users',
+    //         key: 'id'
+    //     }
+    // },
     name: {
         type: DataTypes.STRING(255),
         allowNull: false
@@ -45,11 +45,3 @@ export const instModel = sequelize.define("instituciones",{
 }, {
     timestamps: true
 });
-
-// Relaciones
-instModel.associate = (models) => {
-    instModel.belongsTo(models.usersModel, {
-        foreignKey: 'user_id',
-        as: 'owner'
-    });
-};

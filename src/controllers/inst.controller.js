@@ -51,20 +51,16 @@ export const createInstitution = async (req, res) => {
       });
     }
 
-    const jwt = (await import('jsonwebtoken')).default;
-    const decodedToken = jwt.verify(token, process.env.JWT_SEC);
+    const decodedToken = await verifyToken(req);
     const userId = decodedToken.id;
     const { name, siglas, notas, address, nivel } = req.body;
 
     console.log("👤 Usuario ID:", userId);
 
-    // Las validaciones básicas ya se manejaron en el middleware
-    // Solo necesitamos crear la institución
 
     // Crear la nueva institución
     console.log("🏗️ Creando nueva institución...");
     const newInstitution = await instModel.create({
-      user_id: userId,
       name,
       siglas,
       notas,
@@ -72,14 +68,18 @@ export const createInstitution = async (req, res) => {
       nivel,
       is_active: true
     });
-
-    console.log("✅ Institución creada con ID:", newInstitution.id_institucion);
-
+    const instId = newInstitution.id
+    console.log("✅ Institución creada con ID:", newInstitution.id);
+    const rel = await userInstitutionModel.create({
+      user_id: userId,
+      inst_id: instId
+    });
+    console.log("relacion creada con exito ",rel )
     res.status(201).json({
       success: true,
       message: "Institución creada exitosamente",
       institution: {
-        id: newInstitution.id_institucion,
+        id: newInstitution.id,
         name: newInstitution.name,
         siglas: newInstitution.siglas,
         address: newInstitution.address,
@@ -118,33 +118,23 @@ export const createInstitution = async (req, res) => {
 // Obtener todas las instituciones del usuario actual
 export const getAllInstitutions = async (req, res) => {
   try {
-    const token = verifyToken(req);
-    console.log("🚀 Token encontrado:", token);
 
-    console.log("🔍 Buscando instituciones del usuario:", userId);
 
-    const institutions = await instModel.findAll({
+    const institution = await instModel.findAll({
       where: { 
-        user_id: userId,
-        is_active: true 
-      },
-      attributes: ['id_institucion', 'name', 'siglas', 'logo', 'address', 'nivel', 'createdAt'],
-      order: [['name', 'ASC']]
+        is_active: true
+      }
     });
-
-    console.log("✅ Encontradas", institutions.length, "instituciones del usuario");
-
     res.status(200).json({
       message: "Instituciones obtenidas exitosamente",
-      institutions: institutions
+      institutions: institution
     });
 
   } catch (error) {
-    console.log("❌ Error en getAllInstitutions:", error);
     if (error.message === "error en validar el token") {
       return res.status(401).json({error: "Token inválido o expirado"});
-    }
-    res.status(500).json({ error: "Error interno al obtener las instituciones" });
+    };
+    res.status(500).json({ error: "Error interno al obtener las instituciones " });
   }
 };
 
@@ -157,10 +147,10 @@ export const getInstitutionById = async (req, res) => {
 
     const institution = await instModel.findOne({
       where: { 
-        id_institucion: id,
+        id: id,
         user_id: userId 
       },
-      attributes: ['id_institucion', 'name', 'siglas', 'logo', 'notas', 'address', 'nivel', 'createdAt', 'updatedAt']
+      attributes: ['id', 'name', 'siglas', 'logo', 'notas', 'address', 'nivel', 'createdAt', 'updatedAt']
     });
 
     if (!institution) {
@@ -192,7 +182,7 @@ export const updateInstitution = async (req, res) => {
     // Verificar si la institución existe y pertenece al usuario
     const institution = await instModel.findOne({ 
       where: { 
-        id_institucion: id,
+        id: id,
         user_id: userId 
       } 
     });
@@ -216,11 +206,11 @@ export const updateInstitution = async (req, res) => {
     // Actualizar la institución
     await instModel.update(
       { name, siglas, notas, address, nivel },
-      { where: { id_institucion: id } }
+      { where: { id: id } }
     );
 
     // Obtener la institución actualizada
-    const updatedInstitution = await instModel.findOne({ where: { id_institucion: id } });
+    const updatedInstitution = await instModel.findOne({ where: { id: id } });
 
     res.status(200).json({
       message: "Institución actualizada exitosamente",
@@ -246,7 +236,7 @@ export const uploadInstitutionLogo = async (req, res) => {
     // Verificar si la institución existe y pertenece al usuario
     const institution = await instModel.findOne({ 
       where: { 
-        id_institucion: id,
+        id: id,
         user_id: userId 
       } 
     });
@@ -270,7 +260,7 @@ export const uploadInstitutionLogo = async (req, res) => {
     // Actualizar la institución con la nueva ruta del logo
     await instModel.update(
       { logo: req.file.path },
-      { where: { id_institucion: id } }
+      { where: { id: id } }
     );
 
     res.status(200).json({
@@ -301,7 +291,7 @@ export const deleteInstitution = async (req, res) => {
     // Verificar si la institución existe y pertenece al usuario
     const institution = await instModel.findOne({ 
       where: { 
-        id_institucion: id,
+        id: id,
         user_id: userId 
       } 
     });
@@ -318,7 +308,7 @@ export const deleteInstitution = async (req, res) => {
     }
 
     // Eliminar la institución
-    await instModel.destroy({ where: { id_institucion: id } });
+    await instModel.destroy({ where: { id: id } });
 
     res.status(200).json({
       message: "Institución eliminada exitosamente"
@@ -352,7 +342,7 @@ export const searchInstitutions = async (req, res) => {
           { siglas: { [Op.like]: `%${query}%` } }
         ]
       },
-      attributes: ['id_institucion', 'name', 'siglas', 'logo', 'notas', 'address', 'nivel', 'createdAt', 'updatedAt']
+      attributes: ['id', 'name', 'siglas', 'logo', 'notas', 'address', 'nivel', 'createdAt', 'updatedAt']
     });
 
     res.status(200).json({

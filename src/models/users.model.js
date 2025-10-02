@@ -27,13 +27,11 @@ export const usersModel =  sequelize.define("users",{
     gender:{
         type: DataTypes.STRING(),
         allowNull: true
+    },
+    role:{
+        type: DataTypes.STRING(10),
+        defaultValue: "admin",
+        values:["admin", "user"]
     }
 },{timestamps:true});
 
-// Relaciones
-usersModel.associate = (models) => {
-    usersModel.hasMany(models.instModel, {
-        foreignKey: 'user_id',
-        as: 'institutions'
-    });
-};

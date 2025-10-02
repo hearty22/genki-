@@ -83,7 +83,7 @@ if (parts.length === 2) return parts.pop().split(';').shift();
 async function loadAllInstitutions() {
 try {
     console.log("🔄 Iniciando carga de instituciones...");
-    const token = getCookie('token') || localStorage.getItem("token");
+    const token = getCookie('token') 
     console.log("🔑 Token encontrado:", !!token);
 
     if (!token) {
@@ -138,8 +138,8 @@ try {
 
             institutions.forEach(institution => {
                 institutionsHTML += `
-                    <div class="clase" data-institution-id="${institution.id_institucion}">
-                        <a href="#" onclick="goToInstitution(${institution.id_institucion})">
+                    <div class="clase" data-institution-id="${institution.id}">
+                        <a href="#" onclick="goToInstitution(${institution.id})">
                             <div class="institution-logo-container">
                                 <div class="logo-letter">${institution.name.charAt(0).toUpperCase()}</div>
                             </div>

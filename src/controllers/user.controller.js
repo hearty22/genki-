@@ -5,7 +5,6 @@
 import fs from "fs";
 import path from "path";
 import multer from "multer";
-import jwt from "jsonwebtoken";
 import { usersModel } from "../models/users.model.js";
 import { instModel } from "../models/inst.model.js";
 import { generateToken, verifyToken } from "../helpers/jwt.helper.js";
@@ -47,10 +46,6 @@ export const upload = multer({
 export const createUser = async (req, res)=>{
     try {
         const {user_name, email, password, gender}  = req.body
-
-        // Las validaciones básicas ya se manejaron en el middleware
-        // Solo necesitamos verificar que no haya errores de validación
-
         const hashpassword = await hashPassword(password);
 
         const newUser = new usersModel({user_name, email, password: hashpassword, gender})
@@ -262,16 +257,14 @@ export const deleteProfilePhoto = async (req, res)=>{
 // Obtener instituciones del usuario
 export const getUserInstitutions = async (req, res) => {
     try {
-        const token = verifyToken(req);
-        const userId = token.id;
+
 
         // Buscar las instituciones del usuario
         const institutions = await instModel.findAll({
             where: {
-                user_id: userId,
                 is_active: true
             },
-            attributes: ['id_institucion', 'name', 'siglas', 'logo', 'address', 'nivel', 'createdAt'],
+            attributes: ['id', 'name', 'siglas', 'logo', 'address', 'nivel', 'createdAt'],
             order: [['name', 'ASC']]
         });
 

@@ -1,5 +1,7 @@
 import { sequelize } from "../database/database.js";
 import { DataTypes } from "sequelize";
+import { usersModel } from "./users.model.js";
+import { instModel } from "./inst.model.js";
 
 export const userInstitutionModel = sequelize.define("user_institutions", {
     id: {
@@ -7,47 +9,25 @@ export const userInstitutionModel = sequelize.define("user_institutions", {
         primaryKey: true,
         autoIncrement: true
     },
-    user_id: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-        references: {
-            model: 'users',
-            key: 'id'
-        }
-    },
-    institution_id: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-        references: {
-            model: 'instituciones',
-            key: 'id_institucion'
-        }
-    },
-    role: {
-        type: DataTypes.STRING(100),
-        allowNull: true,
-        comment: 'Rol del usuario en la institución (ej: estudiante, profesor, admin)'
-    },
     is_active: {
         type: DataTypes.BOOLEAN,
         defaultValue: true
     }
 }, {
-    timestamps: true,
-    indexes: [
-        {
-            unique: true,
-            fields: ['user_id', 'institution_id']
-        }
-    ]
+    timestamps: true
 });
 
-// Relaciones
-userInstitutionModel.associate = (models) => {
-    userInstitutionModel.belongsTo(models.usersModel, {
-        foreignKey: 'user_id'
-    });
-    userInstitutionModel.belongsTo(models.instModel, {
-        foreignKey: 'institution_id'
-    });
-};
+
+usersModel.belongsToMany(instModel,{
+    through:"user_institutions",
+    foreignKey: "inst_id",
+    otherKey:"user_id"
+});
+instModel.belongsToMany(usersModel,{
+    through:"user_institutions",
+    foreignKey: "user_id",
+    otherKey:"inst_id"
+});
+
+userInstitutionModel.belongsTo(usersModel,{foreignKey: "user_id"});
+userInstitutionModel.belongsTo(instModel,{foreignKey: "inst_id"});
