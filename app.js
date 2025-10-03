@@ -4,8 +4,7 @@ import path from "path";
 import "./src/models/index.model.js"
 //importacion de la base de datos
 import { db_conect } from "./src/database/db.js";
-import userRouter from "./src/routes/user.routes.js";
-import instRouter from "./src/routes/inst.routes.js";
+import router from "./src/routes/index.routes.js";
 import cookieParser from "cookie-parser";
 import { fileURLToPath } from "url";
 import { dirname } from "path";
@@ -24,8 +23,7 @@ app.use(cookieParser());
 //-----------------------------------------------------------
 app.use('/uploads', express.static(path.join( __dirname ,'uploads')));
 
-app.use("/api", userRouter)
-app.use("/api", instRouter)
+app.use("/api", router);
 
 app.get("/", (req, res)=>{
     res.send("./public/index.hmtl");

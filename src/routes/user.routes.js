@@ -18,4 +18,3 @@ userRouter.delete("/profile", authMiddleware, deleteProfilePhoto);
 userRouter.get("/test-institutions", authMiddleware, testInstitutions);
 
 export default userRouter;
-
