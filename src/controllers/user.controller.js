@@ -1,6 +1,3 @@
-/**
- * Controlador de usuarios - Versión corregida
- */
 
 import fs from "fs";
 import path from "path";
@@ -282,19 +279,7 @@ export const getUserInstitutions = async (req, res) => {
     }
 };
 
-// Asignar institución a usuario - YA NO ES NECESARIO
-export const assignInstitutionToUser = async (req, res) => {
-    return res.status(400).json({
-        message: "Esta funcionalidad ya no está disponible. Las instituciones pertenecen directamente a los usuarios que las crean."
-    });
-};
 
-// Remover institución de usuario - YA NO ES NECESARIO
-export const removeInstitutionFromUser = async (req, res) => {
-    return res.status(400).json({
-        message: "Esta funcionalidad ya no está disponible. Las instituciones pertenecen directamente a los usuarios que las crean."
-    });
-};
 
 // ✅ Endpoint de prueba para verificar el modelo
 export const testInstitutions = async (req, res) => {

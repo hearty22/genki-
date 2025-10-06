@@ -1,6 +1,6 @@
 import { sequelize } from "../database/database.js";
 import { DataTypes } from "sequelize";
-export const instModel = sequelize.define("instituciones",{
+export const instModel =   sequelize.define("instituciones",{
     id:{
         type: DataTypes.INTEGER,
         primaryKey: true,
