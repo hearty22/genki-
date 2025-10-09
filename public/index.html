@@ -3,296 +3,97 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Genki! - Plataforma de Gestión Docente</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>GENKI! - Tu Asistente Docente</title>
+    <link rel="stylesheet" href="./css/style.css">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Raleway:wght@300;400;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../css/style.css">
 </head>
 <body>
-    <!-- Header -->
-    <header>
-        <div class="container">
-            <nav class="navbar">
-                <div class="logo">
-                    <!-- <img src="" alt="genki-logo" height="50vh" width="auto"> -->
-                    <h1>GEN<span>KI!</span></h1>
-                </div>
-                <button class="mobile-menu-btn" id="mobileMenuBtn">
-                    <i class="fas fa-bars"></i>
-                </button>
-                <ul class="nav-links" id="navLinks">
-                    <li><a href="#features">Características</a></li>
-                    <li><a href="#how-it-works">Cómo funciona</a></li>
-                    <li><a href="#testimonials">Testimonios</a></li>
-                    <li><a href="#contact">Contacto</a></li>
-                    <li><a href="./login.html" class="btn">Iniciar Sesión</a></li>
-                </ul>
-            </nav>
-        </div>
+    <header class="header">
+        <nav class="navbar">
+            <div class="logo">
+                <span class="genki">GEN<span>KI!</span></span>
+                <span class="tagline">Workplace</span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="#features">Características</a></li>
+                <li><a href="#about">Sobre Nosotros</a></li>
+                <li><a href="#contact">Contacto</a></li>
+                <li><a href="./workplace.html" class="btn-login">Acceder</a></li>
+            </ul>
+        </nav>
     </header>
 
-    <!-- Hero Section -->
     <section class="hero">
-        <div class="hero-shapes">
-            <div class="shape shape-1"></div>
-            <div class="shape shape-2"></div>
-            <div class="shape shape-3"></div>
+        <div class="hero-content">
+            <h1>GENKI!: Simplifica tu Gestión Docente</h1>
+            <p>Organiza tus clases, gestiona tus instituciones y mantén todo bajo control con nuestra plataforma intuitiva diseñada para educadores.</p>
+            <a href="./workplace.html" class="btn-primary">Empezar Ahora</a>
         </div>
-        <div class="container">
-            <div class="hero-content">
-                <div class="hero-text">
-                    <h1>Transforma la gestión educativa docente</h1>
-                    <p>GEN<span class="highlight">KI!</span> es la plataforma digital que centraliza la planificación académica, asignación de recursos y comunicación institucional, reduciendo la desorganización educativa hasta en un 40%.</p>
-                    <div class="hero-buttons">
-                        <a href="./login.html" class="btn">Comenzar ahora</a>
-                        <a href="#features" class="btn btn-secondary">Ver características</a>
-                    </div>
-                </div>
-                <div class="hero-image">
-                    <img src="https://images.unsplash.com/photo-1553877522-43269d4ea984?q=80&w=2070&auto=format&fit=crop" alt="Dashboard de Tomeru" class="dashboard-img">
-                </div>
+        <div class="hero-image">
+            <img src="https://via.placeholder.com/500x300?text=Dashboard+Preview" alt="GENKI! Dashboard Preview">
+        </div>
+    </section>
+
+    <section id="features" class="features">
+        <h2>Características Clave para Docentes</h2>
+        <div class="feature-grid">
+            <div class="feature-card">
+                <i class="bx bx-home-alt icon"></i>
+                <h3>Dashboard Personalizado</h3>
+                <p>Accede rápidamente a la información más relevante de tus clases y actividades diarias.</p>
+            </div>
+            <div class="feature-card">
+                <i class="bx bx-calendar-alt icon"></i>
+                <h3>Calendario Integrado</h3>
+                <p>Planifica tus horarios, asigna tareas y gestiona eventos importantes de forma eficiente.</p>
+            </div>
+            <div class="feature-card">
+                <i class="bx bx-user icon"></i>
+                <h3>Gestión de Perfil</h3>
+                <p>Mantén tu información profesional actualizada y personaliza tu experiencia en la plataforma.</p>
+            </div>
+            <div class="feature-card">
+                <i class="bx bx-building icon"></i>
+                <h3>Administración de Instituciones</h3>
+                <p>Organiza tus roles y responsabilidades en diferentes instituciones educativas.</p>
             </div>
         </div>
     </section>
 
-    <!-- Features Section -->
-    <section class="features" id="features">
-        <div class="container">
-            <div class="section-title">
-                <h2>Características principales</h2>
-                <p>Descubre cómo GENKI! optimiza la gestión educativa</p>
-            </div>
-            <div class="features-grid">
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-user-plus"></i>
-                    </div>
-                    <h3>Registro de Usuarios</h3>
-                    <p>Sistema completo de registro y autenticación con perfiles personalizados y gestión de fotos de perfil.</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-building"></i>
-                    </div>
-                    <h3>Gestión de Instituciones</h3>
-                    <p>Administra múltiples instituciones educativas con información detallada, logos y configuraciones específicas.</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-chart-line"></i>
-                    </div>
-                    <h3>Dashboard Interactivo</h3>
-                    <p>Panel de control moderno con navegación lateral, modo oscuro y búsqueda integrada para una experiencia fluida.</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-database"></i>
-                    </div>
-                    <h3>Base de Datos Robusta</h3>
-                    <p>Arquitectura de base de datos con Sequelize, modelos relacionales y conexiones seguras con MySQL.</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-upload"></i>
-                    </div>
-                    <h3>Gestión de Archivos</h3>
-                    <p>Sistema de carga de archivos con soporte para imágenes, logos institucionales y documentos diversos.</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-shield-alt"></i>
-                    </div>
-                    <h3>Seguridad Avanzada</h3>
-                    <p>Autenticación JWT, encriptación de contraseñas con bcrypt y manejo seguro de sesiones y cookies.</p>
-                </div>
-            </div>
+    <section id="about" class="about">
+        <div class="about-content">
+            <h2>¿Por qué elegir GENKI!?</h2>
+            <p>En GENKI!, entendemos los desafíos que enfrentan los docentes. Nuestra misión es proporcionarte una herramienta robusta y fácil de usar que te permita enfocarte en lo que realmente importa: enseñar y guiar a tus estudiantes. Con GENKI!, la organización y la eficiencia están al alcance de tu mano.</p>
+            <ul>
+                <li><i class="bx bx-check-circle"></i> Interfaz intuitiva y amigable.</li>
+                <li><i class="bx bx-check-circle"></i> Acceso rápido a tus herramientas esenciales.</li>
+                <li><i class="bx bx-check-circle"></i> Soporte para una mejor gestión del tiempo.</li>
+                <li><i class="bx bx-check-circle"></i> Adaptable a tus necesidades docentes.</li>
+            </ul>
         </div>
     </section>
 
-    <!-- Stats Section -->
-    <section class="stats">
-        <div class="container">
-            <div class="stats-grid">
-                <div class="stat-item">
-                    <h3>40%</h3>
-                    <p>Mejora en eficiencia operativa</p>
-                </div>
-                <div class="stat-item">
-                    <h3>50%</h3>
-                    <p>Reducción de conflictos de coordinación</p>
-                </div>
-                <div class="stat-item">
-                    <h3>30%</h3>
-                    <p>Tiempo recuperado en gestión</p>
-                </div>
-                <div class="stat-item">
-                    <h3>100+</h3>
-                    <p>Instituciones que confían en nosotros</p>
-                </div>
-            </div>
-        </div>
+    <section id="contact" class="cta">
+        <h2>¿Listo para transformar tu gestión docente?</h2>
+        <p>Únete a la comunidad de educadores que ya están simplificando su día a día con GENKI!.</p>
+        <a href="./workplace.html" class="btn-primary">Regístrate Gratis</a>
     </section>
 
-    <!-- How It Works -->
-    <section class="how-it-works" id="how-it-works">
-        <div class="container">
-            <div class="section-title">
-                <h2>Cómo funciona GENKI!</h2>
-                <p>Comienza a usar la plataforma en 3 simples pasos</p>
-            </div>
-            <div class="steps">
-                <div class="step">
-                    <div class="step-number">1</div>
-                    <h3>Regístrate</h3>
-                    <p>Crea tu cuenta de usuario con tu email, nombre y contraseña. Configura tu perfil con foto y preferencias personales.</p>
-                </div>
-                <div class="step">
-                    <div class="step-number">2</div>
-                    <h3>Crea tu institución</h3>
-                    <p>Agrega información detallada de tu institución educativa: nombre, siglas, logo, dirección y nivel educativo.</p>
-                </div>
-                <div class="step">
-                    <div class="step-number">3</div>
-                    <h3>Accede al dashboard</h3>
-                    <p>Explora el panel de control moderno con navegación intuitiva, modo oscuro y todas las herramientas de gestión.</p>
-                </div>
-                <div class="steps-line"></div>
-            </div>
+    <section id="dashboard-preview" class="dashboard-preview">
+        <h2>Nuestro Dashboard Interactivo</h2>
+        <p>Explora las funcionalidades clave de GENKI! con una vista previa de nuestro dashboard.</p>
+        <div class="dashboard-image-container">
+            <img src="https://via.placeholder.com/800x450?text=GENKI!+Dashboard+Screenshot" alt="GENKI! Dashboard Screenshot" class="dashboard-screenshot">
         </div>
+        <div class="dashboard-grid">
+            <!-- ...existing code... -->
+        </div>
+        <a href="./workplace.html" class="btn-primary">Ver Dashboard Completo</a>
     </section>
 
-    <!-- Testimonials -->
-    <section class="testimonials" id="testimonials">
-        <div class="container">
-            <div class="section-title">
-                <h2>Lo que dicen nuestros usuarios</h2>
-                <p>Experiencias de instituciones educativas</p>
-            </div>
-            <div class="testimonial-grid">
-                <div class="testimonial-card">
-                    <p class="testimonial-text">GENKI! ha simplificado completamente nuestra gestión institucional. El sistema de registro es intuitivo y el dashboard nos permite tener todo organizado en un solo lugar.</p>
-                    <div class="testimonial-author">
-                        <div class="author-img">FE</div>
-                        <div class="author-info">
-                            <h4>Felipe</h4>
-                            <p>Administrador Educativo</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="testimonial-card">
-                    <p class="testimonial-text">La gestión de múltiples instituciones nunca fue tan fácil. Puedo crear perfiles para cada una con sus logos y configuraciones específicas. ¡Excelente plataforma!</p>
-                    <div class="testimonial-author">
-                        <div class="author-img">ER</div>
-                        <div class="author-info">
-                            <h4>Ernesto</h4>
-                            <p>Director de Instituciones</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="testimonial-card">
-                    <p class="testimonial-text">Como desarrollador, aprecio la arquitectura robusta con Sequelize y MySQL. El sistema de autenticación JWT y la gestión de archivos funcionan perfectamente.</p>
-                    <div class="testimonial-author">
-                        <div class="author-img">MC</div>
-                        <div class="author-info">
-                            <h4>María</h4>
-                            <p>Desarrolladora Full Stack</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- CTA Section -->
-    <section class="cta" id="contact">
-        <div class="container">
-            <h2>¿Listo para comenzar?</h2>
-            <p>Regístrate ahora y comienza a gestionar tu institución educativa de manera eficiente con GENKI!</p>
-            <a href="./login.html" class="btn">Crear cuenta gratuita</a>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer>
-        <div class="container">
-            <div class="footer-grid">
-                <div class="footer-col">
-                    <h3>GEN<span>KI!</span></h3>
-                    <p>La plataforma líder en gestión educativa docente, diseñada para eliminar la desorganización y optimizar los procesos académicos.</p>
-                    <div class="social-links">
-                        <a href="#"><i class="fab fa-facebook-f"></i></a>
-                        <a href="#"><i class="fab fa-twitter"></i></a>
-                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
-                        <a href="#"><i class="fab fa-instagram"></i></a>
-                    </div>
-                </div>
-                <div class="footer-col">
-                    <h3>Enlaces rápidos</h3>
-                    <ul class="footer-links">
-                        <li><a href="#features">Características</a></li>
-                        <li><a href="#how-it-works">Cómo funciona</a></li>
-                        <li><a href="#testimonials">Testimonios</a></li>
-                        <li><a href="#">Precios</a></li>
-                        <li><a href="#">Blog</a></li>
-                    </ul>
-                </div>
-                <div class="footer-col">
-                    <h3>Recursos</h3>
-                    <ul class="footer-links">
-                        <li><a href="#">Centro de ayuda</a></li>
-                        <li><a href="#">Documentación</a></li>
-                        <li><a href="#">Manuales de usuario</a></li>
-                        <li><a href="#">Soporte técnico</a></li>
-                        <li><a href="#">FAQs</a></li>
-                    </ul>
-                </div>
-                <div class="footer-col">
-                    <h3>Contacto</h3>
-                    <ul class="footer-links">
-                        <li><i class="fas fa-envelope"></i> info@genki.com</li>
-                        <li><i class="fas fa-phone"></i> +54 11 1234-5678</li>
-                        <li><i class="fas fa-map-marker-alt"></i> Buenos Aires, Argentina</li>
-                    </ul>
-                </div>
-            </div>
-            <div class="copyright">
-                <p>&copy; 2025 GENKI! Plataforma de Gestión Docente. Todos los derechos reservados.</p>
-            </div>
-        </div>
+    <footer class="footer">
+        <p>&copy; 2023 GENKI! Todos los derechos reservados.</p>
     </footer>
-
-    <script>
-        // Mobile Menu Toggle
-        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
-        const navLinks = document.getElementById('navLinks');
-        
-        mobileMenuBtn.addEventListener('click', () => {
-            navLinks.classList.toggle('active');
-        });
-        
-        // Close menu when clicking a link
-        document.querySelectorAll('.nav-links a').forEach(link => {
-            link.addEventListener('click', () => {
-                navLinks.classList.remove('active');
-            });
-        });
-        
-        // Smooth scrolling for anchor links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function(e) {
-                e.preventDefault();
-                
-                const targetId = this.getAttribute('href');
-                const targetElement = document.querySelector(targetId);
-                
-                if (targetElement) {
-                    window.scrollTo({
-                        top: targetElement.offsetTop - 80,
-                        behavior: 'smooth'
-                    });
-                }
-            });
-        });
-    </script>
 </body>
 </html>

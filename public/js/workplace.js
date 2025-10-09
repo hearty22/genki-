@@ -123,8 +123,8 @@ try {
             console.log("📭 No hay instituciones disponibles");
             institutionsContainer.innerHTML = `
                 <div class="no-institutions">
-                    <p>No tienes instituciones aún.</p>
-                    <p>¡Crea tu primera institución para comenzar!</p>
+                    <p>No hay instituciones aún.</p>
+                    <p>¡Crea una institución!</p>
                 </div>
                 <div class="claseagregar" onclick="showCreateInstitutionModal()">
                     <i class="bx bx-plus"></i>
