@@ -207,7 +207,7 @@
 }
 
 /* Student and Teacher Items */
-.student-item, .teacher-item {
+.student-item, .teacher-item, .course-item {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -218,25 +218,25 @@
     transition: all 0.3s ease;
 }
 
-.student-item:hover, .teacher-item:hover {
+.student-item:hover, .teacher-item:hover, .course-item:hover {
     transform: translateY(-2px);
     box-shadow: 0 4px 15px var(--dashboard-shadow);
 }
 
-.student-info h4, .teacher-info h4 {
+.student-info h4, .teacher-info h4, .course-info h4 {
     color: var(--dashboard-accent);
     margin: 0;
     margin-bottom: 5px;
     font-size: 1.2em;
 }
 
-.student-info p, .teacher-info p {
+.student-info p, .teacher-info p, .course-info p {
     color: var(--dashboard-text-light);
     margin: 0;
     font-size: 0.95em;
 }
 
-.student-actions, .teacher-actions {
+.student-actions, .teacher-actions, .course-actions {
     display: flex;
     gap: 10px;
 }
@@ -375,6 +375,14 @@
     font-size: 0.85em;
     color: var(--dashboard-text-light);
     opacity: 0.8;
+}
+
+.admin-only {
+    display: none;
+}
+
+.admin-role .admin-only {
+    display: inline-flex;
 }
 
 /* Section Management */

@@ -5,18 +5,19 @@ import { userInstitutionModel } from "./userInstitution.model.js";
 import { careerModel } from "./career.model.js";
 import { courseModel } from "./course.model.js";
 import { subjectModel } from "./subject.model.js";
+import { eventModel } from "./event.model.js";
 
 
 
 usersModel.belongsToMany(instModel, {
     through: userInstitutionModel,
     foreignKey: "user_id",
-    otherKey: "inst_id"
+    otherKey: "institution_id"
 });
 
 instModel.belongsToMany(usersModel, {
     through: userInstitutionModel,
-    foreignKey: "inst_id",
+    foreignKey: "institution_id",
     otherKey: "user_id"
 });
 
@@ -81,5 +82,6 @@ export {
     userInstitutionModel,
     careerModel,
     courseModel,
-    subjectModel
+    subjectModel,
+    eventModel
 };

@@ -68,13 +68,7 @@ export const createInstitution = async (req, res) => {
       nivel,
       is_active: true
     });
-    const instId = newInstitution.id
     console.log("✅ Institución creada con ID:", newInstitution.id);
-    const rel = await userInstitutionModel.create({
-      user_id: userId,
-      inst_id: instId
-    });
-    console.log("relacion creada con exito ",rel )
     res.status(201).json({
       success: true,
       message: "Institución creada exitosamente",
@@ -147,8 +141,7 @@ export const getInstitutionById = async (req, res) => {
 
     const institution = await instModel.findOne({
       where: { 
-        id: id,
-        user_id: userId 
+        id: id
       },
       attributes: ['id', 'name', 'siglas', 'logo', 'notas', 'address', 'nivel', 'createdAt', 'updatedAt']
     });
@@ -182,8 +175,7 @@ export const updateInstitution = async (req, res) => {
     // Verificar si la institución existe y pertenece al usuario
     const institution = await instModel.findOne({ 
       where: { 
-        id: id,
-        user_id: userId 
+        id: id
       } 
     });
     if (!institution) {
@@ -194,8 +186,7 @@ export const updateInstitution = async (req, res) => {
     if (name && name !== institution.name) {
       const existingInstitution = await instModel.findOne({ 
         where: { 
-          name,
-          user_id: userId 
+          name
         } 
       });
       if (existingInstitution) {
@@ -236,8 +227,7 @@ export const uploadInstitutionLogo = async (req, res) => {
     // Verificar si la institución existe y pertenece al usuario
     const institution = await instModel.findOne({ 
       where: { 
-        id: id,
-        user_id: userId 
+        id: id
       } 
     });
     if (!institution) {
@@ -291,8 +281,7 @@ export const deleteInstitution = async (req, res) => {
     // Verificar si la institución existe y pertenece al usuario
     const institution = await instModel.findOne({ 
       where: { 
-        id: id,
-        user_id: userId 
+        id: id
       } 
     });
     if (!institution) {
@@ -336,7 +325,6 @@ export const searchInstitutions = async (req, res) => {
 
     const institutions = await instModel.findAll({
       where: {
-        user_id: userId,
         [Op.or]: [
           { name: { [Op.like]: `%${query}%` } },
           { siglas: { [Op.like]: `%${query}%` } }

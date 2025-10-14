@@ -1,6 +1,6 @@
 import { body } from "express-validator";
 import { instModel } from "../models/inst.model.js";
-
+import { verifyToken } from "../helpers/jwt.helper.js";
 export const createInstitutionValidator = [
     // Validación del nombre (requerido)
     body('name')
@@ -17,15 +17,13 @@ export const createInstitutionValidator = [
                 }
 
                 // Usar jwt.verify directamente como en el middleware
-                const jwt = (await import('jsonwebtoken')).default;
-                const decodedToken = jwt.verify(token, process.env.JWT_SEC);
+                const decodedToken = await verifyToken(req);
                 const userId = decodedToken.id;
 
                 // Verificar si ya existe una institución con ese nombre para este usuario
                 const existingInstitution = await instModel.findOne({
                     where: {
                         name: value,
-                        user_id: userId
                     }
                 });
 

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Carreras</title>
+    <link rel="stylesheet" href="/css/career-management.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Gestión de Carreras</h1>
+        <button id="add-career-btn">Agregar Carrera</button>
+        <div id="career-list"></div>
+    </div>
+
+    <div id="career-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <h2 id="modal-title">Agregar Carrera</h2>
+            <form id="career-form">
+                <input type="hidden" id="career-id">
+                <div class="form-group">
+                    <label for="career-name">Nombre de la Carrera</label>
+                    <input type="text" id="career-name" required>
+                </div>
+                <div class="form-group">
+                    <label for="career-long">Duración (años)</label>
+                    <input type="number" id="career-long" required>
+                </div>
+                <button type="submit" id="save-career-btn">Guardar</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="/js/career-management.js"></script>
+</body>
+</html>

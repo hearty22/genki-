@@ -6,7 +6,7 @@
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "node --watch app.js",
+    "dev": "nodemon app.js",
     "f": "node --watch public.js",
     "clean-db": "node scripts/clean-db.js"
   },

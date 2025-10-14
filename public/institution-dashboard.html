@@ -39,6 +39,18 @@
                         </a>
                     </li>
                     <li class="nav-link">
+                        <a href="#" onclick="showSection('courses')">
+                            <i class='bx bx-book-bookmark icon'></i>
+                            <span class="text nav-text">Cursos</span>
+                        </a>
+                    </li>
+                    <li class="nav-link">
+                        <a href="" id="career-management-link">
+                            <i class='bx bx-graduation icon'></i>
+                            <span class="text nav-text">Carreras</span>
+                        </a>
+                    </li>
+                    <li class="nav-link">
                         <a href="#" onclick="showSection('students')">
                             <i class="bx bx-user icon"></i>
                             <span class="text nav-text">Estudiantes</span>
@@ -189,6 +201,22 @@
                         style="width: 100%; height: 80vh; border: none; border-radius: 15px;"
                         title="Calendario Institucional">
                 </iframe>
+            </div>
+        </div>
+
+        <!-- Courses Section -->
+        <div id="courses-section" class="section">
+            <div class="bienvenida">
+                <h1>Gestión de Cursos</h1>
+                <p>Administrar cursos, clases y materias</p>
+            </div>
+            <div class="management-container">
+                <button class="btn-primary admin-only" onclick="showAddCourseModal()">
+                    <i class="fas fa-plus"></i> Agregar Curso
+                </button>
+                <div id="coursesList" class="management-list">
+                    <div class="loading">Cargando cursos...</div>
+                </div>
             </div>
         </div>
 

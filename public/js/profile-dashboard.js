@@ -63,14 +63,15 @@ async function loadUserInstitutions() {
                     <div class="institution-card">
                         <div class="institution-header">
                             <h3>${inst.name}</h3>
-                            ${inst.siglas ? `<span class="institution-siglas">(${inst.siglas})</span>` : ''}
+                            ${inst.siglas ? `<span class="institution-siglas">${inst.siglas}</span>` : ''}
                         </div>
-                        ${inst.logo ? `<img src="/${inst.logo}" alt="Logo de ${inst.name}" class="institution-logo">` : ''}
+                        ${inst.logo ? `<img src="/${inst.logo}" alt="Logo de ${inst.name}" class="institution-logo">` : 
+                        `<div class="institution-logo" style="display:flex;align-items:center;justify-content:center;font-size:2rem;font-weight:bold;color:var(--primary-color);">${inst.name.charAt(0)}</div>`}
                         <div class="institution-info">
-                            ${inst.address ? `<p><strong>Dirección:</strong> ${inst.address}</p>` : ''}
-                            ${inst.nivel ? `<p><strong>Nivel:</strong> ${inst.nivel}</p>` : ''}
-                            <p><strong>Rol:</strong> ${inst.role || 'Sin especificar'}</p>
-                            <p><strong>Miembro desde:</strong> ${new Date(inst.joinedAt).toLocaleDateString('es-ES')}</p>
+                            ${inst.address ? `<p><strong>Dirección:</strong> <span>${inst.address}</span></p>` : ''}
+                            ${inst.nivel ? `<p><strong>Nivel:</strong> <span>${inst.nivel}</span></p>` : ''}
+                            <p><strong>Rol:</strong> <span>${inst.role || 'Sin especificar'}</span></p>
+                            <p><strong>Miembro desde:</strong> <span>${new Date(inst.joinedAt).toLocaleDateString('es-ES')}</span></p>
                         </div>
                     </div>
                 `).join('');

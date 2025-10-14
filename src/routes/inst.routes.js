@@ -9,7 +9,7 @@ import {
   searchInstitutions,
   upload
 } from "../controllers/inst.controller.js";
-import { authMiddleware } from "../middlewares/auth.js";
+import { authMiddleware, isAdmin } from "../middlewares/auth.js";
 import { createInstitutionValidator, updateInstitutionValidator, searchInstitutionsValidator } from "../validators/inst.validations.js";
 import { validator } from "../validators/validator.js";
 
@@ -19,9 +19,8 @@ const instRouter = Router();
 instRouter.use(authMiddleware);
 
 // Crear una nueva institución
-instRouter.post("/create-institution", createInstitutionValidator , validator, createInstitution);
-
-// Obtener todas las instituciones del usuario
+instRouter.post("/create-institution", isAdmin, createInstitutionValidator , validator, createInstitution);
+//obtener todas las instituciones existentes
 instRouter.get("/institutions", getAllInstitutions);
 
 // Buscar instituciones por nombre o siglas del usuario
@@ -31,13 +30,13 @@ instRouter.get("/institutions/search", searchInstitutionsValidator, validator, s
 instRouter.get("/institutions/:id", getInstitutionById);
 
 // Actualizar una institución (solo si pertenece al usuario)
-instRouter.put("/institutions/:id", updateInstitutionValidator, validator, updateInstitution);
+instRouter.put("/institutions/:id", isAdmin, updateInstitutionValidator, validator, updateInstitution);
 
 // Subir logo de institución (solo si pertenece al usuario)
-instRouter.post("/institutions/:id/logo", upload.single('logo'), uploadInstitutionLogo);
+instRouter.post("/institutions/:id/logo", isAdmin, upload.single('logo'), uploadInstitutionLogo);
 
 // Eliminar una institución (solo si pertenece al usuario)
-instRouter.delete("/institutions/:id", deleteInstitution);
+instRouter.delete("/institutions/:id", isAdmin, deleteInstitution);
 
 export default instRouter;
 

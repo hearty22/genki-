@@ -46,14 +46,16 @@ if (sidebarOverlay) {
     sidebarOverlay.addEventListener("click", closeMobileSidebar);
 }
 
-modeSwitch.addEventListener("click", () => {
-    body.classList.toggle("dark");
-    if (body.classList.contains("dark")) {
-        modeText.innerText = "Light mode"
-    } else {
-        modeText.innerText = "Dark mode"
-    }
-});
+if (modeSwitch) {
+    modeSwitch.addEventListener("click", () => {
+        body.classList.toggle("dark");
+        if (body.classList.contains("dark")) {
+            modeText.innerText = "Light mode"
+        } else {
+            modeText.innerText = "Dark mode"
+        }
+    });
+}
 
 document.addEventListener('DOMContentLoaded', () => {
     const profileBtn = document.getElementById('profileBtn');

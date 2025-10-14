@@ -119,6 +119,12 @@
             `;
         }
 
+        // Actualizar enlace de gestión de carreras
+        const careerManagementLink = document.getElementById('career-management-link');
+        if (careerManagementLink) {
+            careerManagementLink.href = `/career-management.html?inst_id=${currentInstitution.id}`;
+        }
+
         console.log('✅ Información de institución actualizada');
     }
 
@@ -258,6 +264,9 @@
             case 'calendar':
                 loadCalendarSection();
                 break;
+            case 'courses':
+                loadCoursesSection();
+                break;
             case 'students':
                 loadStudentsSection();
                 break;
@@ -284,6 +293,62 @@
                     title="Calendario Institucional">
             </iframe>
         `;
+    }
+
+    // ✅ Cargar sección de cursos
+    async function loadCoursesSection() {
+        const coursesContainer = document.getElementById('coursesList');
+        coursesContainer.innerHTML = '<p>Cargando cursos...</p>';
+
+        try {
+            const token = getCookie('token') || localStorage.getItem("token");
+            const headers = { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` };
+
+            const careersResponse = await fetch(`/institutions/${currentInstitution.id}/careers`, { headers });
+            const careersData = await careersResponse.json();
+
+            if (careersData.success) {
+                coursesContainer.innerHTML = '';
+                let hasCourses = false;
+
+                for (const career of careersData.careers) {
+                    const coursesResponse = await fetch(`/careers/${career.id}/courses`, { headers });
+                    const coursesData = await coursesResponse.json();
+
+                    if (coursesData.success && coursesData.courses.length > 0) {
+                        hasCourses = true;
+                        coursesData.courses.forEach(course => {
+                            const courseItem = document.createElement('div');
+                            courseItem.classList.add('course-item');
+                            courseItem.innerHTML = `
+                                <div class="course-info">
+                                    <h4>${course.year} - ${course.description || 'Curso'}</h4>
+                                    <p>Carrera: ${career.name}</p>
+                                </div>
+                                <div class="course-actions">
+                                    <button class="btn btn-secondary" onclick="editCourse(${course.id})">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    <button class="btn btn-danger admin-only" onclick="deleteCourse(${course.id})">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                            `;
+                            coursesContainer.appendChild(courseItem);
+                        });
+                    }
+                }
+
+                if (!hasCourses) {
+                    coursesContainer.innerHTML = '<p>No hay cursos registrados para esta institución.</p>';
+                }
+            } else {
+                throw new Error('No se pudieron cargar las carreras.');
+            }
+        } catch (error) {
+            console.error('❌ Error al cargar cursos:', error);
+            coursesContainer.innerHTML = '<p>Error al cargar cursos.</p>';
+        }
     }
 
     // ✅ Cargar sección de estudiantes
@@ -410,6 +475,18 @@
     }
 
     // ✅ Funciones placeholder para futuras implementaciones
+    function showAddStudentModal() {
+        alert('🏗️ Agregando estudiante...\n\nEn una implementación completa, aquí se abriría un modal para agregar un estudiante.');
+    }
+
+    function showAddTeacherModal() {
+        alert('🏗️ Agregando docente...\n\nEn una implementación completa, aquí se abriría un modal para agregar un docente.');
+    }
+
+    function showAddCourseModal() {
+        alert('🏗️ Agregando curso...\n\nEn una implementación completa, aquí se abriría un modal para agregar un curso.');
+    }
+
     function editStudent(id) {
         alert(`✏️ Editando estudiante ID: ${id}\n\nEn una implementación completa, aquí se abriría un modal de edición.`);
     }
@@ -430,16 +507,14 @@
         }
     }
 
-    function editInstitutionInfo() {
-        alert('🏗️ Editar información de institución\n\nEn una implementación completa, aquí se abriría un modal para editar la información de la institución.');
+    function editCourse(id) {
+        alert(`✏️ Editando curso ID: ${id}\n\nEn una implementación completa, aquí se abriría un modal de edición.`);
     }
 
-    function systemSettings() {
-        alert('🏗️ Configuración del sistema\n\nEn una implementación completa, aquí se mostrarían las opciones de configuración del sistema.');
-    }
-
-    function manageUsers() {
-        alert('🏗️ Gestionar usuarios\n\nEn una implementación completa, aquí se mostraría la gestión de usuarios y permisos.');
+    function deleteCourse(id) {
+        if (confirm(`¿Estás seguro de que quieres eliminar el curso ID: ${id}?`)) {
+            alert(`🗑️ Curso ${id} eliminado\n\nEn una implementación completa, aquí se eliminaría de la base de datos.`);
+        }
     }
 
     // ✅ Cargar perfil de usuario (reutilizando función del workplace)
@@ -469,6 +544,10 @@
                     profileName.textContent = user.user_name;
                 }
 
+                if (user.role === 'admin') {
+                    document.body.classList.add('admin-role');
+                }
+
                 if (user.profile_photo_path && profilePicture) {
                     profilePicture.src = `/${user.profile_photo_path}`;
                     profilePicture.alt = `Foto de ${user.user_name}`;
@@ -491,12 +570,7 @@
 
     // ✅ Hacer funciones globales para que puedan ser llamadas desde HTML
     window.showSection = showSection;
-    window.showAddStudentModal = showAddStudentModal;
-    window.showAddTeacherModal = showAddTeacherModal;
-    window.editStudent = editStudent;
-    window.deleteStudent = deleteStudent;
-    window.editTeacher = editTeacher;
-    window.deleteTeacher = deleteTeacher;
+    window.deleteCourse = deleteCourse;
     window.editInstitutionInfo = editInstitutionInfo;
     window.systemSettings = systemSettings;
     window.manageUsers = manageUsers;
@@ -505,4 +579,22 @@
     window.generateFinancialReport = generateFinancialReport;
     window.toggleMobileSidebar = toggleMobileSidebar;
 
+    // ✅ Hacer funciones globales para que puedan ser llamadas desde HTML
+    window.showSection = showSection;
+    window.showAddStudentModal = showAddStudentModal;
+    window.showAddTeacherModal = showAddTeacherModal;
+    window.showAddCourseModal = showAddCourseModal;
+    window.editStudent = editStudent;
+    window.deleteStudent = deleteStudent;
+    window.editTeacher = editTeacher;
+    window.deleteTeacher = deleteTeacher;
+    window.editCourse = editCourse;
+    window.deleteCourse = deleteCourse;
+    window.editInstitutionInfo = editInstitutionInfo;
+    window.systemSettings = systemSettings;
+    window.manageUsers = manageUsers;
+    window.generateAttendanceReport = generateAttendanceReport;
+    window.generateAcademicReport = generateAcademicReport;
+    window.generateFinancialReport = generateFinancialReport;
+    window.toggleMobileSidebar = toggleMobileSidebar;
 })();

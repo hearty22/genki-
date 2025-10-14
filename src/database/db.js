@@ -9,7 +9,7 @@ const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 export const db_conect = async (retryCount = 0) => {
     try {
         await sequelize.authenticate();
-        await sequelize.sync({force: true});
+        await sequelize.sync({force: false});
         console.log("✅ Servidor conectado exitosamente con la base de datos");
 
         // await sequelize.sync({ force: false });
