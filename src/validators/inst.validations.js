@@ -1,6 +1,7 @@
 import { body } from "express-validator";
 import { instModel } from "../models/inst.model.js";
 import { verifyToken } from "../helpers/jwt.helper.js";
+
 export const createInstitutionValidator = [
     // Validación del nombre (requerido)
     body('name')
@@ -10,30 +11,22 @@ export const createInstitutionValidator = [
         .matches(/^[a-zA-ZÀ-ÿ0-9\s\-.,()]+$/).withMessage('El nombre solo puede contener letras, números, espacios y los caracteres: -.,()')
         .custom(async (value, { req }) => {
             try {
-                // Verificar si el usuario está autenticado desde cookies
-                const token = req.cookies?.token;
-                if (!token) {
-                    throw new Error('Token de autenticación requerido');
-                }
-
-                // Usar jwt.verify directamente como en el middleware
+                // Verificar autenticación usando el helper
                 const decodedToken = await verifyToken(req);
                 const userId = decodedToken.id;
 
                 // Verificar si ya existe una institución con ese nombre para este usuario
                 const existingInstitution = await instModel.findOne({
-                    where: {
-                        name: value,
-                    }
+                    name: {$eq :{value}}
                 });
 
                 if (existingInstitution) {
-                    throw new Error('Ya tienes una institución con ese nombre');
+                    throw new Error('Ya existe una institución con ese nombre en el sistema');
                 }
 
                 return true;
             } catch (error) {
-                if (error.message.includes('Token')) {
+                if (error.message.includes('Token') || error.message.includes('auth')) {
                     throw new Error('Debes estar autenticado para crear una institución');
                 }
                 throw error;
@@ -57,7 +50,7 @@ export const createInstitutionValidator = [
     // Validación del nivel (opcional)
     body('nivel')
         .optional()
-        .isIn(['Inicial', 'Primaria', 'Secundaria', 'Terciaria', 'Universitaria', 'Posgrado']).withMessage('El nivel debe ser: Inicial, Primaria, Secundaria, Terciaria, Universitaria, Posgrado u Otro'),
+        .isIn(['Inicial', 'Primaria', 'Secundaria', 'Terciaria', 'Universitaria', 'Posgrado']).withMessage('El nivel debe ser: Inicial, Primaria, Secundaria, Terciaria, Universitaria o Posgrado'),
 
     // Validación de las notas (opcional)
     body('notas')
@@ -75,34 +68,26 @@ export const updateInstitutionValidator = [
         .notEmpty().withMessage('El nombre de la institución es requerido')
         .custom(async (value, { req }) => {
             try {
-                // Verificar si el usuario está autenticado desde cookies
-                const token = req.cookies?.token;
-                if (!token) {
-                    throw new Error('Token de autenticación requerido');
-                }
-
-                // Usar jwt.verify directamente como en el middleware
-                const jwt = (await import('jsonwebtoken')).default;
-                const decodedToken = jwt.verify(token, process.env.JWT_SEC);
+                // Verificar autenticación usando el helper
+                const decodedToken = await verifyToken(req);
                 const userId = decodedToken.id;
                 const institutionId = req.params.id;
 
-                // Verificar si ya existe una institución con ese nombre para este usuario (excluyendo la actual)
+                // Verificar si ya existe una institución con ese nombre (excluyendo la actual)
                 const existingInstitution = await instModel.findOne({
                     where: {
                         name: value,
-                        user_id: userId,
-                        id_institucion: { [instModel.sequelize.Op.ne]: institutionId }
+                        id: { [instModel.sequelize.Op.ne]: institutionId }
                     }
                 });
 
                 if (existingInstitution) {
-                    throw new Error('Ya tienes otra institución con ese nombre');
+                    throw new Error('Ya existe otra institución con ese nombre en el sistema');
                 }
 
                 return true;
             } catch (error) {
-                if (error.message.includes('Token')) {
+                if (error.message.includes('Token') || error.message.includes('auth')) {
                     throw new Error('Debes estar autenticado para actualizar una institución');
                 }
                 throw error;
@@ -126,7 +111,7 @@ export const updateInstitutionValidator = [
     // Validación del nivel (opcional)
     body('nivel')
         .optional()
-        .isIn(['Inicial', 'Primaria', 'Secundaria', 'Terciaria', 'Universitaria', 'Otro']).withMessage('El nivel debe ser: Inicial, Primaria, Secundaria, Terciaria, Universitaria u Otro'),
+        .isIn(['Inicial', 'Primaria', 'Secundaria', 'Terciaria', 'Universitaria', 'Posgrado']).withMessage('El nivel debe ser: Inicial, Primaria, Secundaria, Terciaria, Universitaria o Posgrado'),
 
     // Validación de las notas (opcional)
     body('notas')

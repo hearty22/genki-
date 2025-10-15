@@ -1026,6 +1026,55 @@ hr {
     height: 100%;
 }
 
+/* Estilos para el indicador de estado */
+.institution-status {
+    margin-bottom: 15px;
+}
+
+.status-indicator {
+    display: inline-block;
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+.status-active {
+    background-color: rgba(76, 175, 80, 0.2);
+    color: #2e7d32;
+    border: 1px solid rgba(76, 175, 80, 0.5);
+}
+
+.status-inactive {
+    background-color: rgba(244, 67, 54, 0.2);
+    color: #c62828;
+    border: 1px solid rgba(244, 67, 54, 0.5);
+}
+
+/* Estilos para el logo de la institución */
+.institution-logo-container {
+    min-width: 100px;
+    min-height: 100px;
+    padding: 10px;
+    border-radius: 8px;
+    background: var(--primary-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 15px;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+    border: 2px solid var(--primary-color-light);
+}
+
+.logo-letter {
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: white;
+    padding: 5px;
+    text-align: center;
+    word-break: break-word;
+}
+
 .instituto-titulo {
     font-size: 1.2em;
     font-weight: 600;
@@ -1034,28 +1083,15 @@ hr {
     text-align: center;
 }
 
-.instituto-info {
-    position: absolute;
-    bottom: 10px;
-    left: 10px;
-    right: 10px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.nivel, .status {
+.nivel {
     background: rgba(255, 255, 255, 0.2);
     padding: 4px 8px;
     border-radius: 12px;
     font-size: 0.8em;
     font-weight: 500;
+    color: var(--primary-color);
 }
 
-.status.joined {
-    background: rgba(76, 175, 80, 0.8);
-    color: white;
-}
 
 .status.available {
     background: rgba(33, 150, 243, 0.8);

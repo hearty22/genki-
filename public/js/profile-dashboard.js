@@ -61,12 +61,15 @@ async function loadUserInstitutions() {
             } else {
                 institutionsGrid.innerHTML = institutions.map(inst => `
                     <div class="institution-card">
+                        ${inst.logo ? `<img src="/${inst.logo}" alt="Logo de ${inst.name}" class="institution-logo">` : 
+                        `<div class="institution-logo" style="display:flex;align-items:center;justify-content:center;font-size:1.5rem;font-weight:bold;color:var(--primary-color);">${inst.siglas || inst.name.substring(0, 2)}</div>`}
                         <div class="institution-header">
                             <h3>${inst.name}</h3>
                             ${inst.siglas ? `<span class="institution-siglas">${inst.siglas}</span>` : ''}
                         </div>
-                        ${inst.logo ? `<img src="/${inst.logo}" alt="Logo de ${inst.name}" class="institution-logo">` : 
-                        `<div class="institution-logo" style="display:flex;align-items:center;justify-content:center;font-size:2rem;font-weight:bold;color:var(--primary-color);">${inst.name.charAt(0)}</div>`}
+                        <div class="institution-status">
+                            <span class="${inst.active !== false ? 'status-active' : 'status-inactive'}">${inst.active !== false ? 'Activo' : 'Inactivo'}</span>
+                        </div>
                         <div class="institution-info">
                             ${inst.address ? `<p><strong>Dirección:</strong> <span>${inst.address}</span></p>` : ''}
                             ${inst.nivel ? `<p><strong>Nivel:</strong> <span>${inst.nivel}</span></p>` : ''}

@@ -6,7 +6,8 @@ export const generateToken = (user , res)=>{
         const payload = ({
             id: user.id,
             user_name: user.user_name ,
-            gender: user.gender
+            gender: user.gender,
+            role: user.role
             
         })
 

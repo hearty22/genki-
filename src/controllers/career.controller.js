@@ -8,12 +8,13 @@ export const createCareer = async (req, res) => {
         const userId = req.user.id;
 
         // Verificar que el usuario tenga permisos sobre la institución
-        if (req.user.role !== 'admin') {
-            return res.status(403).json({
-                success: false,
-                message: 'Solo los administradores pueden crear carreras'
-            });
-        }
+        //comentado ya que se manejara por middleware
+        // if (req.user.role !== 'admin') {
+        //     return res.status(403).json({
+        //         success: false,
+        //         message: 'Solo los administradores pueden crear carreras'
+        //     });
+        // }
 
         // Verificar que la institución pertenece al usuario
         const userInstitution = await instModel.findOne({

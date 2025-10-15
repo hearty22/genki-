@@ -45,7 +45,7 @@ export const createUser = async (req, res)=>{
         const {user_name, email, password, gender}  = req.body
         const hashpassword = await hashPassword(password);
 
-        const newUser = new usersModel({user_name, email, password: hashpassword, gender})
+        const newUser = new usersModel({user_name, email, password: hashpassword, gender, role: "admin"})
         await newUser.save()
 
         res.status(201).json({

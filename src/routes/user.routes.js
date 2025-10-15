@@ -11,8 +11,8 @@ userRouter.post("/register", createUserValidator, validator, createUser);
 userRouter.post("/login", loginUserValidator, validator, loginUser);
 
 // Rutas protegidas (requieren autenticación)
-userRouter.get("/profile", getProfile);
-userRouter.post("/profile", upload.single('profile_photo'), Profile);
+userRouter.get("/profile", authMiddleware ,getProfile);
+userRouter.post("/profile", authMiddleware ,upload.single('profile_photo'), Profile);
 userRouter.delete("/profile", authMiddleware, deleteProfilePhoto);
 
 userRouter.get("/test-institutions", authMiddleware, testInstitutions);

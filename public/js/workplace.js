@@ -137,17 +137,24 @@ try {
             let institutionsHTML = '';
 
             institutions.forEach(institution => {
+                // Obtener siglas de la institución o usar la primera letra si no hay siglas
+                const siglas = institution.siglas || institution.name.charAt(0).toUpperCase();
+                // Determinar si la institución está activa (por defecto se considera activa)
+                const isActive = institution.active !== false;
+                
                 institutionsHTML += `
                     <div class="clase" data-institution-id="${institution.id}">
                         <a href="#" onclick="goToInstitution(${institution.id})">
+                            <div class="institution-status">
+                                <span class="status-indicator ${isActive ? 'status-active' : 'status-inactive'}">
+                                    ${isActive ? 'Activa' : 'Inactiva'}
+                                </span>
+                            </div>
                             <div class="institution-logo-container">
-                                <div class="logo-letter">${institution.name.charAt(0).toUpperCase()}</div>
+                                <div class="logo-letter">${siglas}</div>
                             </div>
                             <div class="instituto-titulo">${institution.name}</div>
                             ${institution.nivel ? `<div class="nivel">${institution.nivel}</div>` : ''}
-                            <div class="instituto-info">
-                                <span class="status joined">✓ Mi Institución</span>
-                            </div>
                         </a>
                     </div>
                 `;

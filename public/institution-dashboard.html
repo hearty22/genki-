@@ -27,51 +27,21 @@
                 </li>
                 <ul class="menu-links">
                     <li class="nav-link">
-                        <a href="#" onclick="showSection('dashboard')" class="active">
+                        <a href="./workplace.html">
                             <i class="bx bx-home-alt icon"></i>
-                            <span class="text nav-text">Dashboard</span>
+                            <span class="text nav-text">Inicio</span>
                         </a>
                     </li>
                     <li class="nav-link">
-                        <a href="#" onclick="showSection('calendar')">
+                        <a href="./calendar.html">
                             <i class="bx bx-calendar-alt icon"></i>
                             <span class="text nav-text">Calendario</span>
                         </a>
                     </li>
                     <li class="nav-link">
-                        <a href="#" onclick="showSection('courses')">
-                            <i class='bx bx-book-bookmark icon'></i>
-                            <span class="text nav-text">Cursos</span>
-                        </a>
-                    </li>
-                    <li class="nav-link">
-                        <a href="" id="career-management-link">
-                            <i class='bx bx-graduation icon'></i>
-                            <span class="text nav-text">Carreras</span>
-                        </a>
-                    </li>
-                    <li class="nav-link">
-                        <a href="#" onclick="showSection('students')">
-                            <i class="bx bx-user icon"></i>
-                            <span class="text nav-text">Estudiantes</span>
-                        </a>
-                    </li>
-                    <li class="nav-link">
-                        <a href="#" onclick="showSection('teachers')">
-                            <i class="bx bx-chalkboard icon"></i>
-                            <span class="text nav-text">Docentes</span>
-                        </a>
-                    </li>
-                    <li class="nav-link">
-                        <a href="#" onclick="showSection('reports')">
-                            <i class="bx bx-chart-line icon"></i>
-                            <span class="text nav-text">Reportes</span>
-                        </a>
-                    </li>
-                    <li class="nav-link">
-                        <a href="#" onclick="showSection('settings')">
-                            <i class="bx bx-cog icon"></i>
-                            <span class="text nav-text">Configuración</span>
+                        <a href="./workplace.html">
+                            <i class="bx bx-building icon"></i>
+                            <span class="text nav-text">Instituciones</span>
                         </a>
                     </li>
                 </ul>
@@ -141,7 +111,7 @@
             </div>
 
             <div class="dashboard-grid">
-                <div class="dashboard-card">
+                <div class="dashboard-card" onclick="showSection('students')">
                     <div class="card-icon">
                         <i class="fas fa-users"></i>
                     </div>
@@ -151,7 +121,7 @@
                     </div>
                 </div>
 
-                <div class="dashboard-card">
+                <div class="dashboard-card" onclick="showSection('teachers')">
                     <div class="card-icon">
                         <i class="fas fa-chalkboard-teacher"></i>
                     </div>
@@ -161,7 +131,7 @@
                     </div>
                 </div>
 
-                <div class="dashboard-card">
+                <div class="dashboard-card" onclick="showSection('calendar')">
                     <div class="card-icon">
                         <i class="fas fa-calendar-alt"></i>
                     </div>
@@ -171,7 +141,7 @@
                     </div>
                 </div>
 
-                <div class="dashboard-card">
+                <div class="dashboard-card" onclick="showSection('reports')">
                     <div class="card-icon">
                         <i class="fas fa-chart-line"></i>
                     </div>
@@ -299,33 +269,33 @@
                 <p>Administrar configuración general</p>
             </div>
             <div class="settings-container">
-                <div class="settings-card">
+                <div class="settings-card" onclick="editInstitutionInfo()">
                     <div class="settings-icon">
                         <i class="fas fa-info-circle"></i>
                     </div>
                     <h3>Información General</h3>
                     <p>Editar información básica de la institución</p>
-                    <button class="btn-primary" onclick="editInstitutionInfo()">
+                    <button class="btn-primary">
                         <i class="fas fa-edit"></i> Editar Información
                     </button>
                 </div>
-                <div class="settings-card">
+                <div class="settings-card" onclick="systemSettings()">
                     <div class="settings-icon">
                         <i class="fas fa-cogs"></i>
                     </div>
                     <h3>Configuración del Sistema</h3>
                     <p>Configurar parámetros del sistema</p>
-                    <button class="btn-primary" onclick="systemSettings()">
+                    <button class="btn-primary">
                         <i class="fas fa-cogs"></i> Configuración del Sistema
                     </button>
                 </div>
-                <div class="settings-card">
+                <div class="settings-card" onclick="manageUsers()">
                     <div class="settings-icon">
                         <i class="fas fa-users-cog"></i>
                     </div>
                     <h3>Usuarios y Permisos</h3>
                     <p>Gestionar usuarios y permisos de acceso</p>
-                    <button class="btn-primary" onclick="manageUsers()">
+                    <button class="btn-primary">
                         <i class="fas fa-users-cog"></i> Gestionar Usuarios
                     </button>
                 </div>
