@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Genki - Plataforma de Gestión Docente</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>🌟 Genki</h1>
+            <p>Plataforma de Gestión Docente</p>
+        </header>
+
+        <main class="main-content">
+            <!-- Formulario de Registro -->
+            <div id="register-section" class="form-section active">
+                <div class="form-container">
+                    <h2>Crear Cuenta</h2>
+                    <p class="form-subtitle">Regístrate para organizar tu trabajo docente</p>
+                    
+                    <form id="register-form" class="form">
+                        <div class="form-group">
+                            <label for="firstName">Nombre</label>
+                            <input type="text" id="firstName" name="firstName" required>
+                            <span class="error-message" id="firstName-error"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="lastName">Apellido</label>
+                            <input type="text" id="lastName" name="lastName" required>
+                            <span class="error-message" id="lastName-error"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" id="email" name="email" required>
+                            <span class="error-message" id="email-error"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="password">Contraseña</label>
+                            <input type="password" id="password" name="password" required>
+                            <span class="error-message" id="password-error"></span>
+                            <small class="form-hint">Mínimo 6 caracteres, incluye mayúscula, minúscula y número</small>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary" id="register-btn">
+                            <span class="btn-text">Crear Cuenta</span>
+                            <span class="btn-loading" style="display: none;">Creando...</span>
+                        </button>
+                    </form>
+
+                    <div class="form-footer">
+                        <p>¿Ya tienes cuenta? <a href="#" id="show-login">Inicia sesión</a></p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Formulario de Login -->
+            <div id="login-section" class="form-section">
+                <div class="form-container">
+                    <h2>Iniciar Sesión</h2>
+                    <p class="form-subtitle">Accede a tu cuenta docente</p>
+                    
+                    <form id="login-form" class="form">
+                        <div class="form-group">
+                            <label for="login-email">Email</label>
+                            <input type="email" id="login-email" name="email" required>
+                            <span class="error-message" id="login-email-error"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="login-password">Contraseña</label>
+                            <input type="password" id="login-password" name="password" required>
+                            <span class="error-message" id="login-password-error"></span>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary" id="login-btn">
+                            <span class="btn-text">Iniciar Sesión</span>
+                            <span class="btn-loading" style="display: none;">Iniciando...</span>
+                        </button>
+                    </form>
+
+                    <div class="form-footer">
+                        <p>¿No tienes cuenta? <a href="#" id="show-register">Regístrate</a></p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Dashboard (después del login) -->
+            <div id="dashboard-section" class="dashboard-section" style="display: none;">
+                <div class="dashboard-header">
+                    <h2>Bienvenido, <span id="user-name"></span></h2>
+                    <div class="dashboard-nav">
+                        <button id="show-dashboard-btn" class="btn btn-nav active">Dashboard</button>
+                        <button id="show-profile-btn" class="btn btn-nav">Mi Perfil</button>
+                        <button id="logout-btn" class="btn btn-secondary">Cerrar Sesión</button>
+                    </div>
+                </div>
+                
+                <!-- Vista Dashboard Principal -->
+                <div id="dashboard-main" class="dashboard-content">
+                    <div class="dashboard-card">
+                        <h3>🎯 Tu Perfil</h3>
+                        <div id="user-info">
+                            <p><strong>Email:</strong> <span id="user-email"></span></p>
+                            <p><strong>Rol:</strong> <span id="user-role"></span></p>
+                            <p><strong>Miembro desde:</strong> <span id="user-created"></span></p>
+                        </div>
+                    </div>
+                    
+                    <div class="dashboard-card">
+                        <h3>🚀 Próximas Funcionalidades</h3>
+                        <ul>
+                            <li>Gestión de clases y horarios</li>
+                            <li>Seguimiento de estudiantes</li>
+                            <li>Planificación de lecciones</li>
+                            <li>Evaluaciones y calificaciones</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Vista Mi Perfil -->
+                <div id="profile-section" class="dashboard-content" style="display: none;">
+                    <div class="profile-container">
+                        <h3>👤 Mi Perfil</h3>
+                        <p class="profile-subtitle">Actualiza tu información de contacto</p>
+                        
+                        <form id="profile-form" class="form">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="profile-firstName">Nombre</label>
+                                    <input type="text" id="profile-firstName" name="firstName" required>
+                                    <span class="error-message" id="profile-firstName-error"></span>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="profile-lastName">Apellido</label>
+                                    <input type="text" id="profile-lastName" name="lastName" required>
+                                    <span class="error-message" id="profile-lastName-error"></span>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="profile-email">Email</label>
+                                <input type="email" id="profile-email" name="email" required>
+                                <span class="error-message" id="profile-email-error"></span>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="profile-phone">Teléfono (opcional)</label>
+                                <input type="tel" id="profile-phone" name="phone">
+                                <span class="error-message" id="profile-phone-error"></span>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="profile-bio">Biografía (opcional)</label>
+                                <textarea id="profile-bio" name="bio" rows="4" placeholder="Cuéntanos un poco sobre ti..."></textarea>
+                                <span class="error-message" id="profile-bio-error"></span>
+                            </div>
+
+                            <div class="form-actions">
+                                <button type="button" id="cancel-profile-btn" class="btn btn-secondary">Cancelar</button>
+                                <button type="submit" id="save-profile-btn" class="btn btn-primary">
+                                    <span class="btn-text">Guardar Cambios</span>
+                                    <span class="btn-loading" style="display: none;">Guardando...</span>
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Notificaciones -->
+        <div id="notification" class="notification" style="display: none;">
+            <span id="notification-message"></span>
+            <button id="notification-close">&times;</button>
+        </div>
+    </div>
+
+    <!-- Scripts con módulos ES6 -->
+    <script type="module" src="js/app.js"></script>
+</body>
+</html>
