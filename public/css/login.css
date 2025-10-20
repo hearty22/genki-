@@ -1,0 +1,113 @@
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+        'Ubuntu', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    background-color: var(--background-light-gray);
+}
+
+.login-container {
+    background-color: #FFFFFF; /* White surface for contrast */
+    padding: 40px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    width: 100%;
+    max-width: 400px;
+    border: 1px solid var(--border-subtle-gray);
+}
+
+h1 {
+    color: var(--primary-deep-blue);
+    margin-bottom: 20px;
+    font-size: 2em;
+}
+
+.message-area {
+    padding: 10px;
+    margin-bottom: 15px;
+    border-radius: 3px;
+    font-weight: bold;
+    text-align: center;
+    font-size: 0.9em;
+}
+
+.message-area.success {
+    background-color: rgba(72, 187, 120, 0.1); /* Light green */
+    color: var(--accent-success-green);
+    border: 1px solid rgba(72, 187, 120, 0.2);
+}
+
+.message-area.error {
+    background-color: rgba(222, 53, 11, 0.1); /* Light red */
+    color: var(--jira-error);
+    border: 1px solid rgba(222, 53, 11, 0.2);
+}
+
+.form-group {
+    margin-bottom: 15px;
+    text-align: left;
+}
+
+label {
+    display: block;
+    margin-bottom: 8px;
+    color: var(--text-charcoal);
+    font-size: 0.9em;
+    font-weight: 600;
+}
+
+input[type="email"],
+input[type="password"] {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid var(--border-subtle-gray);
+    border-radius: 3px;
+    box-sizing: border-box;
+    font-size: 1em;
+    color: var(--text-charcoal);
+    transition: border-color 0.2s ease;
+}
+
+input[type="email"]:focus,
+input[type="password"]:focus {
+    border-color: var(--primary-deep-blue);
+    outline: none;
+}
+
+button {
+    background-color: var(--primary-deep-blue);
+    color: #fff;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 1em;
+    font-weight: 600;
+    transition: background-color 0.3s ease;
+    width: 100%;
+    margin-top: 20px;
+}
+
+button:hover {
+    background-color: #234369;
+}
+
+p.toggle-link {
+    margin-top: 20px;
+    color: var(--text-charcoal);
+    font-size: 0.9em;
+}
+
+p.toggle-link a {
+    color: var(--primary-deep-blue);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+p.toggle-link a:hover {
+    text-decoration: underline;
+}
