@@ -67,6 +67,13 @@ export class ApiService {
         return this.request(CONFIG.ENDPOINTS.AUTH.PROFILE);
     }
 
+    async updateProfile(profileData) {
+        return this.request(CONFIG.ENDPOINTS.AUTH.PROFILE, {
+            method: 'PUT',
+            body: JSON.stringify(profileData)
+        });
+    }
+
     async logout() {
         return this.request(CONFIG.ENDPOINTS.AUTH.LOGOUT, {
             method: 'POST',
@@ -76,6 +83,36 @@ export class ApiService {
     // Método para verificar el estado de la conexión
     async checkHealth() {
         return this.request('/health');
+    }
+
+    // Métodos para manejo de imagen de perfil
+    
+    // Subir imagen de perfil por archivo
+    async uploadProfileImage(file) {
+        const formData = new FormData();
+        formData.append('profileImage', file);
+        
+        return this.request('/auth/profile/image/upload', {
+            method: 'POST',
+            body: formData,
+            // No establecer Content-Type, el navegador lo hará automáticamente con boundary
+            headers: {}
+        });
+    }
+
+    // Actualizar imagen de perfil por URL
+    async updateProfileImageUrl(imageUrl) {
+        return this.request('/auth/profile/image/url', {
+            method: 'PUT',
+            body: JSON.stringify({ imageUrl })
+        });
+    }
+
+    // Eliminar imagen de perfil
+    async removeProfileImage() {
+        return this.request('/auth/profile/image', {
+            method: 'DELETE'
+        });
     }
 }
 

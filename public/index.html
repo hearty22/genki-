@@ -105,9 +105,22 @@
                     <div class="dashboard-card">
                         <h3>🎯 Tu Perfil</h3>
                         <div id="user-info">
-                            <p><strong>Email:</strong> <span id="user-email"></span></p>
-                            <p><strong>Rol:</strong> <span id="user-role"></span></p>
-                            <p><strong>Miembro desde:</strong> <span id="user-created"></span></p>
+                            <div class="user-profile-header">
+                                <div class="user-avatar">
+                                    <img id="dashboard-profile-image" src="" alt="Foto de perfil" style="display: none;">
+                                    <div id="dashboard-profile-placeholder" class="profile-image-placeholder">
+                                        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                            <circle cx="12" cy="7" r="4"></circle>
+                                        </svg>
+                                    </div>
+                                </div>
+                                <div class="user-details">
+                                    <p><strong>Email:</strong> <span id="user-email"></span></p>
+                                    <p><strong>Rol:</strong> <span id="user-role"></span></p>
+                                    <p><strong>Miembro desde:</strong> <span id="user-created"></span></p>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     
@@ -129,6 +142,54 @@
                         <p class="profile-subtitle">Actualiza tu información de contacto</p>
                         
                         <form id="profile-form" class="form">
+                            <!-- Sección de Foto de Perfil -->
+                            <div class="profile-image-section">
+                                <div class="profile-image-container">
+                                    <div class="profile-image-preview">
+                                        <img id="profile-image-display" src="" alt="Foto de perfil" style="display: none;">
+                                        <div id="profile-image-placeholder" class="profile-image-placeholder">
+                                            <svg width="60" height="60" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                                <circle cx="12" cy="7" r="4"></circle>
+                                            </svg>
+                                        </div>
+                                    </div>
+                                    <div class="profile-image-controls">
+                                        <h4>Foto de Perfil</h4>
+                                        <div class="image-upload-options">
+                                            <div class="upload-tabs">
+                                                <button type="button" id="upload-file-tab" class="upload-tab active">📁 Subir Archivo</button>
+                                                <button type="button" id="upload-url-tab" class="upload-tab">🔗 Desde URL</button>
+                                            </div>
+                                            
+                                            <!-- Opción de subir archivo -->
+                                            <div id="file-upload-section" class="upload-section">
+                                                <input type="file" id="profile-image-file" accept="image/*" style="display: none;">
+                                                <button type="button" id="select-file-btn" class="btn btn-outline">
+                                                    <span>Seleccionar Imagen</span>
+                                                </button>
+                                                <p class="upload-hint">JPG, PNG o GIF. Máximo 5MB.</p>
+                                            </div>
+                                            
+                                            <!-- Opción de URL -->
+                                            <div id="url-upload-section" class="upload-section" style="display: none;">
+                                                <div class="form-group">
+                                                    <input type="url" id="profile-image-url" placeholder="https://ejemplo.com/imagen.jpg">
+                                                    <button type="button" id="load-url-btn" class="btn btn-outline">Cargar</button>
+                                                </div>
+                                                <p class="upload-hint">Pega la URL de una imagen desde internet.</p>
+                                            </div>
+                                            
+                                            <!-- Botón para remover imagen -->
+                                            <button type="button" id="remove-image-btn" class="btn btn-text" style="display: none;">
+                                                🗑️ Remover Imagen
+                                            </button>
+                                        </div>
+                                        <span class="error-message" id="profile-image-error"></span>
+                                    </div>
+                                </div>
+                            </div>
+
                             <div class="form-row">
                                 <div class="form-group">
                                     <label for="profile-firstName">Nombre</label>

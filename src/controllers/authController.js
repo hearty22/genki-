@@ -2,6 +2,12 @@ import User from '../models/User.js';
 import { generateToken, generateRefreshToken } from '../middleware/auth.js';
 import { comparePassword } from '../middleware/hashPassword.js';
 import { validationResult } from 'express-validator';
+import fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 // Registro de nuevo usuario
 export const register = async (req, res) => {
@@ -291,6 +297,170 @@ export const logout = async (req, res) => {
     });
   } catch (error) {
     console.error('Error en logout:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Error interno del servidor'
+    });
+  }
+};
+
+// Subir imagen de perfil por archivo
+export const uploadProfileImage = async (req, res) => {
+  try {
+    if (!req.file) {
+      return res.status(400).json({
+        success: false,
+        message: 'No se ha proporcionado ningún archivo'
+      });
+    }
+
+    const userId = req.user.id;
+    const imageUrl = `/uploads/profiles/${req.file.filename}`;
+
+    // Obtener usuario actual para eliminar imagen anterior si existe
+    const user = await User.findById(userId);
+    if (user && user.profileImage && user.profileImage.startsWith('/uploads/')) {
+      const oldImagePath = path.join(__dirname, '../../public', user.profileImage);
+      if (fs.existsSync(oldImagePath)) {
+        fs.unlinkSync(oldImagePath);
+      }
+    }
+
+    // Actualizar usuario con nueva imagen
+    const updatedUser = await User.findByIdAndUpdate(
+      userId,
+      { profileImage: imageUrl },
+      { new: true, runValidators: true }
+    ).select('-password');
+
+    if (!updatedUser) {
+      return res.status(404).json({
+        success: false,
+        message: 'Usuario no encontrado'
+      });
+    }
+
+    res.json({
+      success: true,
+      message: 'Imagen de perfil actualizada exitosamente',
+      user: updatedUser
+    });
+
+  } catch (error) {
+    console.error('Error al subir imagen de perfil:', error);
+    
+    // Eliminar archivo si hubo error
+    if (req.file) {
+      const filePath = path.join(__dirname, '../../public/uploads/profiles', req.file.filename);
+      if (fs.existsSync(filePath)) {
+        fs.unlinkSync(filePath);
+      }
+    }
+
+    res.status(500).json({
+      success: false,
+      message: 'Error interno del servidor'
+    });
+  }
+};
+
+// Actualizar imagen de perfil por URL
+export const updateProfileImageUrl = async (req, res) => {
+  try {
+    const { imageUrl } = req.body;
+    const userId = req.user.id;
+
+    if (!imageUrl) {
+      return res.status(400).json({
+        success: false,
+        message: 'URL de imagen requerida'
+      });
+    }
+
+    // Validar que sea una URL válida
+    try {
+      new URL(imageUrl);
+    } catch (error) {
+      return res.status(400).json({
+        success: false,
+        message: 'URL de imagen inválida'
+      });
+    }
+
+    // Obtener usuario actual para eliminar imagen local anterior si existe
+    const user = await User.findById(userId);
+    if (user && user.profileImage && user.profileImage.startsWith('/uploads/')) {
+      const oldImagePath = path.join(__dirname, '../../public', user.profileImage);
+      if (fs.existsSync(oldImagePath)) {
+        fs.unlinkSync(oldImagePath);
+      }
+    }
+
+    // Actualizar usuario con nueva URL de imagen
+    const updatedUser = await User.findByIdAndUpdate(
+      userId,
+      { profileImage: imageUrl },
+      { new: true, runValidators: true }
+    ).select('-password');
+
+    if (!updatedUser) {
+      return res.status(404).json({
+        success: false,
+        message: 'Usuario no encontrado'
+      });
+    }
+
+    res.json({
+      success: true,
+      message: 'Imagen de perfil actualizada exitosamente',
+      user: updatedUser
+    });
+
+  } catch (error) {
+    console.error('Error al actualizar imagen de perfil por URL:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Error interno del servidor'
+    });
+  }
+};
+
+// Eliminar imagen de perfil
+export const removeProfileImage = async (req, res) => {
+  try {
+    const userId = req.user.id;
+
+    // Obtener usuario actual para eliminar imagen si existe
+    const user = await User.findById(userId);
+    if (user && user.profileImage && user.profileImage.startsWith('/uploads/')) {
+      const imagePath = path.join(__dirname, '../../public', user.profileImage);
+      if (fs.existsSync(imagePath)) {
+        fs.unlinkSync(imagePath);
+      }
+    }
+
+    // Actualizar usuario removiendo la imagen
+    const updatedUser = await User.findByIdAndUpdate(
+      userId,
+      { $unset: { profileImage: 1 } },
+      { new: true, runValidators: true }
+    ).select('-password');
+
+    if (!updatedUser) {
+      return res.status(404).json({
+        success: false,
+        message: 'Usuario no encontrado'
+      });
+    }
+
+    res.json({
+      success: true,
+      message: 'Imagen de perfil eliminada exitosamente',
+      user: updatedUser
+    });
+
+  } catch (error) {
+    console.error('Error al eliminar imagen de perfil:', error);
     res.status(500).json({
       success: false,
       message: 'Error interno del servidor'

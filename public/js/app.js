@@ -1,5 +1,6 @@
 import { authManager } from './auth.js';
 import { uiManager } from './ui.js';
+import { profileManager } from './profile.js';
 import { ApiError } from './api.js';
 
 // Clase principal de la aplicación
@@ -65,6 +66,9 @@ class App {
 
         // Event listeners para navegación
         this.setupNavigationListeners();
+
+        // Event listeners para imagen de perfil
+        this.setupProfileImageListeners();
     }
 
     // Configurar listeners de navegación
@@ -192,6 +196,175 @@ class App {
             }
         } else {
             uiManager.showNotification('Error inesperado. Inténtalo de nuevo.', 'error');
+        }
+    }
+
+    // Configurar listeners para imagen de perfil
+    setupProfileImageListeners() {
+        // Tabs de carga de imagen
+        const fileTab = document.getElementById('file-upload-tab');
+        const urlTab = document.getElementById('url-upload-tab');
+
+        if (fileTab) {
+            fileTab.addEventListener('click', () => {
+                uiManager.switchUploadTab('file');
+            });
+        }
+
+        if (urlTab) {
+            urlTab.addEventListener('click', () => {
+                uiManager.switchUploadTab('url');
+            });
+        }
+
+        // Input de archivo
+        const fileInput = document.getElementById('profile-image-file');
+        if (fileInput) {
+            fileInput.addEventListener('change', (e) => {
+                const file = e.target.files[0];
+                if (file) {
+                    uiManager.previewImageFile(file);
+                }
+            });
+        }
+
+        // Botón de seleccionar archivo
+        const selectFileBtn = document.getElementById('select-file-btn');
+        if (selectFileBtn && fileInput) {
+            selectFileBtn.addEventListener('click', () => {
+                fileInput.click();
+            });
+        }
+
+        // Input de URL
+        const urlInput = document.getElementById('profile-image-url');
+        const loadUrlBtn = document.getElementById('load-url-btn');
+
+        if (loadUrlBtn && urlInput) {
+            loadUrlBtn.addEventListener('click', () => {
+                const url = urlInput.value.trim();
+                if (url) {
+                    uiManager.previewImageUrl(url);
+                }
+            });
+        }
+
+        // Botón de remover imagen
+        const removeBtn = document.getElementById('remove-image-btn');
+        if (removeBtn) {
+            removeBtn.addEventListener('click', async () => {
+                try {
+                    await this.handleRemoveProfileImage();
+                } catch (error) {
+                    console.error('Error al remover imagen:', error);
+                    uiManager.showNotification('Error al remover la imagen', 'error');
+                }
+            });
+        }
+
+        // Botón de guardar imagen (archivo)
+        const saveFileBtn = document.getElementById('save-image-file-btn');
+        if (saveFileBtn && fileInput) {
+            saveFileBtn.addEventListener('click', async () => {
+                const file = fileInput.files[0];
+                if (file) {
+                    try {
+                        await this.handleUploadProfileImage(file);
+                    } catch (error) {
+                        console.error('Error al subir imagen:', error);
+                        uiManager.showNotification('Error al subir la imagen', 'error');
+                    }
+                }
+            });
+        }
+
+        // Botón de guardar imagen (URL)
+        const saveUrlBtn = document.getElementById('save-image-url-btn');
+        if (saveUrlBtn && urlInput) {
+            saveUrlBtn.addEventListener('click', async () => {
+                const url = urlInput.value.trim();
+                if (url) {
+                    try {
+                        await this.handleUpdateProfileImageUrl(url);
+                    } catch (error) {
+                        console.error('Error al actualizar imagen:', error);
+                        uiManager.showNotification('Error al actualizar la imagen', 'error');
+                    }
+                }
+            });
+        }
+    }
+
+    // Manejar subida de imagen de perfil
+    async handleUploadProfileImage(file) {
+        try {
+            uiManager.setButtonLoading('save-image-file-btn', true);
+            
+            const result = await profileManager.uploadProfileImage(file);
+            
+            if (result.success) {
+                // Actualizar usuario actual
+                const updatedUser = await authManager.loadUserProfile();
+                if (updatedUser) {
+                    uiManager.updateDashboard(updatedUser);
+                    uiManager.loadProfileData();
+                }
+                
+                uiManager.showNotification('Imagen de perfil actualizada correctamente', 'success');
+            }
+        } catch (error) {
+            throw error;
+        } finally {
+            uiManager.setButtonLoading('save-image-file-btn', false);
+        }
+    }
+
+    // Manejar actualización de imagen por URL
+    async handleUpdateProfileImageUrl(url) {
+        try {
+            uiManager.setButtonLoading('save-image-url-btn', true);
+            
+            const result = await profileManager.updateProfileImageUrl(url);
+            
+            if (result.success) {
+                // Actualizar usuario actual
+                const updatedUser = await authManager.loadUserProfile();
+                if (updatedUser) {
+                    uiManager.updateDashboard(updatedUser);
+                    uiManager.loadProfileData();
+                }
+                
+                uiManager.showNotification('Imagen de perfil actualizada correctamente', 'success');
+            }
+        } catch (error) {
+            throw error;
+        } finally {
+            uiManager.setButtonLoading('save-image-url-btn', false);
+        }
+    }
+
+    // Manejar eliminación de imagen de perfil
+    async handleRemoveProfileImage() {
+        try {
+            uiManager.setButtonLoading('remove-image-btn', true);
+            
+            const result = await profileManager.removeProfileImage();
+            
+            if (result.success) {
+                // Actualizar usuario actual
+                const updatedUser = await authManager.loadUserProfile();
+                if (updatedUser) {
+                    uiManager.updateDashboard(updatedUser);
+                    uiManager.loadProfileData();
+                }
+                
+                uiManager.clearImagePreview();
+                uiManager.showNotification('Imagen de perfil eliminada correctamente', 'success');
+            }
+        } catch (error) {
+            throw error;
+        } finally {
+            uiManager.setButtonLoading('remove-image-btn', false);
         }
     }
 
