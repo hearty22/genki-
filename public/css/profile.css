@@ -1,3 +1,25 @@
+.message-area {
+    margin-top: 15px;
+    padding: 10px;
+    border-radius: 5px;
+    text-align: center;
+    font-weight: bold;
+    display: none; /* Hidden by default */
+}
+
+.message-area.success {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+.message-area.error {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+/* Existing profile styles */
 .profile-container {
     max-width: 800px;
     margin: 50px auto;
@@ -33,6 +55,69 @@
     margin: 0 10px;
 }
 
+.profile-actions {
+    display: flex;
+    justify-content: center;
+    gap: 20px; /* Espacio entre los botones */
+    margin-top: 20px; /* Espacio superior para separar del formulario */
+}
+
 .profile-container button:hover {
     background-color: #234369;
+}
+
+/* Añadimos estilos en profile.css */
+.profile-image-section {
+    background: #f8f9fa;
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    margin-bottom: 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.profile-image-display {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 4px solid var(--primary-deep-blue);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.image-upload-controls {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+    max-width: 300px;
+}
+
+.image-upload-controls input[type="file"] {
+    flex-grow: 1;
+    padding: 10px;
+    border: 1px solid var(--border-subtle-gray);
+    border-radius: 3px;
+    background-color: #ffffff;
+}
+
+.button {
+    padding: 0.75rem 1.5rem;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    font-size: 1em;
+    transition: background-color 0.3s ease;
+}
+
+.button-danger {
+    background-color: #dc3545;
+    color: white;
+}
+
+.button-danger:hover {
+    background-color: #c82333;
 }
