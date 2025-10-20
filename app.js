@@ -3,6 +3,11 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import connectDB from './src/config/database.js';
 import routes from './src/routes/index.js';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 // Configurar variables de entorno
 dotenv.config();
@@ -23,7 +28,7 @@ app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
 // Middleware para servir archivos estáticos
-app.use(express.static('public'));
+app.use(express.static(path.join(__dirname, 'public')));
 
 // Middleware de logging para desarrollo
 if (process.env.NODE_ENV !== 'production') {

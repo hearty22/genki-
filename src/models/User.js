@@ -72,6 +72,8 @@ userSchema.methods.toPublicJSON = function() {
   const userObject = this.toObject();
   delete userObject.password;
   delete userObject.__v;
+  // Asegurar que profileImage siempre tenga un valor válido para el frontend
+  userObject.profileImage = userObject.profileImage || '/assets/images/default-profile.png';
   return userObject;
 };
 
