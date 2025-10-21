@@ -19,7 +19,8 @@ export const authenticateToken = async (req, res, next) => {
     }
 
     // Verificar el token
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const secret = process.env.JWT_SECRET ? process.env.JWT_SECRET.trim() : '';
+    const decoded = jwt.verify(token, secret);
     
     // Buscar el usuario en la base de datos
     const user = await User.findById(decoded.userId).select('-password');

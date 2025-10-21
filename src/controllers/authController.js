@@ -207,9 +207,10 @@ export const login = async (req, res) => {
       });
     }
 
-    // Verificar contraseña usando la función utilitaria
-    const isPasswordValid = await comparePassword(password, user.password);
-    if (!isPasswordValid) {
+    // Comparar contraseñas
+    const isMatch = await comparePassword(password, user.password);
+
+    if (!isMatch) {
       return res.status(401).json({
         success: false,
         message: 'Credenciales inválidas'
@@ -233,13 +234,11 @@ export const login = async (req, res) => {
     res.cookie('refreshToken', refreshToken, cookieOptions);
 
     // Respuesta exitosa
-    const userResponse = user.toPublicJSON();
-
-    res.json({
+    res.status(200).json({
       success: true,
-      message: 'Login exitoso',
+      message: 'Inicio de sesión exitoso',
       data: {
-        user: userResponse,
+        user: user.toPublicJSON(),
         token,
         refreshToken
       }

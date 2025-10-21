@@ -38,10 +38,7 @@ router.put('/profile',
 
 // Ruta para logout de usuario
 // POST /api/auth/logout
-router.post('/logout', 
-  authenticateToken,    // Verificar token JWT
-  logout                // Controlador de logout
-);
+router.post('/logout', authenticateToken, logout);
 
 // Rutas para manejo de imagen de perfil
 

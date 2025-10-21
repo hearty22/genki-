@@ -5,6 +5,8 @@ import connectDB from './src/config/database.js';
 import routes from './src/routes/index.js';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import "dotenv/config"
+import cookieParser from 'cookie-parser';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -23,6 +25,7 @@ app.use(cors({
   origin: process.env.FRONTEND_URL || 'http://localhost:3000',
   credentials: true
 }));
+app.use(cookieParser());
 
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));

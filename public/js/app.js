@@ -1,4 +1,5 @@
 // app.js
+console.log('app.js loaded.');
 
 // Helper function to get cookie by name
 function getCookie(name) {
@@ -7,30 +8,29 @@ function getCookie(name) {
     if (parts.length === 2) return parts.pop().split(';').shift();
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-    // Existing showMessage function
-    function showMessage(message, type) {
-        const messageElement = document.getElementById('profile-message');
-        if (messageElement) {
-            messageElement.textContent = message;
-            messageElement.className = `message-area ${type}`;
-            messageElement.style.display = 'block';
-            setTimeout(() => {
-                messageElement.textContent = '';
-                messageElement.className = 'message-area';
-                messageElement.style.display = 'none';
-            }, 5000);
-        }
+// Function to display messages globally
+function showMessage(message, type, containerId = 'message-container') {
+    const messageContainer = document.getElementById(containerId);
+    if (messageContainer) {
+        messageContainer.textContent = message;
+        messageContainer.className = `message ${type}`;
+        messageContainer.style.display = 'block';
+        setTimeout(() => {
+            messageContainer.style.display = 'none';
+        }, 3000);
     }
+}
 
-    const loginForm = document.querySelector('#login-form');
-    const registerForm = document.querySelector('#register-form');
+document.addEventListener('DOMContentLoaded', () => {
+    console.log('DOMContentLoaded event fired.');
+    const loginForm = document.getElementById('login-form');
+    const registerForm = document.getElementById('register-form');
 
     if (loginForm) {
-        loginForm.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const email = loginForm.querySelector('#login-email').value;
-            const password = loginForm.querySelector('#login-password').value;
+        loginForm.addEventListener('submit', async (event) => {
+            event.preventDefault();
+            const email = document.getElementById('login-email').value;
+            const password = document.getElementById('login-password').value;
 
             try {
                 const response = await fetch('/api/auth/login', {
@@ -41,13 +41,24 @@ document.addEventListener('DOMContentLoaded', () => {
                     body: JSON.stringify({ email, password }),
                 });
 
-                const data = await response.json();
-                const messageElement = document.querySelector('#login-message');
+                const responseData = await response.json();
                 if (response.ok) {
-                    showMessage(data.message, 'success');
+                    showMessage(responseData.message, 'success');
+                    console.log('Login exitoso, redirigiendo a dashboard.html');
+                    console.log('Cookies after login:', document.cookie); // Verificar cookies
                     window.location.href = '/dashboard.html';
                 } else {
-                    showMessage(data.message || 'Error al iniciar sesión', 'error');
+                    if (response.status === 400) {
+                        showMessage(responseData.message || 'Datos de entrada inválidos', 'error', 'login-message');
+                    } else if (response.status === 401) {
+                        showMessage(responseData.message || 'Credenciales inválidas', 'error', 'login-message');
+                    } else if (response.status === 406) {
+                        showMessage(responseData.message || 'Solicitud no aceptable', 'error', 'login-message');
+                    } else if (response.status === 500) {
+                        showMessage(responseData.message || 'Error interno del servidor', 'error', 'login-message');
+                    } else {
+                        showMessage(responseData.message || 'Error desconocido al iniciar sesión', 'error', 'login-message');
+                    }
                 }
             } catch (error) {
                 console.error('Error:', error);
@@ -57,12 +68,12 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     if (registerForm) {
-        registerForm.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const firstName = registerForm.querySelector('#firstName').value;
-            const lastName = registerForm.querySelector('#lastName').value;
-            const email = registerForm.querySelector('#register-email').value;
-            const password = registerForm.querySelector('#register-password').value;
+        registerForm.addEventListener('submit', async (event) => {
+            event.preventDefault();
+            const firstName = document.getElementById('firstName').value;
+            const lastName = document.getElementById('lastName').value;
+            const email = document.getElementById('register-email').value;
+            const password = document.getElementById('register-password').value;
 
             try {
                 const response = await fetch('/api/auth/register', {
@@ -73,13 +84,26 @@ document.addEventListener('DOMContentLoaded', () => {
                     body: JSON.stringify({ firstName, lastName, email, password }),
                 });
 
-                const data = await response.json();
-                const messageElement = document.querySelector('#register-message');
                 if (response.ok) {
+                    const data = await response.json();
                     showMessage(data.message, 'success');
                     registerForm.reset();
+                    // Redirigir al login después de un registro exitoso
+                    window.location.href = '/login.html';
                 } else {
-                    showMessage(data.message || 'Error al registrar usuario', 'error');
+                    const errorData = await response.json();
+                    console.log('Register error response status:', response.status);
+                    console.log('Register error data:', errorData);
+                    if (response.status === 400) {
+                        showMessage(errorData.message || 'Datos de entrada inválidos', 'error', 'register-message');
+                    } else if (response.status === 409) {
+                        showMessage(errorData.message || 'El email ya está registrado', 'error', 'register-message');
+                    } else if (response.status === 500) {
+                        showMessage(errorData.message || 'Error interno del servidor', 'error', 'register-message');
+                    } else {
+                        // Fallback para cualquier otro error inesperado
+                        showMessage(errorData.message || 'Error desconocido al registrar usuario', 'error', 'register-message');
+                    }
                 }
             } catch (error) {
                 console.error('Error:', error);
@@ -189,7 +213,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             try {
-                const response = await fetch('/api/profile/image', {
+                const response = await fetch('/api/auth/profile/image/upload', {
                     method: 'POST',
                     headers: {
                         'Authorization': `Bearer ${authToken}`
@@ -200,7 +224,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const data = await response.json();
                 if (response.ok) {
                     showMessage(data.message, 'success');
-                    profileImageDisplay.src = data.profileImage; // Update image display
+                    profileImageDisplay.src = data.user.profileImage; // Update image display
                 } else {
                     showMessage(data.message || 'Error al subir la imagen', 'error');
                 }
@@ -562,7 +586,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     showMessage(data.message, 'success');
                     resetClassFormAndModal();
                     classModal.style.display = 'none';
-            
+                    window.location.reload(); // Recargar la página para mostrar las clases actualizadas
                 } else {
                     showMessage(data.message || 'Error al guardar la clase', 'error');
                 }
@@ -681,3 +705,35 @@ async function fetchAndRenderDashboardClasses() {
         showMessage('Error de conexión al cargar las clases', 'error');
     }
 }
+
+// Manejo del botón de cerrar sesión
+document.addEventListener('DOMContentLoaded', () => {
+    const logoutButton = document.querySelector('#logout-button');
+    console.log('Logout Button Element:', logoutButton);
+    if (logoutButton) {
+        logoutButton.addEventListener('click', async () => {
+            try {
+                const response = await fetch('/api/auth/logout', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    credentials: 'include'
+                });
+
+                console.log('Received response from logout endpoint.');
+                const data = await response.json();
+
+                if (response.ok) {
+                    showMessage(data.message, 'success');
+                    window.location.href = '/index.html';
+                } else {
+                    showMessage(data.message || 'Error al cerrar sesión', 'error');
+                }
+            } catch (error) {
+                console.error('Error during logout fetch or JSON parsing:', error);
+                showMessage('Error de conexión', 'error');
+            }
+        });
+    }
+});
