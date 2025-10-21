@@ -21,7 +21,113 @@ function showMessage(message, type, containerId = 'message-container') {
     }
 }
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
+    // Global form element variables
+    let addClassButton = document.getElementById('add-class-button');
+    let classModal = document.getElementById('class-modal');
+    let classModalClose = document.getElementById('class-modal-close');
+    let cancelClassButton = document.getElementById('cancel-class-button');
+
+    let classForm = document.getElementById('class-form');
+    let subjectNameInput = document.getElementById('subjectName');
+    let dayOfWeekSelect = document.getElementById('dayOfWeek');
+    let startTimeInput = document.getElementById('startTime');
+    let endTimeInput = document.getElementById('endTime');
+
+    let subjectNameError = document.getElementById('subjectName-error');
+    let dayOfWeekError = document.getElementById('dayOfWeek-error');
+    let startTimeError = document.getElementById('startTime-error');
+    let endTimeError = document.getElementById('endTime-error');
+
+    // Function to render user classes in the 'Mis Clases' section
+    function renderUserClasses(classes) {
+        const userClassesContainer = document.getElementById('user-classes');
+        if (userClassesContainer) {
+            userClassesContainer.innerHTML = ''; // Clear previous classes
+            if (classes.length === 0) {
+                userClassesContainer.innerHTML = '<p>No tienes clases programadas aún.</p>';
+                return;
+            }
+
+            classes.forEach(classItem => {
+                const classCard = document.createElement('div');
+                classCard.className = 'class-item';
+                classCard.innerHTML = `
+                    <h3>${classItem.subjectName}</h3>
+                    <p><strong>Grupo:</strong> ${classItem.courseGroup || 'N/A'}</p>
+                    <p><strong>Días:</strong> ${classItem.dayOfWeek.join(', ')}</p>
+                    <p><strong>Hora:</strong> ${classItem.startTime} - ${classItem.endTime}</p>
+                    <p><strong>Ubicación:</strong> ${classItem.location || 'N/A'}</p>
+                    <div class="class-actions">
+                        <button class="button-edit" data-id="${classItem._id}">Editar</button>
+                        <button class="button-delete" data-id="${classItem._id}">Eliminar</button>
+                    </div>
+                `;
+                userClassesContainer.appendChild(classCard);
+
+                // Add event listeners for edit and delete buttons
+                classCard.querySelector('.button-edit').addEventListener('click', () => {
+                    console.log('Edit button clicked for class:', classItem);
+                    // Populate the form for editing
+                    subjectNameInput.value = classItem.subjectName;
+                    console.log('subjectNameInput.value:', subjectNameInput.value);
+                    document.getElementById('courseGroup').value = classItem.courseGroup;
+                    console.log('courseGroup.value:', document.getElementById('courseGroup').value);
+                    // Clear previous selections for dayOfWeek
+                    Array.from(dayOfWeekSelect.options).forEach(option => {
+                        option.selected = false;
+                    });
+                    // Select the days for the current class
+                    classItem.dayOfWeek.forEach(day => {
+                        const option = Array.from(dayOfWeekSelect.options).find(opt => opt.value === day);
+                        if (option) {
+                            option.selected = true;
+                        }
+                    });
+                    console.log('dayOfWeekSelect selected options:', Array.from(dayOfWeekSelect.selectedOptions).map(option => option.value));
+                    startTimeInput.value = classItem.startTime;
+                    console.log('startTimeInput.value:', startTimeInput.value);
+                    endTimeInput.value = classItem.endTime;
+                    console.log('endTimeInput.value:', endTimeInput.value);
+                    document.getElementById('location').value = classItem.location;
+                    console.log('location.value:', document.getElementById('location').value);
+                    document.getElementById('class-color').value = classItem.color;
+                    console.log('class-color.value:', document.getElementById('class-color').value);
+
+                    // Set a data attribute for the class ID being edited
+                    classForm.setAttribute('data-edit-id', classItem._id);
+                    console.log('classForm data-edit-id:', classForm.getAttribute('data-edit-id'));
+
+                    // Open the modal
+                    classModal.style.display = 'block';
+                    console.log('classModal display:', classModal.style.display);
+                });
+
+                classCard.querySelector('.button-delete').addEventListener('click', async () => {
+                    if (confirm('¿Estás seguro de que quieres eliminar esta clase?')) {
+                        try {
+                            const response = await fetch(`/api/classes/${classItem._id}`, {
+                                method: 'DELETE',
+                                headers: {
+                                    'Authorization': `Bearer ${localStorage.getItem('token')}`
+                                }
+                            });
+                            const data = await response.json();
+                            if (response.ok) {
+                                showMessage(data.message, 'success');
+                                window.location.reload(); // Reload to update the class list
+                            } else {
+                                showMessage(data.message, 'error');
+                            }
+                        } catch (error) {
+                            console.error('Error deleting class:', error);
+                            showMessage('Error de conexión al eliminar la clase.', 'error');
+                        }
+                    }
+                });
+            });
+        }
+    }
     console.log('DOMContentLoaded event fired.');
     const loginForm = document.getElementById('login-form');
     const registerForm = document.getElementById('register-form');
@@ -283,69 +389,8 @@ document.addEventListener('DOMContentLoaded', () => {
     let calendar; // Declare calendar in a higher scope
 
     // Class Modal Logic
-    const addClassButton = document.getElementById('add-class-button');
-    const classModal = document.getElementById('class-modal');
-    const classModalClose = document.getElementById('class-modal-close');
-    const cancelClassButton = document.getElementById('cancel-class-button');
 
-    const classForm = document.getElementById('class-form');
-    const subjectNameInput = document.getElementById('subjectName');
-    const dayOfWeekSelect = document.getElementById('dayOfWeek');
-    const startTimeInput = document.getElementById('startTime');
-    const endTimeInput = document.getElementById('endTime');
 
-    const subjectNameError = document.getElementById('subjectName-error');
-    const dayOfWeekError = document.getElementById('dayOfWeek-error');
-    const startTimeError = document.getElementById('startTime-error');
-    const endTimeError = document.getElementById('endTime-error');
-    // Function to render user classes in the 'Mis Clases' section
-    function renderUserClasses(classes) {
-        const userClassesContainer = document.getElementById('user-classes');
-        if (userClassesContainer) {
-            userClassesContainer.innerHTML = ''; // Clear previous classes
-            if (classes.length === 0) {
-                userClassesContainer.innerHTML = '<p>No tienes clases programadas aún.</p>';
-                return;
-            }
-
-            classes.forEach(classItem => {
-                const classCard = document.createElement('div');
-                classCard.className = 'class-item';
-                classCard.innerHTML = `
-                    <h3>${classItem.subjectName}</h3>
-                    <p><strong>Grupo:</strong> ${classItem.courseGroup || 'N/A'}</p>
-                    <p><strong>Días:</strong> ${classItem.dayOfWeek.join(', ')}</p>
-                    <p><strong>Hora:</strong> ${classItem.startTime} - ${classItem.endTime}</p>
-                    <p><strong>Ubicación:</strong> ${classItem.location || 'N/A'}</p>
-                    <div class="class-actions">
-                        <button class="button button-edit" data-id="${classItem._id}">Editar</button>
-                        <button class="button-delete" data-id="${classItem._id}">Eliminar</button>
-                    </div>
-                `;
-                userClassesContainer.appendChild(classCard);
-            });
-
-            // Add event listeners for edit and delete buttons
-            userClassesContainer.querySelectorAll('.button-edit').forEach(button => {
-                button.addEventListener('click', (e) => {
-                    const classId = e.target.dataset.id;
-                    const classToEdit = classes.find(c => c._id === classId);
-                    if (classToEdit) {
-                        openClassModalForEdit(classToEdit);
-                    }
-                });
-            });
-
-            userClassesContainer.querySelectorAll('.button-delete').forEach(button => {
-                button.addEventListener('click', async (e) => {
-                    const classId = e.target.dataset.id;
-                    if (confirm('¿Estás seguro de que quieres eliminar esta clase?')) {
-                        await deleteClass(classId);
-                    }
-                });
-            });
-        }
-    }
 
     // Function to delete a class
     async function deleteClass(classId) {
@@ -416,11 +461,11 @@ document.addEventListener('DOMContentLoaded', () => {
             classModalTitle.textContent = 'Edit Class';
         }
         if (subjectNameInput) {
-            subjectNameInput.value = classData.title;
+            subjectNameInput.value = classData.subjectName;
         }
         const courseGroupInput = document.getElementById('courseGroup');
         if (courseGroupInput) {
-            courseGroupInput.value = classData.extendedProps.courseGroup;
+            courseGroupInput.value = classData.courseGroup;
         }
         if (dayOfWeekSelect) {
             // Clear previous selections
@@ -428,7 +473,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 option.selected = false;
             });
             // Set selections based on classData.dayOfWeek (which is an array)
-            classData.extendedProps.dayOfWeek.forEach(day => {
+            classData.dayOfWeek.forEach(day => {
                 const option = Array.from(dayOfWeekSelect.options).find(opt => opt.value === day);
                 if (option) {
                     option.selected = true;
@@ -443,16 +488,16 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         const locationInput = document.getElementById('location');
         if (locationInput) {
-            locationInput.value = classData.extendedProps.location;
+            locationInput.value = classData.location;
         }
-        const colorInput = document.getElementById('color');
+        const colorInput = document.getElementById('class-color');
         if (colorInput) {
             colorInput.value = classData.color;
         }
 
         if (classForm) {
             classForm.dataset.editing = 'true';
-            classForm.dataset.classId = classData.id; // Assuming classData has an ID
+            classForm.dataset.classId = classData._id; // Assuming classData has an ID
         }
         if (classModal) {
             classModal.style.display = 'block';
@@ -597,6 +642,55 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    function openClassModalForEdit(classData) {
+        const classModalTitle = document.getElementById('class-modal-title');
+        if (classModalTitle) {
+            classModalTitle.textContent = 'Edit Class';
+        }
+        if (subjectNameInput) {
+            subjectNameInput.value = classData.subjectName;
+        }
+        const courseGroupInput = document.getElementById('courseGroup');
+        if (courseGroupInput) {
+            courseGroupInput.value = classData.courseGroup;
+        }
+        if (dayOfWeekSelect) {
+            // Clear previous selections
+            Array.from(dayOfWeekSelect.options).forEach(option => {
+                option.selected = false;
+            });
+            // Set selections based on classData.dayOfWeek (which is an array)
+            classData.dayOfWeek.forEach(day => {
+                const option = Array.from(dayOfWeekSelect.options).find(opt => opt.value === day);
+                if (option) {
+                    option.selected = true;
+                }
+            });
+        }
+        if (startTimeInput) {
+            startTimeInput.value = classData.startTime;
+        }
+        if (endTimeInput) {
+            endTimeInput.value = classData.endTime;
+        }
+        const locationInput = document.getElementById('location');
+        if (locationInput) {
+            locationInput.value = classData.location;
+        }
+        const colorInput = document.getElementById('class-color');
+        if (colorInput) {
+            colorInput.value = classData.color;
+        }
+
+        if (classForm) {
+            classForm.dataset.editing = 'true';
+            classForm.dataset.classId = classData._id; // Assuming classData has an ID
+        }
+        if (classModal) {
+            classModal.style.display = 'block';
+        }
+    }
+
     // Event Listeners for modal
     if (addClassButton) {
         addClassButton.addEventListener('click', () => {
@@ -695,6 +789,38 @@ async function fetchAndRenderDashboardClasses() {
                     </div>
                 `;
                 classesList.appendChild(classElement);
+
+                // Add event listeners for edit and delete buttons
+                classElement.querySelector('.button-edit').addEventListener('click', () => {
+                    console.log('Edit button clicked for class:', classItem);
+                    openClassModalForEdit(classItem);
+                    classModal.style.display = 'block';
+                    console.log('classModal display style:', classModal.style.display);
+                });
+
+                classElement.querySelector('.button-delete').addEventListener('click', async () => {
+                    if (confirm('¿Estás seguro de que quieres eliminar esta clase?')) {
+                        try {
+                            const response = await fetch(`/api/classes/${classItem._id}`, {
+                                method: 'DELETE',
+                                headers: {
+                                    'Authorization': `Bearer ${authToken}`
+                                }
+                            });
+
+                            const data = await response.json();
+                            if (response.ok) {
+                                showMessage(data.message, 'success');
+                                window.location.reload(); // Recargar la página después de eliminar
+                            } else {
+                                showMessage(data.message || 'Error al eliminar la clase', 'error');
+                            }
+                        } catch (error) {
+                            console.error('Error deleting class:', error);
+                            showMessage('Error de conexión al eliminar la clase.', 'error');
+                        }
+                    }
+                });
             });
         } else {
             console.error('Error fetching classes:', data.message);
