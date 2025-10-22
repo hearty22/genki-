@@ -15,7 +15,8 @@
             </div>
             <nav class="sidebar-nav">
                 <button class="sidebar-button" onclick="location.href='dashboard.html'">Inicio</button>
-                <button class="sidebar-button active" onclick="location.href='calendar.html'">Calendario</button>
+                <button class="sidebar-button" onclick="location.href='calendar.html'">Calendario</button>
+                <button class="sidebar-button" onclick="location.href='gradebook.html'">Calificaciones</button>
                 <button class="sidebar-button" onclick="location.href='profile.html'">Perfil</button>
                 <button class="sidebar-button" id="logout-button">Cerrar Sesión</button>
             </nav>
@@ -24,11 +25,25 @@
             <div class="calendar-section">
                 <h2>Calendario</h2>
                 <div id="calendar"></div>
+                <div id="loading-indicator" style="display: none; text-align: center; padding: 20px;">Cargando...</div>
             </div>
         </main>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.js"></script>
     <script src="js/calendar.js"></script>
     <script src="js/app.js"></script>
-</body>
+<div id="event-details-modal" class="modal">
+            <div class="modal-content">
+                <span class="close-button">&times;</span>
+                <h2>Detalles del Evento</h2>
+                <p><strong>Título:</strong> <span id="event-title"></span></p>
+                <p><strong>Materia:</strong> <span id="event-subject"></span></p>
+                <p><strong>Grupo:</strong> <span id="event-group"></span></p>
+                <p><strong>Hora de Inicio:</strong> <span id="event-start-time"></span></p>
+                <p><strong>Hora de Fin:</strong> <span id="event-end-time"></span></p>
+                <p><strong>Días:</strong> <span id="event-days"></span></p>
+                <button id="edit-event-button" class="button-primary">Editar Clase</button>
+            </div>
+        </div>
+    </body>
 </html>

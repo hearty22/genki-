@@ -536,30 +536,69 @@ html, body {
     background-color: #c0392b; /* Same as button-delete hover */
 }
 
-/* Estilos específicos para los botones del modal de clase */
-#class-modal .form-actions .btn {
-    padding: 8px 12px; /* Consistent with .button-edit, .button-delete */
-    border: none;
-    border-radius: 5px; /* Consistent with .button-edit, .button-delete */
+
+/* Event Details Modal Styles */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1000; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%; /* Could be more or less, depending on screen size */
+    max-width: 500px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    position: relative;
+}
+
+.close-button {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    position: absolute;
+    top: 10px;
+    right: 20px;
+}
+
+.close-button:hover,
+.close-button:focus {
+    color: black;
+    text-decoration: none;
     cursor: pointer;
-    font-size: 0.9em; /* Consistent with .button-edit, .button-delete */
-    transition: background-color 0.2s ease;
 }
 
-#class-modal .form-actions .btn-primary {
-    background-color: #3498db; /* Consistent with .button-edit */
-    color: white;
+.modal h2 {
+    color: #333;
+    margin-top: 0;
+    margin-bottom: 15px;
+    font-size: 1.5em;
 }
 
-#class-modal .form-actions .btn-primary:hover {
-    background-color: #2980b9; /* Consistent with .button-edit */
+.modal p {
+    margin-bottom: 10px;
+    line-height: 1.5;
 }
 
-#class-modal .form-actions .btn-secondary {
-    background-color: #e74c3c; /* Consistent with .button-delete */
-    color: white;
+.modal strong {
+    color: #555;
 }
 
-#class-modal .form-actions .btn-secondary:hover {
-    background-color: #c0392b; /* Consistent with .button-delete */
+.modal .button-primary {
+    margin-top: 20px;
+    width: 100%;
+    box-sizing: border-box; /* Ensure padding and border are included in the element's total width and height */
 }

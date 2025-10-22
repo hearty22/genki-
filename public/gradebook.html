@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Libreta de Calificaciones</title>
+    <link rel="stylesheet" href="./css/styles.css">
+    <link rel="stylesheet" href="./css/dashboard.css">
+    <link rel="stylesheet" href="./css/gradebook.css">
+</head>
+<body>
+    <div class="workspace-container">
+        <!-- Barra lateral -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h2>Genki</h2>
+            </div>
+            <nav class="sidebar-nav">
+                <button class="sidebar-button" onclick="location.href='dashboard.html'">Inicio</button>
+                <button class="sidebar-button" onclick="location.href='calendar.html'">Calendario</button>
+                <button class="sidebar-button active" onclick="location.href='gradebook.html'">Calificaciones</button>
+                <button class="sidebar-button" onclick="location.href='profile.html'">Perfil</button>
+                <button class="sidebar-button" id="logout-button">Cerrar Sesión</button>
+            </nav>
+        </aside>
+        <main class="main-content">
+            <div class="dashboard-navbar">
+            </div>
+            <div class="gradebook-controls">
+                <div class="form-group">
+                    <label for="course-select">Curso:</label>
+                    <select id="course-select">
+                        <option value="">Seleccione un curso</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="assessment-select">Evaluación:</label>
+                    <select id="assessment-select">
+                        <option value="">Seleccione una evaluación</option>
+                    </select>
+                </div>
+            </div>
+            <div class="gradebook-grid-container">
+                <h2>Planilla de Calificaciones</h2>
+                <div id="gradebook-grid">
+                    <!-- La tabla de calificaciones se cargará aquí -->
+                </div>
+                <button id="save-grades-button" class="btn btn-primary">Guardar Calificaciones</button>
+            </div>
+        </main>
+    </div>
+    <script src="./js/app.js"></script>
+    <script src="./js/gradebook.js"></script>
+</body>
+</html>

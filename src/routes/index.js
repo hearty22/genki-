@@ -1,6 +1,7 @@
 import express from 'express';
 import authRoutes from './authRoutes.js';
 import classRoutes from './classRoutes.js'; // Import class routes
+import assessmentRoutes from './assessmentRoutes.js'; // Import assessment routes
 
 const router = express.Router();
 
@@ -9,6 +10,9 @@ router.use('/auth', authRoutes);
 
 // Rutas de clases
 router.use('/classes', classRoutes); // Use class routes
+
+// Rutas de evaluaciones
+router.use( assessmentRoutes); // Use assessment routes
 
 // Ruta de salud del API
 router.get('/health', (req, res) => {

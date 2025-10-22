@@ -1,0 +1,119 @@
+.gradebook-controls {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 30px;
+    background-color: #ffffff;
+    padding: 25px; /* Adjusted from 20px */
+    border-radius: 12px; /* Adjusted from 10px */
+    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.05); /* Adjusted shadow */
+}
+
+.gradebook-controls .form-group {
+    flex: 1;
+    min-width: 200px;
+}
+
+.gradebook-controls label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600; /* Adjusted from bold */
+    color: #555; /* Adjusted from #333 */
+    font-size: 0.9rem; /* Adjusted font size */
+}
+
+.gradebook-controls select {
+    width: 100%;
+    padding: 15px; /* Adjusted from 10px */
+    border: 2px solid var(--border-subtle-gray); /* Adjusted from 1px */
+    border-radius: 12px; /* Adjusted from 5px */
+    font-size: 1rem; /* Adjusted from 1em */
+    background-color: #f8f9fa; /* Adjusted from #f9f9f9 */
+    appearance: none; /* Remove default arrow */
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%20viewBox%3D%220%200%20292.4%20292.4%22%3E%3Cpath%20fill%3D%22%23007bff%22%20d%3D%22M287%20197.9l-131.3-131.3c-4.1-4.1-10.8-4.1-14.9%200L5.4%20197.9c-4.1%204.1-4.1%2010.8%200%2014.9s10.8%204.1%2014.9%200l123.9-123.9c4.1-4.1%2010.8-4.1%2014.9%200l123.9%20123.9c4.1%204.1%2010.8%204.1%2014.9%200s4.2-10.8%200-14.9z%22%2F%3E%3C%2Fsvg%3E');
+    background-repeat: no-repeat;
+    background-position: right 10px top 50%;
+    background-size: 12px;
+    cursor: pointer;
+}
+
+.gradebook-controls select:focus {
+    border-color: var(--primary-deep-blue); /* Use variable for consistency */
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1); /* Adjusted shadow */
+}
+
+.gradebook-grid-container {
+    background-color: #ffffff;
+    padding: 25px; /* Adjusted from 20px */
+    border-radius: 12px; /* Adjusted from 10px */
+    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.05); /* Adjusted shadow */
+}
+
+#gradebook-grid {
+    margin-bottom: 20px;
+    overflow-x: auto; /* Enable horizontal scrolling for the table */
+}
+
+.gradebook-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 400px; /* Ensure table is not too small */
+}
+
+.gradebook-table th,
+.gradebook-table td {
+    border: 1px solid #e0e0e0;
+    padding: 12px 15px;
+    text-align: left;
+}
+
+.gradebook-table th {
+    background-color: #f2f2f2;
+    font-weight: bold;
+    color: #333;
+}
+
+.gradebook-table tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.gradebook-table tr:hover {
+    background-color: #f1f1f1;
+}
+
+.gradebook-table input[type="number"] {
+    width: 80px;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 1em;
+    text-align: center;
+}
+
+.gradebook-table input[type="number"]:focus {
+    border-color: #007bff;
+    outline: none;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
+}
+
+#save-grades-button {
+    display: block;
+    margin: 20px auto 0 auto;
+    padding: 15px 30px; /* Adjusted from 12px 25px */
+    font-size: 1rem; /* Adjusted from 1.1em */
+    font-weight: 600; /* Added for consistency */
+    cursor: pointer;
+    border: none; /* Added for consistency */
+    border-radius: 12px; /* Adjusted from 5px */
+    transition: all 0.3s ease; /* Adjusted for consistency */
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); /* Primary button style */
+    color: white; /* Primary button style */
+}
+
+#save-grades-button:hover {
+    transform: translateY(-2px); /* Primary button hover style */
+    box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3); /* Primary button hover style */
+    background-color: #0056b3; /* Fallback for older browsers */
+}
