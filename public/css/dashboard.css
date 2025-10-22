@@ -505,3 +505,61 @@ html, body {
 #calendar {
     margin-top: 20px;
 }
+
+.button-primary {
+    padding: 8px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.9em;
+    transition: background-color 0.2s ease;
+    background-color: #3498db; /* Same as button-edit */
+    color: white;
+    border: none;
+}
+
+.button-primary:hover {
+    background-color: #2980b9; /* Same as button-edit hover */
+}
+
+.button-secondary {
+    padding: 8px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.9em;
+    transition: background-color 0.2s ease;
+    background-color: #e74c3c; /* Same as button-delete */
+    color: white;
+    border: none;
+}
+
+.button-secondary:hover {
+    background-color: #c0392b; /* Same as button-delete hover */
+}
+
+/* Estilos específicos para los botones del modal de clase */
+#class-modal .form-actions .btn {
+    padding: 8px 12px; /* Consistent with .button-edit, .button-delete */
+    border: none;
+    border-radius: 5px; /* Consistent with .button-edit, .button-delete */
+    cursor: pointer;
+    font-size: 0.9em; /* Consistent with .button-edit, .button-delete */
+    transition: background-color 0.2s ease;
+}
+
+#class-modal .form-actions .btn-primary {
+    background-color: #3498db; /* Consistent with .button-edit */
+    color: white;
+}
+
+#class-modal .form-actions .btn-primary:hover {
+    background-color: #2980b9; /* Consistent with .button-edit */
+}
+
+#class-modal .form-actions .btn-secondary {
+    background-color: #e74c3c; /* Consistent with .button-delete */
+    color: white;
+}
+
+#class-modal .form-actions .btn-secondary:hover {
+    background-color: #c0392b; /* Consistent with .button-delete */
+}

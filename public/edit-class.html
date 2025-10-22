@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar Clase - Genki</title>
+    <link rel="stylesheet" href="./css/styles.css">
+    <link rel="stylesheet" href="./css/dashboard.css">
+</head>
+<body>
+    <div class="workspace-container">
+        <!-- Barra lateral -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h2>Genki</h2>
+            </div>
+            <nav class="sidebar-nav">
+                <button class="sidebar-button" onclick="location.href='dashboard.html'">Inicio</button>
+                <button class="sidebar-button" onclick="location.href='calendar.html'">Calendario</button>
+                <button class="sidebar-button" onclick="location.href='profile.html'">Perfil</button>
+                <button class="sidebar-button" id="logout-button">Cerrar Sesión</button>
+            </nav>
+        </aside>
+        <main class="main-content">
+            <section id="edit-class-section" class="classes-section">
+                <h2>Editar Clase</h2>
+                <form id="edit-class-form" class="class-form">
+                    <input type="hidden" id="class-id">
+                    <div class="form-group">
+                        <label for="subjectName">Nombre de la Materia:</label>
+                        <input type="text" id="subjectName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="courseGroup">Curso/Grupo:</label>
+                        <input type="text" id="courseGroup">
+                    </div>
+                    <div class="form-group">
+                        <label for="dayOfWeek">Día de la Semana:</label>
+                        <select id="dayOfWeek" multiple required>
+                            <option value="Lunes">Lunes</option>
+                            <option value="Martes">Martes</option>
+                            <option value="Miércoles">Miércoles</option>
+                            <option value="Jueves">Jueves</option>
+                            <option value="Viernes">Viernes</option>
+                            <option value="Sábado">Sábado</option>
+                            <option value="Domingo">Domingo</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="startTime">Hora de Inicio:</label>
+                        <input type="time" id="startTime" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="endTime">Hora de Fin:</label>
+                        <input type="time" id="endTime" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="location">Aula/Ubicación:</label>
+                        <input type="text" id="location">
+                    </div>
+                    <div class="form-group">
+                        <label for="class-color">Color:</label>
+                        <input type="color" id="class-color" value="#607d8b">
+                    </div>
+                    <button type="submit" class="button-primary">Guardar Cambios</button>
+                    <button type="button" id="cancel-edit-button" class="button-secondary">Cancelar</button>
+                </form>
+            </section>
+        </main>
+    </div>
+
+    <div id="message-container" class="message-container"></div>
+
+    <script src="./js/edit-class.js"></script>
+    <script src="./js/app.js"></script> <!-- Incluir app.js para funciones comunes como showMessage y getCookie -->
+</body>

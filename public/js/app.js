@@ -8,15 +8,14 @@ function getCookie(name) {
     if (parts.length === 2) return parts.pop().split(';').shift();
 }
 
-// Function to display messages globally
-function showMessage(message, type, containerId = 'message-container') {
-    const messageContainer = document.getElementById(containerId);
+function showMessage(message, type) {
+    const messageContainer = document.getElementById('message-container');
     if (messageContainer) {
         messageContainer.textContent = message;
-        messageContainer.className = `message ${type}`;
-        messageContainer.style.display = 'block';
+        messageContainer.className = `message-container ${type}`;
         setTimeout(() => {
-            messageContainer.style.display = 'none';
+            messageContainer.textContent = '';
+            messageContainer.className = 'message-container';
         }, 3000);
     }
 }
@@ -68,39 +67,8 @@ document.addEventListener('DOMContentLoaded', async () => {
                 // Add event listeners for edit and delete buttons
                 classCard.querySelector('.button-edit').addEventListener('click', () => {
                     console.log('Edit button clicked for class:', classItem);
-                    // Populate the form for editing
-                    subjectNameInput.value = classItem.subjectName;
-                    console.log('subjectNameInput.value:', subjectNameInput.value);
-                    document.getElementById('courseGroup').value = classItem.courseGroup;
-                    console.log('courseGroup.value:', document.getElementById('courseGroup').value);
-                    // Clear previous selections for dayOfWeek
-                    Array.from(dayOfWeekSelect.options).forEach(option => {
-                        option.selected = false;
-                    });
-                    // Select the days for the current class
-                    classItem.dayOfWeek.forEach(day => {
-                        const option = Array.from(dayOfWeekSelect.options).find(opt => opt.value === day);
-                        if (option) {
-                            option.selected = true;
-                        }
-                    });
-                    console.log('dayOfWeekSelect selected options:', Array.from(dayOfWeekSelect.selectedOptions).map(option => option.value));
-                    startTimeInput.value = classItem.startTime;
-                    console.log('startTimeInput.value:', startTimeInput.value);
-                    endTimeInput.value = classItem.endTime;
-                    console.log('endTimeInput.value:', endTimeInput.value);
-                    document.getElementById('location').value = classItem.location;
-                    console.log('location.value:', document.getElementById('location').value);
-                    document.getElementById('class-color').value = classItem.color;
-                    console.log('class-color.value:', document.getElementById('class-color').value);
-
-                    // Set a data attribute for the class ID being edited
-                    classForm.setAttribute('data-edit-id', classItem._id);
-                    console.log('classForm data-edit-id:', classForm.getAttribute('data-edit-id'));
-
-                    // Open the modal
+                    openClassModalForEdit(classItem);
                     classModal.style.display = 'block';
-                    console.log('classModal display:', classModal.style.display);
                 });
 
                 classCard.querySelector('.button-delete').addEventListener('click', async () => {
@@ -455,54 +423,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     // Function to open modal for editing
-    function openClassModalForEdit(classData) {
-        const classModalTitle = document.getElementById('class-modal-title');
-        if (classModalTitle) {
-            classModalTitle.textContent = 'Edit Class';
-        }
-        if (subjectNameInput) {
-            subjectNameInput.value = classData.subjectName;
-        }
-        const courseGroupInput = document.getElementById('courseGroup');
-        if (courseGroupInput) {
-            courseGroupInput.value = classData.courseGroup;
-        }
-        if (dayOfWeekSelect) {
-            // Clear previous selections
-            Array.from(dayOfWeekSelect.options).forEach(option => {
-                option.selected = false;
-            });
-            // Set selections based on classData.dayOfWeek (which is an array)
-            classData.dayOfWeek.forEach(day => {
-                const option = Array.from(dayOfWeekSelect.options).find(opt => opt.value === day);
-                if (option) {
-                    option.selected = true;
-                }
-            });
-        }
-        if (startTimeInput) {
-            startTimeInput.value = classData.startTime;
-        }
-        if (endTimeInput) {
-            endTimeInput.value = classData.endTime;
-        }
-        const locationInput = document.getElementById('location');
-        if (locationInput) {
-            locationInput.value = classData.location;
-        }
-        const colorInput = document.getElementById('class-color');
-        if (colorInput) {
-            colorInput.value = classData.color;
-        }
 
-        if (classForm) {
-            classForm.dataset.editing = 'true';
-            classForm.dataset.classId = classData._id; // Assuming classData has an ID
-        }
-        if (classModal) {
-            classModal.style.display = 'block';
-        }
-    }
 
     if (addClassButton) {
         addClassButton.addEventListener('click', () => {
@@ -642,54 +563,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         });
     }
 
-    function openClassModalForEdit(classData) {
-        const classModalTitle = document.getElementById('class-modal-title');
-        if (classModalTitle) {
-            classModalTitle.textContent = 'Edit Class';
-        }
-        if (subjectNameInput) {
-            subjectNameInput.value = classData.subjectName;
-        }
-        const courseGroupInput = document.getElementById('courseGroup');
-        if (courseGroupInput) {
-            courseGroupInput.value = classData.courseGroup;
-        }
-        if (dayOfWeekSelect) {
-            // Clear previous selections
-            Array.from(dayOfWeekSelect.options).forEach(option => {
-                option.selected = false;
-            });
-            // Set selections based on classData.dayOfWeek (which is an array)
-            classData.dayOfWeek.forEach(day => {
-                const option = Array.from(dayOfWeekSelect.options).find(opt => opt.value === day);
-                if (option) {
-                    option.selected = true;
-                }
-            });
-        }
-        if (startTimeInput) {
-            startTimeInput.value = classData.startTime;
-        }
-        if (endTimeInput) {
-            endTimeInput.value = classData.endTime;
-        }
-        const locationInput = document.getElementById('location');
-        if (locationInput) {
-            locationInput.value = classData.location;
-        }
-        const colorInput = document.getElementById('class-color');
-        if (colorInput) {
-            colorInput.value = classData.color;
-        }
-
-        if (classForm) {
-            classForm.dataset.editing = 'true';
-            classForm.dataset.classId = classData._id; // Assuming classData has an ID
-        }
-        if (classModal) {
-            classModal.style.display = 'block';
-        }
-    }
+    
 
     // Event Listeners for modal
     if (addClassButton) {
@@ -793,9 +667,7 @@ async function fetchAndRenderDashboardClasses() {
                 // Add event listeners for edit and delete buttons
                 classElement.querySelector('.button-edit').addEventListener('click', () => {
                     console.log('Edit button clicked for class:', classItem);
-                    openClassModalForEdit(classItem);
-                    classModal.style.display = 'block';
-                    console.log('classModal display style:', classModal.style.display);
+                    window.location.href = `/edit-class.html?id=${classItem._id}`;
                 });
 
                 classElement.querySelector('.button-delete').addEventListener('click', async () => {

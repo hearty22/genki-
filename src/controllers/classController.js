@@ -33,6 +33,23 @@ export const getClasses = async (req, res) => {
     }
 };
 
+// Get a single class by ID
+export const getClassById = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const classItem = await Class.findOne({ _id: id, user: req.user.id });
+
+        if (!classItem) {
+            return res.status(404).json({ success: false, message: 'Class not found or user not authorized' });
+        }
+
+        res.status(200).json(classItem);
+    } catch (error) {
+        console.error('Error fetching class by ID:', error);
+        res.status(500).json({ success: false, message: 'Error fetching class by ID', error: error.message });
+    }
+};
+
 // Update a class
 export const updateClass = async (req, res) => {
     try {

@@ -1,5 +1,5 @@
 import express from 'express';
-import { createClass, getClasses, updateClass, deleteClass } from '../controllers/classController.js';
+import { createClass, getClasses, updateClass, deleteClass, getClassById } from '../controllers/classController.js';
 import { authenticateToken } from '../middleware/auth.js';
 
 const router = express.Router();
@@ -12,6 +12,9 @@ router.post('/', createClass);
 
 // Route to get all classes for the authenticated user
 router.get('/', getClasses);
+
+// Route to get a single class by ID
+router.get('/:id', getClassById);
 
 // Route to update a class by ID
 router.put('/:id', updateClass);
