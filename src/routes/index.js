@@ -2,6 +2,7 @@ import express from 'express';
 import authRoutes from './authRoutes.js';
 import classRoutes from './classRoutes.js'; // Import class routes
 import assessmentRoutes from './assessmentRoutes.js'; // Import assessment routes
+import reportRoutes from './reportRoutes.js'; // Import report routes
 
 const router = express.Router();
 
@@ -12,7 +13,10 @@ router.use('/auth', authRoutes);
 router.use('/classes', classRoutes); // Use class routes
 
 // Rutas de evaluaciones
-router.use( assessmentRoutes); // Use assessment routes
+router.use('/assessments', assessmentRoutes); // Use assessment routes
+
+// Rutas de reportes
+router.use('/reports', reportRoutes); // Use report routes
 
 // Ruta de salud del API
 router.get('/health', (req, res) => {

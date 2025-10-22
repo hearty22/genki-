@@ -59,10 +59,10 @@ document.addEventListener('DOMContentLoaded', async () => {
             return;
         }
         try {
-            assessments = await fetchData(`/api/courses/${courseId}/assessments`); // Assuming an endpoint for course assessments
+            assessments = await fetchData(`/api/assessments/courses/${courseId}/assessments`); // Assuming an endpoint for course assessments
             assessments.forEach(assessment => {
                 const option = document.createElement('option');
-                option.value = assessment.id;
+                option.value = assessment._id;
                 option.textContent = assessment.name;
                 assessmentSelect.appendChild(option);
             });
@@ -82,7 +82,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
 
         try {
-            students = await fetchData(`/api/courses/${courseId}/students`); // Assuming an endpoint for course students
+            students = await fetchData(`/api/classes/${courseId}/students`); // Assuming an endpoint for course students
             const currentGrades = await fetchData(`/api/assessments/${assessmentId}/grades`); // Assuming an endpoint for existing grades
 
             // Initialize grades object
@@ -194,6 +194,239 @@ document.addEventListener('DOMContentLoaded', async () => {
         } catch (error) {
             console.error('Error saving grades:', error);
             alert('Error al guardar las calificaciones.');
+        }
+    });
+
+    // Get modal elements
+    const addAssessmentModal = document.getElementById('add-assessment-modal');
+    const closeAssessmentModalButton = addAssessmentModal.querySelector('.close-button');
+    const addAssessmentForm = document.getElementById('add-assessment-form');
+    const newAssessmentNameInput = document.getElementById('new-assessment-name');
+    const newAssessmentCourseSelect = document.getElementById('new-assessment-course');
+
+    // Function to show the add assessment modal
+    async function showAddAssessmentModal() {
+        addAssessmentModal.style.display = 'block';
+        // Populate course select in modal
+        newAssessmentCourseSelect.innerHTML = '<option value="">Seleccione un curso</option>';
+        if (Array.isArray(courses)) {
+            courses.forEach(course => {
+                const option = document.createElement('option');
+                option.value = course._id;
+                option.textContent = `${course.subjectName} - ${course.courseGroup}`;
+                newAssessmentCourseSelect.appendChild(option);
+            });
+        }
+    }
+
+    // Function to hide the add assessment modal
+    function hideAddAssessmentModal() {
+        addAssessmentModal.style.display = 'none';
+        addAssessmentForm.reset();
+    }
+
+    // Close modal button event listener
+    closeAssessmentModalButton.addEventListener('click', hideAddAssessmentModal);
+
+    // Close modal if clicked outside
+    window.addEventListener('click', (event) => {
+        if (event.target === addAssessmentModal) {
+            hideAddAssessmentModal();
+        }
+    });
+
+    // Add Assessment form submission
+    addAssessmentForm.addEventListener('submit', async (event) => {
+        event.preventDefault();
+        const assessmentName = newAssessmentNameInput.value;
+        const courseId = newAssessmentCourseSelect.value;
+
+        if (!assessmentName || !courseId) {
+            alert('Por favor, complete todos los campos.');
+            return;
+        }
+
+        try {
+            const token = getCookie('authToken');
+            if (!token) {
+                window.location.href = 'login.html';
+                return;
+            }
+            const response = await fetch('/api/assessments', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify({ name: assessmentName, course: courseId })
+            });
+
+            if (response.status === 401) {
+                window.location.href = 'login.html';
+                return;
+            }
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            alert('Evaluación añadida exitosamente.');
+            hideAddAssessmentModal();
+            // Re-populate assessments for the current course
+            populateAssessments(courseSelect.value);
+        } catch (error) {
+            console.error('Error adding assessment:', error);
+            alert('Error al añadir la evaluación.');
+        }
+    });
+
+    // Get edit modal elements
+    const editAssessmentModal = document.getElementById('edit-assessment-modal');
+    const closeEditAssessmentModalButton = editAssessmentModal.querySelector('.close-button');
+    const editAssessmentForm = document.getElementById('edit-assessment-form');
+    const editAssessmentIdInput = document.getElementById('edit-assessment-id');
+    const editAssessmentNameInput = document.getElementById('edit-assessment-name');
+    const editAssessmentCourseSelect = document.getElementById('edit-assessment-course');
+
+    // Function to show the edit assessment modal
+    async function showEditAssessmentModal() {
+        const assessmentId = assessmentSelect.value;
+        if (!assessmentId) {
+            alert('Por favor, seleccione una evaluación para editar.');
+            return;
+        }
+
+        const selectedAssessment = assessments.find(assessment => assessment.id === assessmentId);
+        if (!selectedAssessment) {
+            alert('Evaluación no encontrada.');
+            return;
+        }
+
+        editAssessmentIdInput.value = selectedAssessment.id;
+        editAssessmentNameInput.value = selectedAssessment.name;
+
+        // Populate course select in modal
+        editAssessmentCourseSelect.innerHTML = '<option value="">Seleccione un curso</option>';
+        if (Array.isArray(courses)) {
+            courses.forEach(course => {
+                const option = document.createElement('option');
+                option.value = course._id;
+                option.textContent = `${course.subjectName} - ${course.courseGroup}`;
+                if (course._id === selectedAssessment.course) {
+                    option.selected = true;
+                }
+                editAssessmentCourseSelect.appendChild(option);
+            });
+        }
+
+        editAssessmentModal.style.display = 'block';
+    }
+
+    // Function to hide the edit assessment modal
+    function hideEditAssessmentModal() {
+        editAssessmentModal.style.display = 'none';
+        editAssessmentForm.reset();
+    }
+
+    // Close edit modal button event listener
+    closeEditAssessmentModalButton.addEventListener('click', hideEditAssessmentModal);
+
+    // Close edit modal if clicked outside
+    window.addEventListener('click', (event) => {
+        if (event.target === editAssessmentModal) {
+            hideEditAssessmentModal();
+        }
+    });
+
+    // Edit Assessment form submission
+    editAssessmentForm.addEventListener('submit', async (event) => {
+        event.preventDefault();
+        const assessmentId = editAssessmentIdInput.value;
+        const assessmentName = editAssessmentNameInput.value;
+        const courseId = editAssessmentCourseSelect.value;
+
+        if (!assessmentName || !courseId) {
+            alert('Por favor, complete todos los campos.');
+            return;
+        }
+
+        try {
+            const token = getCookie('authToken');
+            if (!token) {
+                window.location.href = 'login.html';
+                return;
+            }
+            const response = await fetch(`/api/assessments/${assessmentId}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify({ name: assessmentName, course: courseId })
+            });
+
+            if (response.status === 401) {
+                window.location.href = 'login.html';
+                return;
+            }
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            alert('Evaluación actualizada exitosamente.');
+            hideEditAssessmentModal();
+            // Re-populate assessments for the current course
+            populateAssessments(courseSelect.value);
+        } catch (error) {
+            console.error('Error updating assessment:', error);
+            alert('Error al actualizar la evaluación.');
+        }
+    });
+
+    // Event listeners for assessment management buttons
+    document.getElementById('add-assessment-button').addEventListener('click', showAddAssessmentModal);
+
+    document.getElementById('edit-assessment-button').addEventListener('click', showEditAssessmentModal);
+
+    document.getElementById('delete-assessment-button').addEventListener('click', async () => {
+        const assessmentId = assessmentSelect.value;
+        if (!assessmentId) {
+            alert('Por favor, seleccione una evaluación para eliminar.');
+            return;
+        }
+
+        if (!confirm('¿Está seguro de que desea eliminar esta evaluación? Esta acción no se puede deshacer.')) {
+            return;
+        }
+
+        try {
+            const token = getCookie('authToken');
+            if (!token) {
+                window.location.href = 'login.html';
+                return;
+            }
+            const response = await fetch(`/api/assessments/${assessmentId}`, {
+                method: 'DELETE',
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+
+            if (response.status === 401) {
+                window.location.href = 'login.html';
+                return;
+            }
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            alert('Evaluación eliminada exitosamente.');
+            // Re-populate assessments for the current course
+            populateAssessments(courseSelect.value);
+            // Clear gradebook if the deleted assessment was selected
+            renderGradebook(courseSelect.value, assessmentSelect.value);
+        } catch (error) {
+            console.error('Error deleting assessment:', error);
+            alert('Error al eliminar la evaluación.');
         }
     });
 

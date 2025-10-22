@@ -1,22 +1,17 @@
 import express from 'express';
-import { getAssessmentsByClass, getStudentsByClass, getGradesByAssessment, updateGrades } from '../controllers/assessmentController.js';
+
 import { authenticateToken } from '../middleware/auth.js';
+
+import { getAssessmentsByClass, getStudentsByClass, getGradesByAssessment, updateGrades, createAssessment, updateAssessment, deleteAssessment } from '../controllers/assessmentController.js';
 
 const router = express.Router();
 
-// Apply authentication middleware to all assessment routes
-router.use(authenticateToken);
-
-// Route to get assessments for a specific class
-router.get('/courses/:classId/assessments', getAssessmentsByClass);
-
-// Route to get students for a specific class
-router.get('/courses/:classId/students', getStudentsByClass);
-
-// Route to get grades for a specific assessment
-router.get('/assessments/:assessmentId/grades', getGradesByAssessment);
-
-// Route to update grades for a specific assessment (batch update)
-router.put('/assessments/:assessmentId/grades', updateGrades);
+router.get('/courses/:classId/assessments', authenticateToken, getAssessmentsByClass);
+router.get('/courses/:classId/students', authenticateToken, getStudentsByClass);
+router.get('/:assessmentId/grades', authenticateToken, getGradesByAssessment);
+router.put('/:assessmentId/grades', authenticateToken, updateGrades);
+router.put('/:id', authenticateToken, updateAssessment);
+router.post('/', authenticateToken, createAssessment);
+router.delete('/:id', authenticateToken, deleteAssessment);
 
 export default router;

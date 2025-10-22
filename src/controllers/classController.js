@@ -89,3 +89,26 @@ export const deleteClass = async (req, res) => {
         res.status(500).json({ success: false, message: 'Error deleting class', error: error.message });
     }
 };
+
+// Get students by class
+export const getStudentsByClass = async (req, res) => {
+    try {
+        const { classId } = req.params;
+        const classItem = await Class.findById(classId).populate('students');
+
+        if (!classItem) {
+            return res.status(404).json({ success: false, message: 'Class not found' });
+        }
+
+        const students = classItem.students.map(student => ({
+            id: student._id,
+            firstName: student.firstName,
+            lastName: student.lastName
+        }));
+
+        res.status(200).json(students);
+    } catch (error) {
+        console.error('Error fetching students by class:', error);
+        res.status(500).json({ success: false, message: 'Error fetching students by class', error: error.message });
+    }
+};

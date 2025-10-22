@@ -1,5 +1,5 @@
 import express from 'express';
-import { createClass, getClasses, updateClass, deleteClass, getClassById } from '../controllers/classController.js';
+import { createClass, getClasses, updateClass, deleteClass, getClassById, getStudentsByClass } from '../controllers/classController.js';
 import { authenticateToken } from '../middleware/auth.js';
 
 const router = express.Router();
@@ -21,5 +21,8 @@ router.put('/:id', updateClass);
 
 // Route to delete a class by ID
 router.delete('/:id', deleteClass);
+
+// Route to get students by class ID
+router.get('/:classId/students', getStudentsByClass);
 
 export default router;

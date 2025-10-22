@@ -19,6 +19,7 @@
                 <button class="sidebar-button" onclick="location.href='dashboard.html'">Inicio</button>
                 <button class="sidebar-button" onclick="location.href='calendar.html'">Calendario</button>
                 <button class="sidebar-button active" onclick="location.href='gradebook.html'">Calificaciones</button>
+                <button class="sidebar-button" onclick="location.href='reports.html'">Reportes</button>
                 <button class="sidebar-button" onclick="location.href='profile.html'">Perfil</button>
                 <button class="sidebar-button" id="logout-button">Cerrar Sesión</button>
             </nav>
@@ -40,6 +41,12 @@
                     </select>
                 </div>
             </div>
+            <div class="assessment-management-controls">
+                <h2>Gestión de Evaluaciones</h2>
+                <button id="add-assessment-button" class="btn btn-secondary">Añadir Evaluación</button>
+                <button id="edit-assessment-button" class="btn btn-secondary">Editar Evaluación</button>
+                <button id="delete-assessment-button" class="btn btn-secondary">Eliminar Evaluación</button>
+            </div>
             <div class="gradebook-grid-container">
                 <h2>Planilla de Calificaciones</h2>
                 <div id="gradebook-grid">
@@ -49,6 +56,50 @@
             </div>
         </main>
     </div>
+
+    <!-- Add Assessment Modal -->
+    <div id="add-assessment-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <h2>Añadir Nueva Evaluación</h2>
+            <form id="add-assessment-form">
+                <div class="form-group">
+                    <label for="new-assessment-name">Nombre de la Evaluación:</label>
+                    <input type="text" id="new-assessment-name" required>
+                </div>
+                <div class="form-group">
+                    <label for="new-assessment-course">Curso:</label>
+                    <select id="new-assessment-course" required>
+                        <option value="">Seleccione un curso</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary">Guardar Evaluación</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Edit Assessment Modal -->
+    <div id="edit-assessment-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <h2>Editar Evaluación</h2>
+            <form id="edit-assessment-form">
+                <input type="hidden" id="edit-assessment-id">
+                <div class="form-group">
+                    <label for="edit-assessment-name">Nombre de la Evaluación:</label>
+                    <input type="text" id="edit-assessment-name" required>
+                </div>
+                <div class="form-group">
+                    <label for="edit-assessment-course">Curso:</label>
+                    <select id="edit-assessment-course" required>
+                        <option value="">Seleccione un curso</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+            </form>
+        </div>
+    </div>
+
     <script src="./js/app.js"></script>
     <script src="./js/gradebook.js"></script>
 </body>
