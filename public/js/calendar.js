@@ -13,21 +13,36 @@ document.addEventListener('DOMContentLoaded', function() {
             firstDay: 1, // Lunes
             slotMinTime: '07:00:00',
             slotMaxTime: '21:00:00',
+            initialView: 'timeGridWeek',
             events: [], // This will be populated with class data later
             eventClick: function(info) {
                 const modal = document.getElementById('event-details-modal');
+                if (!modal) return; // Verificar que el modal exista
                 const closeButton = modal.querySelector('.close-button');
                 const editButton = document.getElementById('edit-event-button');
+                if (!closeButton || !editButton) return; // Verificar botones
 
                 const eventTitle = info.event.title;
                 const [subjectName, courseGroup] = eventTitle.split(' - ');
 
-                document.getElementById('event-title').textContent = eventTitle;
-                document.getElementById('event-subject').textContent = subjectName;
-                document.getElementById('event-group').textContent = courseGroup;
-                document.getElementById('event-start-time').textContent = info.event.start.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-                document.getElementById('event-end-time').textContent = info.event.end.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-                document.getElementById('event-days').textContent = info.event.extendedProps.daysOfWeek ? info.event.extendedProps.daysOfWeek.map(dayNum => getDayName(dayNum)).join(', ') : 'N/A';
+                const eventTitleEl = document.getElementById('event-title');
+                const eventSubjectEl = document.getElementById('event-subject');
+                const eventGroupEl = document.getElementById('event-group');
+                const eventStartTimeEl = document.getElementById('event-start-time');
+                const eventEndTimeEl = document.getElementById('event-end-time');
+                const eventDaysEl = document.getElementById('event-days');
+                // Verificar todos los elementos del modal
+                if (!eventTitleEl || !eventSubjectEl || !eventGroupEl || !eventStartTimeEl || !eventEndTimeEl || !eventDaysEl) {
+                    console.error('Faltan elementos en el modal de detalles');
+                    return;
+                }
+
+                eventTitleEl.textContent = eventTitle;
+                eventSubjectEl.textContent = subjectName;
+                eventGroupEl.textContent = courseGroup;
+                eventStartTimeEl.textContent = info.event.start.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                eventEndTimeEl.textContent = info.event.end.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                eventDaysEl.textContent = info.event.extendedProps.daysOfWeek ? info.event.extendedProps.daysOfWeek.map(dayNum => getDayName(dayNum)).join(', ') : 'N/A';
 
                 modal.style.display = 'flex';
 
@@ -90,6 +105,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         extendedProps: { classId: cls._id, daysOfWeek: days.map(getDayNumber) }
                     }));
                 });
+                console.log('Generated events for calendar:', JSON.stringify(events, null, 2)); // Modified line
                 calendar.setOption('events', events);
             } catch (error) {
                 console.error('Error fetching classes for calendar:', error);

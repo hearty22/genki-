@@ -474,8 +474,8 @@ document.addEventListener('DOMContentLoaded', async () => {
             const subjectName = subjectNameInput.value;
             const courseGroup = document.getElementById('courseGroup').value;
             const dayOfWeek = Array.from(dayOfWeekSelect.selectedOptions).map(option => option.value);
-            const startTime = startTimeInput.value;
-            const endTime = endTimeInput.value;
+            const startTime = startTimeInput.value || '08:00'; // Default to 08:00 if empty
+            const endTime = endTimeInput.value || '09:00';   // Default to 09:00 if empty
             const location = document.getElementById('location').value;
             const color = document.getElementById('color').value;
     
@@ -550,11 +550,11 @@ document.addEventListener('DOMContentLoaded', async () => {
                 const data = await response.json();
                 if (response.ok) {
                     showMessage(data.message, 'success');
-                    resetClassFormAndModal();
-                    classModal.style.display = 'none';
-                    window.location.reload(); // Recargar la página para mostrar las clases actualizadas
+                    classModal.style.display = 'none'; // Close the modal
+                    resetClassFormAndModal(); // Reset form fields
+                    fetchAndRenderDashboardClasses(); // Refresh the class list
                 } else {
-                    showMessage(data.message || 'Error al guardar la clase', 'error');
+                    showMessage(data.message || 'Error al guardar la clase.', 'error');
                 }
             } catch (error) {
                 console.error('Error saving class:', error);
@@ -564,6 +564,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     
+     fetchAndRenderDashboardClasses(); // Refresh the class list
 
     // Event Listeners for modal
     if (addClassButton) {
@@ -621,6 +622,13 @@ if (document.getElementById('home-tab') && document.getElementById('home-tab').c
 
 
 async function fetchAndRenderDashboardClasses() {
+    const classesList = document.getElementById('classes-list');
+    if (!classesList) {
+        // If classes-list element is not found, it means we are not on the dashboard page.
+        // So, we just return without doing anything.
+        return;
+    }
+
     const authToken = getCookie('authToken');
     if (!authToken) {
         console.error('No authentication token found.');

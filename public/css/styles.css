@@ -6,6 +6,16 @@
 }
 
 :root {
+    --background-color: #1a1a2e;
+    --text-color: #e0e0e0;
+    --primary-color: #e91e63;
+    --primary-dark-color: #c2185b;
+    --accent-color: #ff4081;
+    --error-color: #f44336;
+    --border-color: #33334d;
+}
+
+:root {
     --primary-deep-blue: #2C5282;
     --accent-success-green: #48BB78;
     --background-light-gray: #F7FAFC;

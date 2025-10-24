@@ -6,22 +6,22 @@ body {
     align-items: center;
     min-height: 100vh;
     margin: 0;
-    background-color: var(--background-light-gray);
+    background-color: var(--background-color);
 }
 
 .login-container {
-    background-color: #FFFFFF; /* White surface for contrast */
+    background-color: #2a2a4a; /* Contrasting dark shade for the container */
     padding: 40px;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     text-align: center;
     width: 100%;
     max-width: 400px;
-    border: 1px solid var(--border-subtle-gray);
+    border: 1px solid var(--border-color);
 }
 
 h1 {
-    color: var(--primary-deep-blue);
+    color: var(--primary-color);
     margin-bottom: 20px;
     font-size: 2em;
 }
@@ -36,15 +36,15 @@ h1 {
 }
 
 .message-area.success {
-    background-color: rgba(72, 187, 120, 0.1); /* Light green */
-    color: var(--accent-success-green);
-    border: 1px solid rgba(72, 187, 120, 0.2);
+    background-color: rgba(255, 64, 129, 0.1); /* Light pink */
+    color: var(--accent-color);
+    border: 1px solid rgba(255, 64, 129, 0.2);
 }
 
 .message-area.error {
-    background-color: rgba(222, 53, 11, 0.1); /* Light red */
-    color: var(--jira-error);
-    border: 1px solid rgba(222, 53, 11, 0.2);
+    background-color: rgba(244, 67, 54, 0.1); /* Light red */
+    color: var(--error-color);
+    border: 1px solid rgba(244, 67, 54, 0.2);
 }
 
 .form-group {
@@ -55,7 +55,7 @@ h1 {
 label {
     display: block;
     margin-bottom: 8px;
-    color: var(--text-charcoal);
+    color: var(--text-color);
     font-size: 0.9em;
     font-weight: 600;
 }
@@ -64,22 +64,23 @@ input[type="email"],
 input[type="password"] {
     width: 100%;
     padding: 10px 12px;
-    border: 1px solid var(--border-subtle-gray);
+    border: 1px solid var(--border-color);
     border-radius: 3px;
     box-sizing: border-box;
     font-size: 1em;
-    color: var(--text-charcoal);
+    color: #000000;
+    background-color: var(--background-color);
     transition: border-color 0.2s ease;
 }
 
 input[type="email"]:focus,
 input[type="password"]:focus {
-    border-color: var(--primary-deep-blue);
+    border-color: var(--primary-color);
     outline: none;
 }
 
 button {
-    background-color: var(--primary-deep-blue);
+    background-color: var(--primary-color);
     color: #fff;
     border: none;
     padding: 12px 20px;
@@ -93,17 +94,17 @@ button {
 }
 
 button:hover {
-    background-color: #234369;
+    background-color: var(--primary-dark-color);
 }
 
 p.toggle-link {
     margin-top: 20px;
-    color: var(--text-charcoal);
+    color: var(--text-color);
     font-size: 0.9em;
 }
 
 p.toggle-link a {
-    color: var(--primary-deep-blue);
+    color: var(--primary-color);
     text-decoration: none;
     font-weight: 500;
 }
