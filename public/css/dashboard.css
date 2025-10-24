@@ -2,7 +2,7 @@
     max-width: 800px;
     margin: 50px auto;
     padding: 30px;
-    background-color: #2a2a4a;
+    background-color: var(--background-light-gray);
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     text-align: center;
@@ -10,19 +10,19 @@
 }
 
 .dashboard-container h1 {
-    color: var(--primary-color);
+    color: var(--primary-deep-blue);
     margin-bottom: 20px;
     font-size: 2.5em;
 }
 
 .dashboard-container p {
-    color: var(--text-color);
+    color: var(--text-medium-gray);
     font-size: 1.1em;
     margin-bottom: 30px;
 }
 
 .dashboard-container button {
-    background-color: var(--primary-color);
+    background-color: var(--primary-deep-blue);
     color: white;
     padding: 12px 25px;
     border: none;
@@ -49,7 +49,7 @@
 }
 
 .modal-content {
-    background-color: var(--background-color);
+    background-color: var(--background-light-gray);
     margin: 5% auto; /* 15% from the top and centered */
     padding: 30px;
     border: 1px solid var(--border-color);
@@ -61,7 +61,7 @@
 }
 
 .close-button {
-    color: var(--background-color);
+    color: var(--text-medium-gray);
     float: right;
     font-size: 28px;
     font-weight: bold;
@@ -72,7 +72,7 @@
 
 .close-button:hover,
 .close-button:focus {
-    color: var(--primary-color);
+    color: var(--primary-deep-blue);
     text-decoration: none;
     cursor: pointer;
 }
@@ -124,9 +124,9 @@
 
 .form-group input:focus,
 .form-group select:focus {
-    border-color: var(--primary-color);
+    border-color: var(--primary-deep-blue);
     outline: none;
-    box-shadow: 0 0 5px rgba(233, 30, 99, 0.3);
+    box-shadow: 0 0 5px var(--primary-light-blue);
 }
 
 .error-message {
@@ -194,7 +194,7 @@ html, body {
 }
 
 .sidebar-header h2 {
-    color: var(--primary-color);
+    color: var(--primary-deep-blue);
     font-size: 1.8em;
     margin: 0;
 }
@@ -218,8 +218,9 @@ html, body {
 }
 
 .sidebar-button:hover {
-    background-color: var(--primary-dark-color);
+    background-color: var(--primary-light-blue);
     transform: translateX(5px);
+    color: white;
 }
 
 .main-content {
@@ -255,7 +256,7 @@ html, body {
     display: flex;
     justify-content: center;
     margin-bottom: 20px;
-    background-color: #ffffff;
+    background-color: white;
     border-radius: 10px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
     padding: 10px;
@@ -273,8 +274,8 @@ html, body {
 }
 
 .nav-button:hover {
-    color: #2c3e50;
-    border-bottom-color: #a0a0a0;
+    color: var(--text-medium-gray);
+    border-bottom-color: var(--border-medium-gray);
 }
 
 .nav-button.active {
@@ -293,7 +294,7 @@ html, body {
 }
 
 .classes-section {
-    background-color: #ffffff;
+    background-color: white;
     padding: 25px;
     border-radius: 10px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
@@ -301,7 +302,7 @@ html, body {
 }
 
 .classes-section h2 {
-    color: #2c3e50;
+    color: var(--text-charcoal);
     font-size: 1.6em;
     margin-top: 0;
     margin-bottom: 20px;
@@ -531,29 +532,29 @@ table {
     width: 100%;
     border-collapse: collapse;
     margin-top: 20px;
-    background-color: var(--background-color);
-    color: var(--text-color);
+    background-color: white;
+    color: var(--text-charcoal);
 }
 
 table th,
 table td {
     padding: 12px 15px;
-    border: 1px solid var(--border-color);
+    border: 1px solid var(--border-light-gray);
     text-align: left;
 }
 
 table th {
-    background-color: var(--primary-color);
-    color: white;
+    background-color: white;
+    color: var(--text-charcoal);
     font-weight: bold;
 }
 
 table tr:nth-child(even) {
-    background-color: #2a2a4a;
+    background-color: var(--background-light-gray);
 }
 
 .button-primary {
-    background-color: var(--primary-color);
+    background-color: var(--primary-deep-blue);
     color: white;
     border: none;
     padding: 8px 12px;
@@ -638,13 +639,13 @@ table tr:nth-child(even) {
     width: 100%; /* Full width */
     height: 100%; /* Full height */
     overflow: auto; /* Enable scroll if needed */
-    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+    background-color: rgba(0,0,0,0.2); /* Lighter overlay */
     align-items: center;
     justify-content: center;
 }
 
 .modal-content {
-    background-color: #fefefe;
+    background-color: white;
     margin: auto;
     padding: 20px;
     border: 1px solid #888;
@@ -656,7 +657,7 @@ table tr:nth-child(even) {
 }
 
 .close-button {
-    color: #aaa;
+    color: var(--text-medium-gray);
     float: right;
     font-size: 28px;
     font-weight: bold;
@@ -667,13 +668,13 @@ table tr:nth-child(even) {
 
 .close-button:hover,
 .close-button:focus {
-    color: black;
+    color: var(--primary-deep-blue);
     text-decoration: none;
     cursor: pointer;
 }
 
 .modal h2 {
-    color: #333;
+    color: var(--text-charcoal);
     margin-top: 0;
     margin-bottom: 15px;
     font-size: 1.5em;
@@ -685,11 +686,544 @@ table tr:nth-child(even) {
 }
 
 .modal strong {
-    color: #555;
+    color: var(--text-medium-gray);
 }
 
-.modal .button-primary {
-    margin-top: 20px;
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    color: var(--background-color);
+    font-weight: bold;
+}
+
+.form-group input[type="text"],
+.form-group input[type="time"],
+.form-group input[type="color"],
+.form-group select {
+    width: calc(100% - 22px); /* Adjust for padding and border */
+    padding: 10px;
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
+    font-size: 1em;
+    box-sizing: border-box; /* Include padding and border in the element's total width and height */
+    color: var(--text-color);
+    background-color: #33334d;
+}
+
+.form-group input[type="color"] {
+    height: 40px; /* Adjust height for color input */
+    padding: 5px;
+}
+
+.form-group select[multiple] {
+    height: 120px; /* Adjust height to show multiple options */
+    overflow-y: auto; /* Add scrollbar if options exceed height */
+    padding: 5px;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+    border-color: var(--primary-deep-blue);
+    outline: none;
+    box-shadow: 0 0 5px var(--primary-light-blue);
+}
+
+.error-message {
+    color: #e74c3c;
+    font-size: 0.9em;
+    margin-top: 5px;
+    display: none; /* Hidden by default */
+}
+
+.form-text.text-muted {
+    font-size: 0.85em;
+    color: #6c757d;
+    margin-top: 5px;
+    display: block;
+}
+
+.form-actions {
+    text-align: right;
+    margin-top: 25px;
+}
+
+.form-actions .button {
+    margin-left: 10px;
+}
+
+.form-actions .button-secondary {
+    background-color: #6c757d;
+}
+
+.form-actions .button-secondary:hover {
+    background-color: #5a6268;
+}
+
+/* Modern Workspace Layout */
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+.workspace-container {
+    display: flex;
+    height: 100vh;
+    background-color: #f4f7f6;
+}
+
+.sidebar {
+    width: 250px;
+    background-color: #131324;
+    color: var(--text-color);
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+    transition: width 0.3s ease;
+}
+
+.sidebar-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.sidebar-header h2 {
+    color: var(--primary-deep-blue);
+    font-size: 1.8em;
+    margin: 0;
+}
+
+.sidebar-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.sidebar-button {
+    background-color: var(--background-light-gray);
+    color: var(--text-charcoal);
+    border: none;
+    padding: 12px 15px;
+    text-align: left;
+    font-size: 1.1em;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.sidebar-button:hover {
+    background-color: var(--primary-light-blue);
+    transform: translateX(5px);
+    color: white;
+}
+
+.main-content {
+    flex-grow: 1;
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    height: 100%; /* Añadido para asegurar que ocupe toda la altura disponible */
+    /* align-items: start; */ /* Eliminado para permitir que los elementos se estiren horizontalmente */
+    background-color: var(--background-color);
+    color: var(--text-color);
+    overflow-y: auto;
+}
+
+.card {
+    background-color: white;
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border: 1px solid var(--border-color);
+}
+
+.card h3 {
+    color: var(--primary-deep-blue);
+    margin-top: 0;
+    margin-bottom: 15px;
+    font-size: 1.5em;
+}
+
+.dashboard-navbar {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    padding: 10px;
+}
+
+.nav-button {
+    background-color: transparent;
+    border: none;
+    padding: 10px 20px;
+    font-size: 1.1em;
+    cursor: pointer;
+    color: #555;
+    transition: color 0.3s ease, border-bottom 0.3s ease;
+    border-bottom: 3px solid transparent;
+}
+
+.nav-button:hover {
+    color: var(--text-medium-gray);
+    border-bottom-color: var(--border-medium-gray);
+}
+
+.nav-button.active {
+    color: var(--primary-deep-blue);
+    border-bottom-color: var(--primary-deep-blue);
+    font-weight: bold;
+}
+
+.tab-content {
+    display: none; /* Hidden by default */
+    width: 100%; /* Take full width */
+}
+
+.tab-content.active {
+    display: block; /* Show active tab content */
+}
+
+.classes-section {
+    background: white;
+    padding: 25px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
     width: 100%;
-    box-sizing: border-box; /* Ensure padding and border are included in the element's total width and height */
+}
+
+.classes-section h2 {
+    color: var(--text-charcoal);
+    font-size: 1.6em;
+    margin-top: 0;
+    margin-bottom: 20px;
+    border-bottom: 2px solid #e0e0e0;
+    padding-bottom: 10px;
+}
+
+.classes-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.class-item {
+    background-color: #f9f9f9;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    transition: transform 0.2s ease;
+}
+
+.class-item:hover {
+    transform: translateY(-3px);
+}
+
+.class-item h3 {
+    color: #34495e;
+    font-size: 1.2em;
+    margin: 0 0 5px 0;
+}
+
+.class-item p {
+    color: #555;
+    font-size: 0.95em;
+    margin: 0;
+}
+
+.class-actions {
+    margin-top: 10px;
+    display: flex;
+    gap: 10px;
+}
+
+.button-edit,
+.button-delete {
+    padding: 8px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.9em;
+    transition: background-color 0.2s ease;
+}
+
+.button-edit {
+    background-color: #3498db;
+    color: white;
+    border: none;
+}
+
+.button-edit:hover {
+    background-color: #2980b9;
+}
+
+.button-delete {
+    background-color: #e74c3c;
+    color: white;
+    border: none;
+}
+
+.button-delete:hover {
+    background-color: #c0392b;
+}
+
+#add-class-button {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1em;
+    transition: background-color 0.2s ease;
+}
+
+#add-class-button:hover {
+    background-color: #218838;
+}
+
+/* FullCalendar overrides */
+#calendar {
+    max-width: 100%;
+    margin: 0 auto;
+    flex-grow: 1; /* Permite que el calendario ocupe el espacio disponible dentro de su sección */
+    height: 100%; /* Añadido para asegurar que ocupe toda la altura disponible */
+}
+
+.fc-toolbar-title {
+    color: #2c3e50;
+}
+
+.fc-button {
+    background-color: #3498db;
+    color: white;
+    border: none;
+}
+
+.fc-button:hover {
+    background-color: #2980b9;
+}
+
+/* Responsive adjustments */
+@media (max-width: 992px) {
+    .main-content {
+        grid-template-columns: 1fr; /* Stack columns on smaller screens */
+    }
+}
+
+@media (max-width: 768px) {
+    .workspace-container {
+        flex-direction: column; /* Stack sidebar and main content */
+    }
+
+    .sidebar {
+        width: 100%;
+        padding: 15px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .sidebar-nav {
+        flex-direction: row;
+        justify-content: center;
+        gap: 10px;
+    }
+
+    .sidebar-button {
+        padding: 10px 12px;
+        font-size: 0.9em;
+    }
+
+    .main-content {
+        padding: 20px;
+        gap: 20px;
+    }
+
+    .classes-section {
+        padding: 20px;
+    }
+
+    .classes-section h2 {
+        font-size: 1.4em;
+    }
+}
+
+@media (max-width: 480px) {
+    .sidebar-header h2 {
+        font-size: 1.5em;
+    }
+
+    .sidebar-button {
+        font-size: 0.8em;
+        padding: 8px 10px;
+    }
+
+    .main-content {
+        padding: 15px;
+    }
+
+    .classes-section h2 {
+        font-size: 1.2em;
+    }
+
+    .class-item h3 {
+        font-size: 1.1em;
+    }
+
+    .class-item p {
+        font-size: 0.85em;
+    }
+
+    .button-edit,
+    .button-delete,
+    #add-class-button {
+        font-size: 0.85em;
+        padding: 7px 10px;
+    }
+}
+.dashboard-header {
+    margin-bottom: 30px;
+    color: #2c3e50;
+}
+
+.classes-section {
+    background: white;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 2px 15px rgba(0,0,0,0.05);
+    margin-bottom: 30px;
+}
+
+.classes-section h2 {
+    color: #2c3e50;
+    margin-top: 0;
+}
+
+.classes-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 15px;
+    margin: 20px 0;
+}
+
+.classes-list .class-item {
+    padding: 18px;
+    background: #f8f9fa;
+    border-radius: 8px;
+    border-left: 4px solid #3498db;
+}
+
+#calendar {
+    margin-top: 20px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    background-color: white;
+    color: var(--text-charcoal);
+}
+
+table th,
+table td {
+    padding: 12px 15px;
+    border: 1px solid var(--border-light-gray);
+    text-align: left;
+}
+
+table th {
+    background-color: white;
+    color: var(--text-charcoal);
+    font-weight: bold;
+}
+
+table tr:nth-child(even) {
+    background-color: var(--background-light-gray);
+}
+
+.button-primary {
+    background-color: var(--primary-deep-blue);
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.9em;
+    transition: background-color 0.2s ease;
+}
+
+.button-primary:hover {
+    background-color: var(--primary-dark-blue);
+}
+
+.button-secondary {
+    background-color: var(--background-medium-gray);
+    color: var(--text-charcoal);
+    border: 1px solid var(--border-light-gray);
+    padding: 8px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.9em;
+    transition: background-color 0.2s ease;
+}
+
+.button-secondary:hover {
+    background-color: var(--primary-deep-blue);
+    color: white;
+}
+
+.button-danger {
+    background-color: var(--jira-error);
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.9em;
+    transition: background-color 0.2s ease;
+}
+
+.button-danger:hover {
+    background-color: var(--jira-error-dark);
+}
+
+.button-info {
+    background-color: var(--primary-deep-blue);
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.9em;
+    transition: background-color 0.2s ease;
+}
+
+.button-info:hover {
+    background-color: var(--primary-dark-blue);
+}
+
+.button-success {
+    background-color: var(--jira-success);
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.9em;
+    transition: background-color 0.2s ease;
+}
+
+.button-success:hover {
+    background-color: var(--jira-success-dark);
 }

@@ -13,13 +13,13 @@ body {
     text-align: center;
     background-color: #FFFFFF;
     padding: 40px;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 16px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.06);
     border: 1px solid var(--border-subtle-gray);
 }
 
 h1 {
-    color: var(--primary-deep-blue);
+    color: var(--primary-color);
     margin-bottom: 20px;
     font-size: 2.5em;
 }
@@ -31,16 +31,17 @@ p {
 }
 
 button {
-    background-color: var(--primary-deep-blue);
+    background-color: var(--accent-color);
     color: #fff;
     border: none;
     padding: 12px 25px;
-    border-radius: 3px;
+    border-radius: 12px;
     cursor: pointer;
     font-size: 16px;
-    transition: background-color 0.3s ease;
+    transition: filter 0.2s ease, transform 0.2s ease;
 }
 
 button:hover {
-    background-color: #234369;
+    filter: brightness(1.06);
+    transform: translateY(-1px);
 }

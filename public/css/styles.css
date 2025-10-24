@@ -6,11 +6,11 @@
 }
 
 :root {
-    --background-color: #1a1a2e;
+    --background-color: #1a1a2e; /* mantener fondo oscuro para secciones dark */
     --text-color: #e0e0e0;
-    --primary-color: #e91e63;
-    --primary-dark-color: #c2185b;
-    --accent-color: #ff4081;
+    --primary-color: #f48fb1; /* rosa pastel */
+    --primary-dark-color: #e57399; /* rosa pastel más profundo */
+    --accent-color: #b39ddb; /* morado/lavanda pastel */
     --error-color: #f44336;
     --border-color: #33334d;
 }
@@ -27,8 +27,17 @@
 }
 
 body {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-        'Ubuntu', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+    font-family: 'Montserrat Alternates', sans-serif;
+    margin: 0;
+    padding: 0;
+    /* background-color: var(--background-light-gray); */
+    color: var(--text-charcoal);
+    /* min-height: 100vh; */
+    /* line-height: 1.5; */
+    /* -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale; */
+    /* font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+        'Ubuntu', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif; */
     background-color: var(--background-light-gray);
     min-height: 100vh;
     color: var(--text-charcoal);
@@ -175,8 +184,9 @@ body {
 }
 
 .btn-primary {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background-color: var(--accent-color);
     color: white;
+    border-radius: 14px;
 }
 
 .btn-primary:hover {
@@ -278,9 +288,10 @@ body {
 }
 
 .btn-nav.active {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background-color: var(--accent-color);
     color: white;
     border-color: transparent;
+    border-radius: 18px;
 }
 
 /* Perfil Container */

@@ -6,22 +6,22 @@ body {
     align-items: center;
     min-height: 100vh;
     margin: 0;
-    background-color: var(--background-color);
+    background-color: var(--background-light-gray);
 }
 
 .register-container {
-    background-color: #2a2a4a; /* Contrasting dark shade for the container */
+    background-color: white;
     padding: 40px;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 16px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.06);
     text-align: center;
     width: 100%;
     max-width: 400px;
-    border: 1px solid var(--border-color);
+    border: 1px solid var(--border-subtle-gray);
 }
 
 h1 {
-    color: var(--primary-color);
+    color: var(--text-charcoal);
     margin-bottom: 20px;
     font-size: 2em;
 }
@@ -29,7 +29,7 @@ h1 {
 .message-area {
     padding: 10px;
     margin-bottom: 15px;
-    border-radius: 3px;
+    border-radius: 8px;
     font-weight: bold;
     text-align: center;
     font-size: 0.9em;
@@ -66,7 +66,7 @@ input[type="password"] {
     width: 100%;
     padding: 10px 12px;
     border: 1px solid var(--border-color);
-    border-radius: 3px;
+    border-radius: 8px;
     box-sizing: border-box;
     font-size: 1em;
     color: #000000;
@@ -82,31 +82,31 @@ input[type="password"]:focus {
 }
 
 button {
-    background-color: var(--primary-color);
+    background-color: var(--accent-color);
     color: #fff;
     border: none;
     padding: 12px 20px;
-    border-radius: 3px;
+    border-radius: 12px;
     cursor: pointer;
     font-size: 1em;
     font-weight: 600;
-    transition: background-color 0.3s ease;
+    transition: filter 0.2s ease;
     width: 100%;
     margin-top: 20px;
 }
 
 button:hover {
-    background-color: var(--primary-dark-color);
+    filter: brightness(1.06);
 }
 
 p.toggle-link {
     margin-top: 20px;
-    color: var(--text-color);
+    color: var(--text-charcoal);
     font-size: 0.9em;
 }
 
 p.toggle-link a {
-    color: var(--primary-color);
+    color: var(--primary-deep-blue);
     text-decoration: none;
     font-weight: 500;
 }
