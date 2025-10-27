@@ -13,6 +13,16 @@
     --accent-color: #b39ddb; /* morado/lavanda pastel */
     --error-color: #f44336;
     --border-color: #33334d;
+
+    /* Pastel Theme Variables */
+    --pastel-purple: #b39ddb; /* Morado pastel */
+    --accent-purple: #9575cd; /* Morado acento */
+    --pastel-pink: #f48fb1; /* Rosa pastel */
+    --accent-pink: #e57399; /* Rosa acento */
+    --bg-soft: #f8f9fa; /* Fondo suave */
+    --text-dark: #34495e; /* Texto oscuro */
+    --border-soft: #e0e0e0; /* Borde suave */
+    --light-purple-bg: #f0f0f8; /* Morado claro casi blanco para inputs */
 }
 
 :root {
