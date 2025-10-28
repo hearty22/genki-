@@ -2,10 +2,11 @@ body {
     font-family: 'Roboto', sans-serif;
     margin: 0;
     padding: 0;
-    background-color: var(--background-color);
-    color: var(--text-color);
+    background-color: #ffffff;
+    color: #333333;
     display: flex;
     min-height: 100vh;
+    width: 100%;
 }
 
 .workspace-container {
@@ -15,12 +16,15 @@ body {
 
 .sidebar {
     width: 250px;
-    background-color: #131324;
+    background-color: #ffffff;
     padding: 20px;
-    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);
     display: flex;
     flex-direction: column;
-    border-right: 1px solid var(--border-color);
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    z-index: 1000; /* Ensure sidebar is above other content */
 }
 
 .sidebar-header {
@@ -29,7 +33,7 @@ body {
 }
 
 .sidebar-header h2 {
-    color: var(--primary-color);
+    color: var(--accent-purple);
     font-size: 1.8em;
     margin: 0;
 }
@@ -41,102 +45,131 @@ body {
 }
 
 .sidebar-button {
-    background-color: #33334d;
-    color: var(--text-color);
-    border: none;
-    padding: 12px 15px;
-    text-align: left;
-    font-size: 1.1em;
+    background-color: var(--pastel-pink);
+    color: white;
+    border: 1px solid var(--border-soft);
+    padding: 12px 16px;
+    font-size: 1.05em;
     cursor: pointer;
-    border-radius: 8px;
-    transition: background-color 0.3s ease, color 0.3s ease;
+    border-radius: 12px;
+    transition: background-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .sidebar-button:hover {
-    background-color: var(--primary-color);
-    color: #ffffff;
+    background-color: var(--accent-pink);
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(185, 155, 230, 0.25);
 }
 
 .sidebar-button.active {
-    background-color: #444466;
-    color: #ffffff;
+    background-color: var(--accent-pink);
+    color: white;
 }
 
 .main-content {
     flex-grow: 1;
-    padding: 30px;
-    background-color: var(--background-color);
-    color: var(--text-color);
+    padding: 0;
+    background-color: #ffffff;
+    color: #333333;
+    margin-left: 250px; /* Offset for fixed sidebar */
 }
 
 .calendar-section {
-    background-color: var(--surface-color);
-    padding: 25px;
-    border-radius: 10px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-}
+    background-color: #ffffff;
+    padding: 20px;
+    /* Removed box-shadow and border-radius */
+  }
 
 .calendar-section h2 {
-    color: var(--primary-color);
-    margin-top: 0;
     margin-bottom: 20px;
-    font-size: 1.8em;
-    border-bottom: 2px solid var(--border-color);
-    padding-bottom: 10px;
 }
 
 #calendar {
-    max-width: 900px;
-    margin: 0 auto;
-    background-color: var(--background-color);
-    padding: 15px;
-    border-radius: 8px;
-}
+    background-color: #ffffff;
+    color: #333333;
+    /* Removed padding and border-radius */
+  }
 
-/* FullCalendar overrides for dark theme */
-.fc .fc-toolbar-title {
-    color: var(--text-color);
-}
 
-.fc .fc-button {
-    background-color: var(--primary-color);
-    color: #ffffff;
+  .fc .fc-button {
+    background-color: #FF69B4; /* Pink button background */
+    color: #FFFFFF; /* White text for contrast */
     border: none;
     padding: 8px 15px;
     border-radius: 5px;
     cursor: pointer;
-    transition: background-color 0.3s ease;
-}
+    transition: background-color 0.3s ease, transform 0.2s ease;
+  }
 
-.fc .fc-button:hover {
-    background-color: var(--button-hover-bg);
-}
+  .fc .fc-button:hover {
+    background-color: #FF1493; /* Darker pink on hover */
+    transform: translateY(-1px);
+  }
+
+  .fc .fc-button-primary {
+    background-color: #8A2BE2; /* Purple primary button */
+  }
+
+  .fc .fc-button-primary:not(:disabled):active,
+  .fc .fc-button-primary:not(:disabled).fc-button-active {
+    background-color: #6A0DAD; /* Darker purple when active */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  }
+
+  .fc .fc-toolbar-title {
+    color: #8A2BE2; /* Purple toolbar title */
+    font-size: 1.8em; /* Make toolbar title more prominent */
+    font-weight: 700; /* Bold for prominence */
+  }
 
 .fc .fc-daygrid-day-number {
-    color: var(--text-color-dark);
-}
+    color: #8A2BE2; /* Purple for day numbers */
+  }
 
-.fc .fc-daygrid-event {
-    background-color: var(--secondary-color);
-    color: var(--background-color);
-    border: none;
-    font-size: 0.85em;
-    padding: 2px 5px;
-    border-radius: 3px;
-}
+  .fc .fc-daygrid-event {
+      background-color: #FF69B4; /* Pink background for events */
+      color: #FFFFFF; /* White text for event titles */
+      border: none;
+      font-size: 0.85em;
+      padding: 2px 5px;
+      border-radius: 3px;
+  }
 
-.fc .fc-event-title {
-    color: var(--background-color);
-}
+  .fc .fc-event-title {
+      color: #FFFFFF; /* White text for event titles */
+  }
 
-.fc .fc-col-header-cell-cushion {
-    color: var(--primary-color);
-}
+  .fc .fc-col-header-cell-cushion {
+    color: #8A2BE2; /* Purple for column headers */
+    font-weight: 600;
+  }
 
-.fc .fc-day-other .fc-daygrid-day-number {
-    color: var(--text-color-dark);
+  .fc .fc-day-other .fc-daygrid-day-number {
+    color: #C0C0C0; /* Lighter grey for other month days */
     opacity: 0.6;
-}
+  }
+
+  .fc .fc-list-event-title {
+    color: #333333; /* Dark text for contrast */
+  }
+
+  .fc .fc-list-event-time {
+    color: #333333; /* Dark text for contrast */
+  }
+
+  .fc .fc-list-day-text,
+  .fc .fc-list-day-alt-text {
+    color: var(--text-dark); /* Using --text-dark for list day text */
+  }
+
+  .fc .fc-list-event.fc-event-forced-url {
+    background-color: #f0f2f5; /* Light background for list events */
+  }
+
+  .fc .fc-list-event-dot {
+    background-color: var(--primary-color); /* Use primary color for event dot */
+  }
 
 /* Modal Styles */
 .modal {

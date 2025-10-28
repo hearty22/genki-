@@ -3,6 +3,7 @@ document.addEventListener('DOMContentLoaded', function() {
     if (calendarEl) {
         const calendar = new FullCalendar.Calendar(calendarEl, {
             initialView: 'dayGridMonth',
+            locale: 'es', // Set locale to Spanish
             height: 'auto',
             aspectRatio: 1.8,
             headerToolbar: {

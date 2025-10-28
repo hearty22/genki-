@@ -70,7 +70,7 @@ input[type="password"] {
     box-sizing: border-box;
     font-size: 1em;
     color: #000000;
-    background-color: var(--background-color);
+    background-color: #FFF0F5; /* Very pale pink, almost white */
     transition: border-color 0.2s ease;
 }
 
