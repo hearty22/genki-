@@ -23,9 +23,7 @@
     --text-dark: #34495e; /* Texto oscuro */
     --border-soft: #e0e0e0; /* Borde suave */
     --light-purple-bg: #f0f0f8; /* Morado claro casi blanco para inputs */
-}
 
-:root {
     --primary-deep-blue: #2C5282;
     --accent-success-green: #48BB78;
     --background-light-gray: #F7FAFC;
@@ -40,17 +38,9 @@ body {
     font-family: 'Montserrat Alternates', sans-serif;
     margin: 0;
     padding: 0;
-    /* background-color: var(--background-light-gray); */
+    background-color: var(--background-light-gray); /* Using a defined variable for consistency */
     color: var(--text-charcoal);
-    /* min-height: 100vh; */
-    /* line-height: 1.5; */
-    /* -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale; */
-    /* font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-        'Ubuntu', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif; */
-    background-color: #ffffff;
     min-height: 100vh;
-    color: var(--text-charcoal);
     line-height: 1.5;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;

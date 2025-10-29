@@ -1,5 +1,3 @@
-// app.js
-console.log('app.js loaded.');
 
 // Helper function to get cookie by name
 function getCookie(name) {
@@ -322,7 +320,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             }
 
             try {
-                const response = await fetch('/api/profile/image', {
+                const response = await fetch('/api/auth/profile/image', {
                     method: 'DELETE',
                     headers: {
                         'Authorization': `Bearer ${authToken}`
@@ -334,6 +332,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                     showMessage(data.message, 'success');
                     profileImageDisplay.src = '/assets/images/default-profile.png'; // Set to default image
                 } else {
+                    alert("error al eliminar la imagen")
                     showMessage(data.message || 'Error al eliminar la imagen', 'error');
                 }
             } catch (error) {

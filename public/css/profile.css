@@ -1,82 +1,27 @@
-.message-area {
-    margin-top: 15px;
-    padding: 10px;
-    border-radius: 5px;
-    text-align: center;
-    font-weight: bold;
-    display: none; /* Hidden by default */
-}
-
-.message-area.success {
-    background-color: #d4edda;
-    color: #155724;
-    border: 1px solid #c3e6cb;
-}
-
-.message-area.error {
-    background-color: #f8d7da;
-    color: #721c24;
-    border: 1px solid #f5c6cb;
-}
-
-/* Existing profile styles */
-.profile-container {
-    max-width: 800px;
-    margin: 50px auto;
-    padding: 30px;
-    background-color: #FFFFFF;
+.main-content {
+    padding: 20px;
+    flex-grow: 1;
+    background-color: var(--background-light-gray);
     border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    text-align: center;
-    border: 1px solid var(--border-subtle-gray);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-left: 20px; /* Adjust as needed for spacing from sidebar */
 }
 
-.profile-container h1 {
-    color: var(--primary-deep-blue);
-    margin-bottom: 20px;
-    font-size: 2.5em;
-}
-
-.profile-container p {
-    color: var(--text-charcoal);
-    font-size: 1.1em;
-    margin-bottom: 30px;
-}
-
-.profile-container button {
-    background-color: var(--primary-deep-blue);
-    color: white;
-    padding: 12px 25px;
-    border: none;
-    border-radius: 3px;
-    cursor: pointer;
-    font-size: 1em;
-    transition: background-color 0.3s ease;
-    margin: 0 10px;
-}
-
-.profile-actions {
-    display: flex;
-    justify-content: center;
-    gap: 20px; /* Espacio entre los botones */
-    margin-top: 20px; /* Espacio superior para separar del formulario */
-}
-
-.profile-container button:hover {
-    background-color: #234369;
-}
-
-/* Añadimos estilos en profile.css */
 .profile-image-section {
-    background: #f8f9fa;
-    padding: 2rem;
-    border-radius: 12px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-    margin-bottom: 2rem;
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 1.5rem;
+    margin-bottom: 20px;
+    padding: 20px;
+    background-color: var(--white);
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.profile-image-upload-label {
+    cursor: pointer;
+    margin-bottom: 15px;
+    display: block;
 }
 
 .profile-image-display {
@@ -84,40 +29,115 @@
     height: 150px;
     border-radius: 50%;
     object-fit: cover;
-    border: 4px solid var(--primary-deep-blue);
-    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    border: 3px solid var(--primary-pastel-pink);
+    transition: border-color 0.3s ease;
 }
 
-.image-upload-controls {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    width: 100%;
-    max-width: 300px;
+.profile-image-upload-label:hover .profile-image-display {
+    border-color: var(--primary-pastel-purple);
 }
 
-.image-upload-controls input[type="file"] {
-    flex-grow: 1;
+.profile-image-section button {
+    margin: 5px;
+}
+
+#profile-form {
+    background-color: var(--white);
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    margin-bottom: 20px;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 600;
+    color: var(--text-charcoal);
+}
+
+.form-group input[type="email"],
+.form-group input[type="text"],
+.form-group textarea {
+    width: calc(100% - 20px);
     padding: 10px;
-    border: 1px solid var(--border-subtle-gray);
-    border-radius: 3px;
-    background-color: #ffffff;
+    border: 1px solid var(--border-light-gray);
+    border-radius: 4px;
+    font-size: 1rem;
+    color: var(--text-charcoal);
+    background-color: var(--background-white);
 }
 
-.button {
-    padding: 0.75rem 1.5rem;
-    border-radius: 6px;
+.form-group input[type="email"]:focus,
+.form-group input[type="text"]:focus,
+.form-group textarea:focus {
+    border-color: var(--primary-pastel-purple);
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(147, 112, 219, 0.2);
+}
+
+.profile-actions {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.profile-actions button {
+    background-color: var(--primary-pastel-pink);
+    color: var(--white);
+    padding: 10px 20px;
     border: none;
+    border-radius: 5px;
     cursor: pointer;
-    font-size: 1em;
+    font-size: 1rem;
     transition: background-color 0.3s ease;
 }
 
+.profile-actions button:hover {
+    background-color: var(--primary-pastel-purple);
+}
+
+.message-area {
+    margin-bottom: 20px;
+    padding: 10px;
+    border-radius: 4px;
+    text-align: center;
+    font-weight: 600;
+}
+
+.message-area.success {
+    background-color: var(--success-light);
+    color: var(--success-dark);
+}
+
+.message-area.error {
+    background-color: var(--error-light);
+    color: var(--error-dark);
+}
+
+/* General button styling */
+.button {
+    background-color: var(--primary-pastel-pink);
+    color: var(--white);
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: background-color 0.3s ease;
+}
+
+.button:hover {
+    background-color: var(--primary-pastel-purple);
+}
+
 .button-danger {
-    background-color: #dc3545;
-    color: white;
+    background-color: var(--error-dark);
 }
 
 .button-danger:hover {
-    background-color: #c82333;
+    background-color: #cc0000;
 }

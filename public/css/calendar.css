@@ -91,10 +91,9 @@ body {
     /* Removed padding and border-radius */
   }
 
-
   .fc .fc-button {
-    background-color: #FF69B4; /* Pink button background */
-    color: #FFFFFF; /* White text for contrast */
+    background-color: var(--pastel-pink) !important; /* Pink button background */
+    color: #FFFFFF !important; /* White text for contrast */
     border: none;
     padding: 8px 15px;
     border-radius: 5px;
@@ -103,33 +102,33 @@ body {
   }
 
   .fc .fc-button:hover {
-    background-color: #FF1493; /* Darker pink on hover */
+    background-color: var(--accent-pink) !important; /* Darker pink on hover */
     transform: translateY(-1px);
   }
 
   .fc .fc-button-primary {
-    background-color: #8A2BE2; /* Purple primary button */
+    background-color: var(--pastel-purple) !important; /* Purple primary button */
   }
 
   .fc .fc-button-primary:not(:disabled):active,
   .fc .fc-button-primary:not(:disabled).fc-button-active {
-    background-color: #6A0DAD; /* Darker purple when active */
+    background-color: var(--accent-purple) !important; /* Darker purple when active */
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
   }
 
   .fc .fc-toolbar-title {
-    color: #8A2BE2; /* Purple toolbar title */
+    color: var(--pastel-pink) !important; /* Purple toolbar title */
     font-size: 1.8em; /* Make toolbar title more prominent */
     font-weight: 700; /* Bold for prominence */
   }
 
 .fc .fc-daygrid-day-number {
-    color: #8A2BE2; /* Purple for day numbers */
+    color: var(--pastel-purple) !important; /* Purple for day numbers */
   }
 
   .fc .fc-daygrid-event {
-      background-color: #FF69B4; /* Pink background for events */
-      color: #FFFFFF; /* White text for event titles */
+      background-color: var(--pastel-pink) !important; /* Pink background for events */
+      color: #FFFFFF !important; /* White text for event titles */
       border: none;
       font-size: 0.85em;
       padding: 2px 5px;
@@ -137,11 +136,11 @@ body {
   }
 
   .fc .fc-event-title {
-      color: #FFFFFF; /* White text for event titles */
+      color: #FFFFFF !important; /* White text for event titles */
   }
 
   .fc .fc-col-header-cell-cushion {
-    color: #8A2BE2; /* Purple for column headers */
+    color: var(--pastel-purple) !important; /* Purple for column headers */
     font-weight: 600;
   }
 
