@@ -35,8 +35,7 @@ export const validateLogin = [
     .isEmail()
     .withMessage('Debe ser un email válido')
     .normalizeEmail()
-    .toLowerCase(),
-  
+,  
   body('password')
     .notEmpty()
     .withMessage('La contraseña es obligatoria')

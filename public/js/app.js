@@ -7,13 +7,13 @@ function getCookie(name) {
 }
 
 function showMessage(message, type) {
-    const messageContainer = document.getElementById('message-container');
+    const messageContainer = document.getElementsByClassName('message-area');
     if (messageContainer) {
         messageContainer.textContent = message;
-        messageContainer.className = `message-container ${type}`;
+        messageContainer.className = `message-area.${type}`;
         setTimeout(() => {
             messageContainer.textContent = '';
-            messageContainer.className = 'message-container';
+            messageContainer.className = 'message-area';
         }, 3000);
     }
 }
@@ -121,15 +121,16 @@ document.addEventListener('DOMContentLoaded', async () => {
                     window.location.href = '/dashboard.html';
                 } else {
                     if (response.status === 400) {
-                        showMessage(responseData.message || 'Datos de entrada inválidos', 'error', 'login-message');
+                        showMessage(responseData.message || 'Datos de entrada inválidos', 'error');
                     } else if (response.status === 401) {
-                        showMessage(responseData.message || 'Credenciales inválidas', 'error', 'login-message');
+                        console.log(responseData.message)
+                        showMessage(responseData.message || 'Credenciales inválidas', 'error');
                     } else if (response.status === 406) {
-                        showMessage(responseData.message || 'Solicitud no aceptable', 'error', 'login-message');
+                        showMessage(responseData.message || 'Solicitud no aceptable', 'error');
                     } else if (response.status === 500) {
-                        showMessage(responseData.message || 'Error interno del servidor', 'error', 'login-message');
+                        showMessage(responseData.message || 'Error interno del servidor', 'error');
                     } else {
-                        showMessage(responseData.message || 'Error desconocido al iniciar sesión', 'error', 'login-message');
+                        showMessage(responseData.message || 'Error desconocido al iniciar sesión', 'error');
                     }
                 }
             } catch (error) {

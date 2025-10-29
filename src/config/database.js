@@ -6,7 +6,7 @@ dotenv.config();
 // Configuración de MongoDB
 const connectDB = async () => {
   try {
-    const mongoURI = process.env.MONGODB_URI || 'mongodb://localhost:27017/genki_docente';
+    const mongoURI = process.env.MONGODB_URI
     
     await mongoose.connect(mongoURI, {
       useNewUrlParser: true,
