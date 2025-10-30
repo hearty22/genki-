@@ -4,18 +4,454 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bienvenido a Genki</title>
-    <link rel="stylesheet" href="./css/styles.css">
-    <link rel="stylesheet" href="./css/index.css">
+    
+    <!-- Icono de Reemplazo (Placeholder) -->
+    <link rel="icon" href="./assets/images/logogenkiG.png">
+    
+    <!-- Fuentes Externas -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="icon" href="./assets/images/GENKI_-removebg-preview.png">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat+Alternates:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+
+    <!-- 
+    ========================================
+    ESTILOS CSS CONSOLIDADOS (TEMA MODERNO/PASTEL)
+    ========================================
+    -->
+    <style>
+        /* 1. Variables Globales (Paleta de Colores y Fuentes) */
+        :root {
+            /* Paleta de colores pastel moderna */
+            --primary-color: #b39ddb;       /* Morado pastel (principal) */
+            --primary-hover: #9575cd;       /* Morado acento (hover) */
+            --secondary-color: #f48fb1;     /* Rosa pastel (acento) */
+            --secondary-hover: #e57399;     /* Rosa acento (hover) */
+            
+            --background-color: #f0f2f5;    /* Fondo de página (gris claro) */
+            --surface-color: #ffffff;       /* Fondo de "tarjetas" y header (blanco) */
+            
+            --text-primary: #2D3748;        /* Texto principal (carbón/azul oscuro) */
+            --text-secondary: #666666;      /* Texto secundario (gris) */
+            --text-light: #ffffff;          /* Texto sobre fondos oscuros */
+            
+            --border-color: #E2E8F0;        /* Borde sutil (gris claro) */
+            
+            /* Tipografía (Importada en tu HTML) */
+            --font-family: 'Montserrat Alternates', sans-serif;
+            
+            /* Sombras modernas y suaves */
+            --shadow-sm: 0 2px 4px rgba(0,0,0,0.05);
+            --shadow-md: 0 4px 10px rgba(0,0,0,0.05);
+            --shadow-lg: 0 10px 20px rgba(0,0,0,0.07);
+        }
+
+        /* 2. Reseteo Básico y Estilos del Body */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            font-size: 16px;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--font-family);
+            background-color: var(--background-color);
+            color: var(--text-primary);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased; /* Mejora renderizado de fuentes */
+        }
+
+        /* 3. Estilos de Tipografía Base */
+        h1, h2, h3 {
+            font-weight: 700;
+            margin-bottom: 0.75em;
+            line-height: 1.2;
+        }
+
+        p {
+            margin-bottom: 1em;
+            color: var(--text-secondary);
+        }
+
+        a {
+            color: var(--primary-color);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        a:hover {
+            color: var(--primary-hover);
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        /* 4. Clase Contenedora Reutilizable */
+        .container {
+            width: 90%;
+            max-width: 1100px; /* Ancho máximo estándar */
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+
+        /* 5. Estilos de Botones Reutilizables (Moderno) */
+        .button {
+            display: inline-block;
+            padding: 12px 28px;
+            border-radius: 8px; /* Más redondeado */
+            font-weight: 700; /* Más grueso */
+            text-decoration: none;
+            text-align: center;
+            transition: transform 0.3s ease, background-color 0.3s ease, box-shadow 0.3s ease, color 0.3s ease;
+            cursor: pointer;
+            border: 2px solid transparent;
+            font-size: 0.95rem;
+            box-shadow: var(--shadow-sm); /* Sombra sutil por defecto */
+        }
+
+        /* Botón Primario (Color sólido) */
+        .primary-button {
+            background-color: var(--primary-color);
+            color: var(--text-light);
+            border-color: var(--primary-color);
+        }
+
+        .primary-button:hover {
+            background-color: var(--primary-hover);
+            border-color: var(--primary-hover);
+            transform: translateY(-3px); /* Efecto de levantar */
+            box-shadow: var(--shadow-md);
+        }
+
+        /* Botón Secundario (Estilo "Ghost" o contorno) */
+        .secondary-button {
+            background-color: var(--surface-color); /* Fondo blanco */
+            color: var(--primary-color); /* Texto morado */
+            border-color: var(--border-color); /* Borde sutil */
+        }
+
+        .secondary-button:hover {
+            background-color: #f7f5fa; /* Lavanda muy claro al pasar el mouse */
+            border-color: var(--primary-color);
+            color: var(--primary-hover);
+        }
+
+        /* Botón Grande (Para el Hero) */
+        .large-button {
+            padding: 16px 36px;
+            font-size: 1.1rem;
+        }
+
+
+        /* --- ESTILOS ESPECÍFICOS DEL INDEX --- */
+
+        /* 1. Header (Navegación Principal) */
+        .main-header {
+            background-color: var(--surface-color);
+            padding: 1.25rem 0; /* Relleno vertical */
+            box-shadow: var(--shadow-sm);
+            border-bottom: 1px solid var(--border-color);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .main-header .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        /* 2. Logo */
+        .logo {
+            display: flex;
+            align-items: center;
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--text-primary);
+            text-decoration: none;
+        }
+
+        .logo img {
+            width: 40px;
+            height: 40px;
+            margin-right: 10px;
+            object-fit: contain; 
+            border-radius: 6px; /* Redondeo para el placeholder */
+        }
+
+        /* 3. Navegación del Header */
+        .main-nav a {
+            margin-left: 10px;
+        }
+
+        /* 4. Sección Hero (Bienvenida) */
+        .hero-section {
+            /* Gradiente pastel moderno */
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            color: var(--text-light);
+            padding: 8rem 0; /* Más espacio vertical */
+            text-align: center;
+        }
+
+        .hero-section h1 {
+            font-size: 3.5rem; /* Título más grande */
+            margin-bottom: 0.5em;
+            font-weight: 800;
+        }
+
+        .hero-section p {
+            font-size: 1.3rem;
+            color: rgba(255, 255, 255, 0.95); /* Más legible */
+            max-width: 700px;
+            margin: 0 auto 2.5rem auto; /* Centrado y con más margen inferior */
+        }
+
+        .hero-buttons .button {
+            margin: 0 10px;
+        }
+
+        /* Estilo especial para el botón secundario en el hero (fondo oscuro) */
+        .hero-section .secondary-button {
+            background-color: transparent;
+            color: var(--text-light);
+            border-color: var(--text-light);
+        }
+
+        .hero-section .secondary-button:hover {
+            background-color: var(--text-light);
+            color: var(--primary-hover); /* Texto morado oscuro al pasar el mouse */
+        }
+
+        /* 5. Sección de Características (Features) */
+        .features-section {
+            padding: 6rem 0; /* Más espaciado */
+            background-color: var(--background-color);
+        }
+
+        .features-section h2 {
+            text-align: center;
+            font-size: 2.8rem; /* Más grande */
+            margin-bottom: 4rem; /* Más separación */
+            color: var(--text-primary);
+        }
+
+        /* 6. Grid de Características */
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2.5rem; /* Más espacio entre tarjetas */
+        }
+
+        .feature-item {
+            background-color: var(--surface-color);
+            padding: 2.5rem 2rem;
+            border-radius: 12px; /* Tarjetas más redondeadas */
+            box-shadow: var(--shadow-md);
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .feature-item:hover {
+            transform: translateY(-10px); /* Eleva más la tarjeta */
+            box-shadow: var(--shadow-lg); /* Sombra más pronunciada */
+        }
+
+        /* Icono modernizado (en un círculo) */
+        .feature-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 70px;
+            height: 70px;
+            background-color: var(--primary-color);
+            color: var(--text-light);
+            font-size: 2.5rem; /* Tamaño del ícono */
+            border-radius: 50%; /* Círculo perfecto */
+            margin-bottom: 1.5rem;
+        }
+
+        .feature-item h3 {
+            font-size: 1.5rem;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .feature-item p {
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        /* 7. Footer (Pie de Página) */
+        .main-footer {
+            background-color: var(--text-primary); /* Fondo carbón/azul oscuro */
+            color: var(--background-color); /* Texto gris claro */
+            padding: 4rem 0;
+        }
+
+        .main-footer .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap; /* Permite que se apilen en móviles */
+            gap: 1.5rem;
+        }
+
+        .main-footer p {
+            color: inherit; /* Hereda el color del footer */
+            margin: 0;
+        }
+
+        /* 8. Links de Redes Sociales */
+        .social-links a {
+            color: inherit; /* Hereda el color del footer */
+            font-size: 1.6rem;
+            margin-left: 15px;
+            transition: color 0.3s ease, transform 0.3s ease;
+        }
+
+        .social-links a:hover {
+            color: var(--primary-color); /* Resalta con el color principal (morado) */
+            transform: scale(1.15); /* Efecto de zoom */
+        }
+
+
+        /* 9. Media Queries (Responsividad) */
+
+        @media (max-width: 768px) {
+            .hero-section h1 {
+                font-size: 2.8rem;
+            }
+            
+            .hero-section p {
+                font-size: 1.15rem;
+            }
+
+            .features-section h2 {
+                font-size: 2.2rem;
+            }
+            
+            .main-footer .container {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .social-links {
+                margin-top: 1.5rem;
+            }
+            .social-links a {
+                margin: 0 10px;
+            }
+        }
+
+        @media (max-width: 500px) {
+            /* Apila los elementos del header en móviles */
+            .main-header .container {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .main-nav {
+                width: 100%;
+                display: flex;
+                justify-content: space-around;
+            }
+            .main-nav a {
+                margin: 0;
+            }
+
+            /* Apila los botones del hero en móviles */
+            .hero-buttons {
+                display: flex;
+                flex-direction: column;
+                gap: 1rem;
+                align-items: center;
+            }
+            
+            .hero-buttons .button {
+                width: 80%;
+                margin: 0;
+            }
+        }
+    </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Bienvenido a Genki</h1>
-        <p>Tu plataforma para gestionar tus tareas y proyectos de forma eficiente.</p>
-        <button onclick="location.href='login.html'">Comenzar</button>
-    </div>
+    <header class="main-header">
+        <div class="container">
+            <div class="logo">
+                <!-- Logo de reemplazo -->
+                <img src="./assets/images/GENKI_-removebg-preview.png" alt="Genki Logo">
+                <span>Genki</span>
+            </div>
+            <nav class="main-nav">
+                <!-- Enlaces temporales -->
+                <a href="./register.html" class="button primary-button">Unirse</a>
+                <a href="./login.html" class="button secondary-button">Iniciar Sesión</a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero-section">
+            <div class="container">
+                <h1>Bienvenido a Genki</h1>
+                <p>Tu plataforma integral para la gestión educativa. Simplifica tus tareas, organiza tus clases y mejora la comunicación.</p>
+                <div class="hero-buttons">
+                    <a href="#" class="button primary-button large-button">Empezar Ahora</a>
+                    <a href="#" class="button secondary-button large-button">Acceder</a>
+                </div>
+            </div>
+        </section>
+
+        <section class="features-section">
+            <div class="container">
+                <h2>Características Principales</h2>
+                <div class="feature-grid">
+                    <div class="feature-item">
+                        <i class="fas fa-calendar-alt feature-icon"></i>
+                        <h3>Gestión de Calendario</h3>
+                        <p>Organiza tus clases y eventos con un calendario intuitivo y fácil de usar.</p>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-book feature-icon"></i>
+                        <h3>Libro de Calificaciones</h3>
+                        <p>Registra y gestiona las calificaciones de tus estudiantes de manera eficiente.</p>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-chart-bar feature-icon"></i>
+                        <h3>Reportes Detallados</h3>
+                        <p>Genera informes completos sobre el rendimiento académico y la asistencia.</p>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-user-friends feature-icon"></i>
+                        <h3>Perfiles de Usuario</h3>
+                        <p>Gestiona tu información personal y la de tus estudiantes de forma segura.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="main-footer">
+        <div class="container">
+            <p>&copy; 2024 Genki. Todos los derechos reservados.</p>
+            <div class="social-links">
+                <a href="#"><i class="fab fa-facebook-f"></i></a>
+                <a href="#"><i class="fab fa-twitter"></i></a>
+                <a href="#"><i class="fab fa-instagram"></i></a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Tu archivo JS (si tienes uno) iría aquí -->
+    <!-- <script src="./js/app.js"></script> -->
 </body>
 </html>
+
