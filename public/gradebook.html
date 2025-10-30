@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="./css/styles.css">
     <link rel="stylesheet" href="./css/dashboard.css">
     <link rel="stylesheet" href="./css/gradebook.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="icon" href="./assets/images/GENKI_-removebg-preview.png">
@@ -21,13 +22,15 @@
                 <h2>Genki</h2>
             </div>
             <nav class="sidebar-nav">
-                <button class="sidebar-button" onclick="location.href='dashboard.html'">Inicio</button>
-                <button class="sidebar-button" onclick="location.href='calendar.html'">Calendario</button>
-                <button class="sidebar-button active" onclick="location.href='gradebook.html'">Calificaciones</button>
-                <button class="sidebar-button" onclick="location.href='reports.html'">Reportes</button>
-                <button class="sidebar-button" onclick="location.href='profile.html'">Perfil</button>
-                <button class="sidebar-button" id="logout-button">Cerrar Sesión</button>
+                <button class="sidebar-button" onclick="location.href='dashboard.html'"><i class="fas fa-home"></i> Inicio</button>
+                <button class="sidebar-button" onclick="location.href='calendar.html'"><i class="fas fa-calendar-alt"></i> Calendario</button>
+                <button class="sidebar-button active" onclick="location.href='gradebook.html'"><i class="fas fa-book"></i> Calificaciones</button>
+                <button class="sidebar-button" onclick="location.href='profile.html'"><i class="fas fa-user"></i> Perfil</button>
+                <button class="sidebar-button" onclick="location.href='reports.html'"><i class="fas fa-chart-bar"></i> Reportes</button>
             </nav>
+            <div class="sidebar-footer">
+                <button class="sidebar-button logout-button" id="logout-button"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</button>
+            </div>
         </aside>
         <main class="main-content">
             <div class="dashboard-navbar">

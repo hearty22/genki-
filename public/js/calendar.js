@@ -72,12 +72,16 @@ document.addEventListener('DOMContentLoaded', function() {
         // Function to fetch and render classes on the calendar
         async function fetchAndRenderClasses() {
             const loadingIndicator = document.getElementById('loading-indicator');
-            loadingIndicator.style.display = 'block'; // Show loading indicator
+            if (loadingIndicator) {
+                loadingIndicator.style.display = 'block'; // Show loading indicator
+            }
 
             const authToken = getCookie('authToken');
             if (!authToken) {
                 console.error('No authentication token found.');
-                loadingIndicator.style.display = 'none'; // Hide loading indicator on error
+                if (loadingIndicator) {
+                    loadingIndicator.style.display = 'none'; // Hide loading indicator on error
+                }
                 return;
             }
             try {
@@ -88,25 +92,34 @@ document.addEventListener('DOMContentLoaded', function() {
                     }
                 });
                 if (!response.ok) {
+                    if (response.status === 401) {
+                        window.location.href = '/login.html';
+                        return;
+                    }
                     const errorData = await response.json();
                     throw new Error(errorData.message || `HTTP error! status: ${response.status}`);
                 }
                 const classes = await response.json();
-                const events = classes.flatMap(cls => {
+                const events = classes.map(cls => {
                     const days = Array.isArray(cls.dayOfWeek) ? cls.dayOfWeek : [cls.dayOfWeek];
-                    return days.map(day => ({
+                    const daysOfWeekNumbers = days.map(d => getDayNumber(d));
+
+                    return {
                         title: `${cls.subjectName} - ${cls.courseGroup}`,
                         startTime: cls.startTime,
                         endTime: cls.endTime,
-                        daysOfWeek: [getDayNumber(day)],
-                        startRecur: cls.startDate || '2023-01-01', // Default start date
-                        endRecur: cls.endDate || '2030-12-31',   // Default end date
+                        daysOfWeek: daysOfWeekNumbers,
+                        startRecur: cls.startDate || '2023-01-01',
+                        endRecur: cls.endDate || '2030-12-31',
                         color: cls.color || '#2C5282',
                         textColor: '#FFFFFF',
-                        extendedProps: { classId: cls._id, daysOfWeek: days.map(getDayNumber) }
-                    }));
+                        extendedProps: {
+                            classId: cls._id,
+                            daysOfWeek: daysOfWeekNumbers
+                        }
+                    };
                 });
-                console.log('Generated events for calendar:', JSON.stringify(events, null, 2)); // Modified line
+                // console.log('Generated events for calendar:', JSON.stringify(events, null, 2)); // Modified line
                 calendar.setOption('events', events);
             } catch (error) {
                 console.error('Error fetching classes for calendar:', error);

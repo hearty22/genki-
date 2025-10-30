@@ -211,6 +211,14 @@ document.addEventListener('DOMContentLoaded', async () => {
                 }
             });
             const data = await response.json();
+            if (response.status === 401) {
+                window.location.href = '/login.html';
+                return;
+            }
+            if (response.status === 404){
+                console.log(response.status)
+                return profileImageDisplay.src = "/assets/images/default-profile.png"
+            }
             if (response.ok) {
                 const userProfile = data.data.user; // Acceder al objeto user anidado
                 profileEmailInput.value = userProfile.email;
@@ -222,6 +230,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                     profileImageDisplay.src = '/assets/images/default-profile.png'; // Default image
                 }
             } else {
+                console.log("error?")
                 showMessage(data.message || 'Error al cargar el perfil', 'error');
             }
         } catch (error) {
@@ -377,6 +386,10 @@ document.addEventListener('DOMContentLoaded', async () => {
             });
 
             const data = await response.json();
+            if (response.status === 401) {
+                window.location.href = '/login.html';
+                return;
+            }
             if (response.ok) {
                 showMessage(data.message, 'success');
         
@@ -644,6 +657,10 @@ async function fetchAndRenderDashboardClasses() {
         });
         const data = await response.json();
         console.log('Raw API response data:', data); // Added for debugging
+        if (response.status === 401) {
+            window.location.href = '/login.html';
+            return;
+        }
 
         if (response.ok) {
             const classesList = document.getElementById('classes-list');
