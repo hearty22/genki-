@@ -6,11 +6,11 @@ function getCookie(name) {
     if (parts.length === 2) return parts.pop().split(';').shift();
 }
 
-function showMessage(message, type) {
-    const messageContainer = document.getElementsByClassName('message-area');
+function showMessage(message, type, messageContainerId) {
+    const messageContainer = messageContainerId ? document.getElementById(messageContainerId) : document.getElementsByClassName('message-area')[0];
     if (messageContainer) {
         messageContainer.textContent = message;
-        messageContainer.className = `message-area.${type}`;
+        messageContainer.className = `message-area ${type}`;
         setTimeout(() => {
             messageContainer.textContent = '';
             messageContainer.className = 'message-area';
