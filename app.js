@@ -111,6 +111,8 @@ app.listen(PORT, () => {
   console.log(`🚀 Servidor ejecutándose en puerto ${PORT}`);
   console.log(`📱 Entorno: ${process.env.NODE_ENV || 'development'}`);
   console.log(`🌐 URL: http://localhost:${PORT}`);
+  console.log(`📂 Directorio de trabajo actual: ${process.cwd()}`);
+  console.log(`🔍 Ruta de app.js: ${__filename}`);
 });
 
 export default app;

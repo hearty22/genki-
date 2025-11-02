@@ -81,20 +81,31 @@ export const updateEvent = async (req, res) => {
 // Delete an event
 export const deleteEvent = async (req, res) => {
     try {
+        console.log('Attempting to delete event with ID:', req.params.id);
+        const eventsBeforeDelete = await Event.find({ user: req.user.id });
+        console.log('Events before deletion:', eventsBeforeDelete.length);
+
         const event = await Event.findById(req.params.id);
 
         if (!event) {
+            console.log('Event not found for ID:', req.params.id);
             return res.status(404).json({ msg: 'Event not found' });
         }
         // Ensure user owns the event
         if (event.user.toString() !== req.user.id) {
+            console.log('User not authorized to delete event ID:', req.params.id);
             return res.status(401).json({ msg: 'User not authorized' });
         }
 
         await Event.deleteOne({ _id: req.params.id });
+        console.log('Event successfully deleted with ID:', req.params.id);
+
+        const eventsAfterDelete = await Event.find({ user: req.user.id });
+        console.log('Events after deletion:', eventsAfterDelete.length);
+
         res.json({ msg: 'Event removed' });
     } catch (error) {
-        console.error(error.message);
+        console.error('Error in deleteEvent:', error.message);
         res.status(500).send('Server Error');
     }
 };
