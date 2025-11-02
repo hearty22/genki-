@@ -1164,3 +1164,39 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 });
+
+// Dark Mode Toggle
+function toggleDarkMode() {
+    const body = document.body;
+    body.dataset.theme = body.dataset.theme === 'dark' ? 'light' : 'dark';
+    localStorage.setItem('theme', body.dataset.theme);
+    updateDarkModeToggleIcon();
+}
+
+function updateDarkModeToggleIcon() {
+    const toggleButton = document.getElementById('darkModeToggle');
+    if (toggleButton) {
+        if (document.body.dataset.theme === 'dark') {
+            toggleButton.innerHTML = '<i class="fas fa-sun"></i>';
+        } else {
+            toggleButton.innerHTML = '<i class="fas fa-moon"></i>';
+        }
+    }
+}
+
+// Apply saved theme on load
+document.addEventListener('DOMContentLoaded', () => {
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme) {
+        document.body.dataset.theme = savedTheme;
+    } else {
+        // Default to light theme if no preference is saved
+        document.body.dataset.theme = 'light';
+    }
+    updateDarkModeToggleIcon(); // Update icon on load
+
+    const darkModeToggle = document.getElementById('darkModeToggle');
+    if (darkModeToggle) {
+        darkModeToggle.addEventListener('click', toggleDarkMode);
+    }
+});
