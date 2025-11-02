@@ -186,7 +186,7 @@ body {
 }
 
 .modal-content {
-    background-color: var(--surface-color);
+    background-color: #FFFFFF;
     margin: auto;
     padding: 30px;
     border-radius: 10px;

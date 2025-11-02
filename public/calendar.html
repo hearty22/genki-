@@ -45,6 +45,21 @@
         </main>
     </div>
 
+    <!-- Modal de Detalles de Evento/Clase -->
+    <div id="event-details-modal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <h2 id="event-title"></h2>
+            <p id="event-subject-row"><strong>Materia:</strong> <span id="event-subject"></span></p>
+            <p id="event-group-row"><strong>Grupo:</strong> <span id="event-group"></span></p>
+            <p><strong>Hora de Inicio:</strong> <span id="event-start-time"></span></p>
+            <p id="event-end-time-row"><strong>Hora de Fin:</strong> <span id="event-end-time"></span></p>
+            <p id="event-days-row"><strong>Días:</strong> <span id="event-days"></span></p>
+            <p id="event-description-row"><strong>Descripción:</strong> <span id="event-description"></span></p>
+            <button id="edit-event-button" class="edit-button">Editar</button>
+        </div>
+    </div>
+
     <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/locales/es.js"></script>
