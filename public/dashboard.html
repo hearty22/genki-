@@ -34,13 +34,56 @@
         <main class="main-content">
 
             <div id="home-content" class="tab-content active">
-                <div class="classes-section">
-                    <h2>Mis Clases</h2>
-                    <div class="classes-list" id="classes-list"></div>
-                    <button id="add-class-button">Añadir Clase</button>
+                <div class="dashboard-sections-container">
+                    <div class="classes-section">
+                        <h2>Mis Clases</h2>
+                        <div class="classes-list" id="classes-list"></div>
+                        <button id="add-class-button">Añadir Clase</button>
+                    </div>
+
+                    <section id="my-activities-section" class="classes-section">
+                        <h2>Mis Actividades</h2>
+                        <button id="add-event-button" class="button-primary">Añadir Evento</button>
+                        <div id="events-list" class="classes-list">
+                            <!-- Eventos y clases se renderizarán aquí -->
+                        </div>
+                    </section>
                 </div>
             </div>
         </main>
+    </div>
+
+    <!-- Modal de evento -->
+    <div id="event-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-button" id="event-modal-close">&times;</span>
+            <h2>Añadir Evento</h2>
+            <form id="event-form">
+                <div class="form-group">
+                    <label for="eventTitle">Título del Evento:</label>
+                    <input type="text" id="eventTitle" required minlength="3">
+                    <div class="error-message" id="eventTitle-error"></div>
+                </div>
+                <div class="form-group">
+                    <label for="eventDate">Fecha:</label>
+                    <input type="date" id="eventDate" required>
+                    <div class="error-message" id="eventDate-error"></div>
+                </div>
+                <div class="form-group">
+                    <label for="eventTime">Hora:</label>
+                    <input type="time" id="eventTime" required>
+                    <div class="error-message" id="eventTime-error"></div>
+                </div>
+                <div class="form-group">
+                    <label for="eventColor">Color del Evento:</label>
+                    <input type="color" id="eventColor" value="#FF5733">
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary" id="save-event-button">Guardar Evento</button>
+                    <button type="button" class="btn btn-secondary" id="cancel-event-button">Cancelar</button>
+                </div>
+            </form>
+        </div>
     </div>
 
     <!-- Modal de clase (sin cambios) -->

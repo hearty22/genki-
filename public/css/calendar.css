@@ -374,3 +374,28 @@ body {
 #loading-indicator {
     color: var(--text-color);
 }
+
+.event-details-grid {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 10px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.detail-row {
+    display: contents;
+}
+
+.detail-label {
+    font-weight: bold;
+    color: var(--text-color-dark);
+    text-align: right;
+    padding-right: 10px;
+}
+
+.modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 20px;
+}

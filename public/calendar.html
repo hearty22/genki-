@@ -36,69 +36,13 @@
             </div>
         </aside>
         <main class="main-content">
-            <div id="message-container" class="message-container"></div>
-    
-            <div class="calendar-section">
-                <h2>Calendario de Clases</h2>
-                <div id="calendar"></div>
+            <div id="loading-indicator" class="loading-indicator" style="display: none;">
+                Cargando...
             </div>
-        </main>
-    </div>
-
-    <!-- Modal de clase -->
-    <div id="class-modal" class="modal">
-        <div class="modal-content">
-            <span class="close-button" id="class-modal-close">&times;</span>
-            <h2>Añadir/Editar Clase</h2>
-            <form id="class-form">
-                <div class="form-group">
-                    <label for="subjectName">Nombre de la Materia:</label>
-                    <input type="text" id="subjectName" required minlength="3">
-                    <div class="error-message" id="subjectName-error"></div>
-                </div>
-                <div class="form-group">
-                    <label for="courseGroup">Curso o Grupo:</label>
-                    <input type="text" id="courseGroup">
-                </div>
-                <div class="form-group">
-                    <label for="dayOfWeek">Día:</label>
-                    <select id="dayOfWeek" required multiple>
-                        <option value="">Selecciona un día</option>
-                        <option value="Lunes">Lunes</option>
-                        <option value="Martes">Martes</option>
-                        <option value="Miércoles">Miércoles</option>
-                        <option value="Jueves">Jueves</option>
-                        <option value="Viernes">Viernes</option>
-                        <option value="Sábado">Sábado</option>
-                        <option value="Domingo">Domingo</option>
-                    </select>
-                    <small class="form-text text-muted">Mantén Ctrl/Cmd presionado para seleccionar múltiples días.</small>
-                    <div class="error-message" id="dayOfWeek-error"></div>
-                </div>
-                <div class="form-group">
-                    <label for="startTime">Hora de Inicio:</label>
-                    <input type="time" id="startTime" required>
-                    <div class="error-message" id="startTime-error"></div>
-                </div>
-                <div class="form-group">
-                    <label for="endTime">Hora de Fin:</label>
-                    <input type="time" id="endTime" required>
-                    <div class="error-message" id="endTime-error"></div>
-                </div>
-                <div class="form-group">
-                    <label for="location">Aula / Ubicación:</label>
-                    <input type="text" id="location">
-                </div>
-                <div class="form-group">
-                    <label for="color">Color del Evento:</label>
-                    <input type="color" id="color" value="#2C5282">
-                </div>
-                <div class="form-actions">
-                    <button type="submit" class="btn btn-primary" id="save-class-button">Guardar</button>
-                    <button type="button" class="btn btn-secondary" id="cancel-class-button">Cancelar</button>
-                </div>
-            </form>
+            <h1>Calendario de Clases</h1>
+            <div id="calendar"></div>
         </div>
+        </main>
     </div>
 
     <!-- Scripts -->

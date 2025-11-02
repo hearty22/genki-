@@ -18,6 +18,66 @@ function showMessage(message, type, messageContainerId) {
     }
 }
 
+// Nueva función para renderizar próximos acontecimientos
+function renderUpcomingEvents(eventsAndClasses) {
+    const container = document.getElementById('upcoming-events-list');
+    if (!container) return;
+
+    // Ordenar por fecha y hora
+    const sortedItems = [...eventsAndClasses].sort((a, b) => {
+        // Convertir a objetos Date si aún no lo son (para clases)
+        const dateA = a.date instanceof Date ? a.date : new Date(a.date);
+        const dateB = b.date instanceof Date ? b.date : new Date(b.date);
+        return dateA.getTime() - dateB.getTime();
+    });
+
+    container.innerHTML = '';
+    if (sortedItems.length === 0) {
+        container.innerHTML = '<p>No tienes acontecimientos próximos.</p>';
+        return;
+    }
+
+    sortedItems.forEach(item => {
+        const itemElement = document.createElement('div');
+        itemElement.className = `upcoming-item ${item.type}`;
+        itemElement.style.borderLeft = `4px solid ${item.color}`;
+        itemElement.innerHTML = `
+            <h3>${item.title}</h3>
+            <p><strong>Fecha:</strong> ${item.date.toLocaleDateString('es-ES')}</p>
+            <p><strong>Hora:</strong> ${item.time} ${item.endTime ? `- ${item.endTime}` : ''}</p>
+            <p><strong>Tipo:</strong> ${item.type === 'class' ? 'Clase' : 'Evento'}</p>
+        `;
+        container.appendChild(itemElement);
+    });
+}
+
+// Nueva función para cargar eventos y clases unificados
+async function fetchUpcomingEventsAndClasses() {
+    const token = getCookie('authToken') || localStorage.getItem('token');
+    if (!token) return;
+
+    try {
+        // Cargar eventos
+        const eventsResponse = await fetch('/api/events', {
+            headers: { 'Authorization': `Bearer ${token}` }
+        });
+        const eventsData = await eventsResponse.json();
+        const formattedEvents = eventsData.data?.map(event => ({
+            id: event._id,
+            title: event.title,
+            date: new Date(event.date),
+            time: new Date(event.date).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }), // Extraer la hora del objeto Date
+            type: 'event',
+            color: event.color || '#FF5733'
+        })) || [];
+
+        // Unificar y renderizar
+        renderUpcomingEvents([...formattedEvents]);
+    } catch (error) {
+        console.error('Error fetching upcoming events and classes:', error);
+    }
+}
+
 document.addEventListener('DOMContentLoaded', async () => {
     // Global form element variables
     let addClassButton = document.getElementById('add-class-button');
@@ -36,64 +96,272 @@ document.addEventListener('DOMContentLoaded', async () => {
     let startTimeError = document.getElementById('startTime-error');
     let endTimeError = document.getElementById('endTime-error');
 
-    // Function to render user classes in the 'Mis Clases' section
-    function renderUserClasses(classes) {
-        const userClassesContainer = document.getElementById('user-classes');
-        if (userClassesContainer) {
-            userClassesContainer.innerHTML = ''; // Clear previous classes
-            if (classes.length === 0) {
-                userClassesContainer.innerHTML = '<p>No tienes clases programadas aún.</p>';
+    // Nuevas variables para formulario de eventos
+    let eventForm = document.getElementById('event-form');
+    let eventTitleInput = document.getElementById('eventTitle');
+    let eventDateInput = document.getElementById('eventDate');
+    let eventTimeInput = document.getElementById('eventTime');
+    let eventColorInput = document.getElementById('eventColor');
+    let eventDescriptionInput = document.getElementById('eventDescription'); // Nuevo campo para descripción
+
+    let eventTitleError = document.getElementById('eventTitle-error');
+    let eventDateError = document.getElementById('eventDate-error');
+    let eventTimeError = document.getElementById('eventTime-error');
+
+    // Nuevas variables para el modal de eventos
+    let addEventButton = document.getElementById('add-event-button');
+    let eventModal = document.getElementById('event-modal');
+    let eventModalClose = document.getElementById('event-modal-close');
+    let cancelEventButton = document.getElementById('cancel-event-button');
+    let saveEventButton = document.getElementById('save-event-button');
+
+    let currentEditingEventId = null; // Para saber si estamos editando o creando
+
+    // Function to render user events and classes in the 'Mis Actividades' section
+    function renderUserEvents(activities) {
+        const userActivitiesContainer = document.getElementById('events-list');
+        if (userActivitiesContainer) {
+            userActivitiesContainer.innerHTML = ''; // Clear previous activities
+            if (activities.length === 0) {
+                userActivitiesContainer.innerHTML = '<p>No tienes actividades programadas aún.</p>';
                 return;
             }
 
-            classes.forEach(classItem => {
-                const classCard = document.createElement('div');
-                classCard.className = 'class-item';
-                classCard.innerHTML = `
-                    <h3>${classItem.subjectName}</h3>
-                    <p><strong>Grupo:</strong> ${classItem.courseGroup || 'N/A'}</p>
-                    <p><strong>Días:</strong> ${classItem.dayOfWeek.join(', ')}</p>
-                    <p><strong>Hora:</strong> ${classItem.startTime} - ${classItem.endTime}</p>
-                    <p><strong>Ubicación:</strong> ${classItem.location || 'N/A'}</p>
-                    <div class="class-actions">
-                        <button class="button-edit" data-id="${classItem._id}">Editar</button>
-                        <button class="button-delete" data-id="${classItem._id}">Eliminar</button>
+            // Sort activities by date and time
+            activities.sort((a, b) => new Date(a.date) - new Date(b.date));
+    
+            // console.log('Activities array before forEach:', activities, 'Length:', activities.length); // Removed console.log
+    
+            activities.forEach(activity => {
+                const activityCard = document.createElement('div');
+                activityCard.className = 'activity-item'; // Use a generic class for styling
+                activityCard.style.borderLeft = `4px solid ${activity.color}`;
+    
+                // console.log('Creating activity card for:', activity.type, activity); // Removed console.log
+    
+                let detailsHtml = '';
+                let actionsHtml = '';
+    
+                if (activity.type === 'event') {
+                    detailsHtml = `
+                        <h3>${activity.title}</h3>
+                        <p><strong>Tipo:</strong> Evento</p>
+                        <p><strong>Fecha:</strong> ${new Date(activity.date).toLocaleDateString('es-ES')}</p>
+                        <p><strong>Hora:</strong> ${new Date(activity.date).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</p>
+                        <p><strong>Descripción:</strong> ${activity.description || 'N/A'}</p>
+                    `;
+                    actionsHtml = `
+                        <button class="button-edit-event" data-id="${activity._id}">Editar</button>
+                        <button class="button-delete-event" data-id="${activity._id}">Eliminar</button>
+                    `;
+                } 
+
+                activityCard.innerHTML = `
+                    ${detailsHtml}
+                    <div class="activity-actions">
+                        ${actionsHtml}
                     </div>
                 `;
-                userClassesContainer.appendChild(classCard);
+                userActivitiesContainer.appendChild(activityCard);
 
                 // Add event listeners for edit and delete buttons
-                classCard.querySelector('.button-edit').addEventListener('click', () => {
-                    console.log('Edit button clicked for class:', classItem);
-                    openClassModalForEdit(classItem);
-                    classModal.style.display = 'block';
-                });
-
-                classCard.querySelector('.button-delete').addEventListener('click', async () => {
-                    if (confirm('¿Estás seguro de que quieres eliminar esta clase?')) {
-                        try {
-                            const response = await fetch(`/api/classes/${classItem._id}`, {
-                                method: 'DELETE',
-                                headers: {
-                                    'Authorization': `Bearer ${localStorage.getItem('token')}`
+                if (activity.type === 'event') {
+                    activityCard.querySelector('.button-edit-event').addEventListener('click', () => {
+                        openEventModalForEdit(activity);
+                        eventModal.style.display = 'block';
+                    });
+                    activityCard.querySelector('.button-delete-event').addEventListener('click', async () => {
+                        if (confirm('¿Estás seguro de que quieres eliminar este evento?')) {
+                            try {
+                                const response = await fetch(`/api/events/${activity._id}`, {
+                                    method: 'DELETE',
+                                    headers: {
+                                        'Authorization': `Bearer ${localStorage.getItem('token')}`
+                                    }
+                                });
+                                const data = await response.json();
+                                if (response.ok) {
+                                    showMessage(data.message, 'success');
+                                    fetchAndRenderAllActivities(); // Actualizar lista de actividades
+                                } else {
+                                    showMessage(data.message, 'error');
                                 }
-                            });
-                            const data = await response.json();
-                            if (response.ok) {
-                                showMessage(data.message, 'success');
-                                window.location.reload(); // Reload to update the class list
-                            } else {
-                                showMessage(data.message, 'error');
+                            } catch (error) {
+                                console.error('Error deleting event:', error);
+                                showMessage('Error de conexión al eliminar el evento.', 'error');
                             }
-                        } catch (error) {
-                            console.error('Error deleting class:', error);
-                            showMessage('Error de conexión al eliminar la clase.', 'error');
                         }
-                    }
-                });
+                    });
+                } else if (activity.type === 'class') {
+                    activityCard.querySelector('.button-edit-class').addEventListener('click', () => {
+                        openClassModalForEdit(activity);
+                        classModal.style.display = 'block';
+                    });
+                    activityCard.querySelector('.button-delete-class').addEventListener('click', async () => {
+                        if (confirm('¿Estás seguro de que quieres eliminar esta clase?')) {
+                            try {
+                                const response = await fetch(`/api/classes/${activity._id}`, {
+                                    method: 'DELETE',
+                                    headers: {
+                                        'Authorization': `Bearer ${localStorage.getItem('token')}`
+                                    }
+                                });
+                                const data = await response.json();
+                                if (response.ok) {
+                                    showMessage(data.message, 'success');
+                                    fetchAndRenderAllActivities(); // Actualizar lista de actividades
+                                } else {
+                                    showMessage(data.message, 'error');
+                                }
+                            } catch (error) {
+                                console.error('Error deleting class:', error);
+                                showMessage('Error de conexión al eliminar la clase.', 'error');
+                            }
+                        }
+                    });
+                }
             });
         }
     }
+
+    // Function to fetch and render all activities (events and classes)
+    async function fetchAndRenderAllActivities() {
+        const token = getCookie('authToken') || localStorage.getItem('token');
+        if (!token) return;
+
+        try {
+            const eventsResponse = await fetch('/api/events', { headers: { 'Authorization': `Bearer ${token}` } });
+            const eventsData = await eventsResponse.json();
+
+            let allActivities = [];
+
+            if (eventsResponse.ok && eventsData) {
+                const formattedEvents = eventsData.map(event => ({
+                    ...event,
+                    type: 'event',
+                    date: new Date(`${event.date.split('T')[0]}T${event.time}`),
+                    color: event.color || '#FF5733'
+                }));
+                allActivities = allActivities.concat(formattedEvents);
+            } else {
+                console.error('Error al cargar los eventos:', eventsData.message || 'Error desconocido', eventsResponse.status, eventsResponse.statusText, eventsData);
+            }
+
+            renderUserEvents(allActivities);
+
+        } catch (error) {
+            console.error('Error fetching all activities:', error);
+            showMessage('Error de conexión al cargar las actividades.', 'error');
+        }
+    }
+
+    // Function to open event modal for editing
+
+
+    if (addEventButton) {
+        addEventButton.addEventListener('click', () => {
+            currentEditingEventId = null;
+            eventForm.reset();
+            saveEventButton.textContent = 'Guardar Evento';
+            document.querySelector('#event-modal h2').textContent = 'Añadir Evento';
+            eventModal.style.display = 'block';
+        });
+    }
+
+    if (eventModalClose) {
+        eventModalClose.addEventListener('click', () => {
+            eventModal.style.display = 'none';
+        });
+    }
+
+    if (cancelEventButton) {
+        cancelEventButton.addEventListener('click', () => {
+            eventModal.style.display = 'none';
+        });
+    }
+
+    // Event form submission logic
+    if (eventForm) {
+        eventForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            let isValid = true;
+
+            // Validación
+            if (!eventTitleInput.value.trim()) {
+                eventTitleError.textContent = 'El título es obligatorio';
+                isValid = false;
+            } else if (eventTitleInput.value.length < 3) {
+                eventTitleError.textContent = 'El título debe tener al menos 3 caracteres';
+                isValid = false;
+            } else {
+                eventTitleError.textContent = '';
+            }
+
+            if (!eventDateInput.value) {
+                eventDateError.textContent = 'La fecha es obligatoria';
+                isValid = false;
+            } else if (new Date(eventDateInput.value) < new Date().setHours(0, 0, 0, 0) && !currentEditingEventId) {
+                eventDateError.textContent = 'No se pueden crear eventos en fechas pasadas';
+                isValid = false;
+            } else {
+                eventDateError.textContent = '';
+            }
+
+            if (!eventTimeInput.value) {
+                eventTimeError.textContent = 'La hora es obligatoria';
+                isValid = false;
+            } else {
+                eventTimeError.textContent = '';
+            }
+
+            if (!isValid) return;
+
+            const token = getCookie('authToken') || localStorage.getItem('token');
+            if (!token) {
+                showMessage('No autenticado. Inicia sesión nuevamente.', 'error');
+                return;
+            }
+
+            const eventData = {
+                title: eventTitleInput.value.trim(),
+                description: eventDescriptionInput.value.trim(),
+                date: eventDateInput.value,
+                time: eventTimeInput.value,
+                color: eventColorInput.value
+            };
+
+            try {
+                const method = currentEditingEventId ? 'PUT' : 'POST';
+                const url = currentEditingEventId ? `/api/events/${currentEditingEventId}` : '/api/events';
+
+                const response = await fetch(url, {
+                    method: method,
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify(eventData)
+                });
+
+                const data = await response.json();
+                if (response.ok) {
+                    showMessage(data.message, 'success');
+                    eventModal.style.display = 'none';
+                    eventForm.reset();
+                    fetchAndRenderUserEvents(); // Actualizar lista de eventos
+                    fetchUpcomingEventsAndClasses(); // Actualizar acontecimientos
+                } else {
+                    showMessage(data.message || 'Error al guardar el evento', 'error');
+                }
+            } catch (error) {
+                console.error('Error saving event:', error);
+                showMessage('Error de conexión al guardar el evento', 'error');
+            }
+        });
+    }
+
+    // Initial fetches when DOM is loaded
+    fetchAndRenderAllActivities(); // Fetch and render all activities on dashboard
     console.log('DOMContentLoaded event fired.');
     const loginForm = document.getElementById('login-form');
     const registerForm = document.getElementById('register-form');
@@ -243,19 +511,19 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (profileForm) {
         profileForm.addEventListener('submit', async (e) => {
             e.preventDefault();
-
+    
             const authToken = getCookie('authToken');
             if (!authToken) {
                 showMessage('No autenticado. Por favor, inicia sesión.', 'error');
                 return;
             }
-
+    
             const updatedProfile = {
                 email: profileEmailInput.value,
                 phone: profilePhoneInput.value,
                 bio: profileBioTextarea.value
             };
-
+    
             try {
                 const response = await fetch('/api/auth/profile', {
                     method: 'PUT',
@@ -265,7 +533,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                     },
                     body: JSON.stringify(updatedProfile)
                 });
-
+    
                 const data = await response.json();
                 if (response.ok) {
                     showMessage(data.message, 'success');
@@ -284,16 +552,16 @@ document.addEventListener('DOMContentLoaded', async () => {
         profileImageUpload.addEventListener('change', async (e) => {
             const file = e.target.files[0];
             if (!file) return;
-
+    
             const formData = new FormData();
             formData.append('profileImage', file);
-
+    
             const authToken = getCookie('authToken');
             if (!authToken) {
                 showMessage('No autenticado. Por favor, inicia sesión.', 'error');
                 return;
             }
-
+    
             try {
                 const response = await fetch('/api/auth/profile/image/upload', {
                     method: 'POST',
@@ -302,7 +570,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                     },
                     body: formData
                 });
-
+    
                 const data = await response.json();
                 if (response.ok) {
                     showMessage(data.message, 'success');
@@ -322,13 +590,13 @@ document.addEventListener('DOMContentLoaded', async () => {
             if (!confirm('¿Estás seguro de que quieres eliminar tu imagen de perfil?')) {
                 return;
             }
-
+    
             const authToken = getCookie('authToken');
             if (!authToken) {
                 showMessage('No autenticado. Por favor, inicia sesión.', 'error');
                 return;
             }
-
+    
             try {
                 const response = await fetch('/api/auth/profile/image', {
                     method: 'DELETE',
@@ -336,7 +604,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                         'Authorization': `Bearer ${authToken}`
                     }
                 });
-
+    
                 const data = await response.json();
                 if (response.ok) {
                     showMessage(data.message, 'success');
@@ -645,6 +913,7 @@ async function fetchAndRenderDashboardClasses() {
     const authToken = getCookie('authToken');
     if (!authToken) {
         console.error('No authentication token found.');
+        window.location.href = "./login.html"
         return;
     }
 
