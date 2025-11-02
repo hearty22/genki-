@@ -5,6 +5,7 @@
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     margin-left: 20px; /* Adjust as needed for spacing from sidebar */
+    overflow-x: hidden;
 }
 
 .profile-image-section {
@@ -47,6 +48,8 @@
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
     margin-bottom: 20px;
+    box-sizing: border-box;
+    max-width: 100%;
 }
 
 .form-group {
@@ -63,13 +66,14 @@
 .form-group input[type="email"],
 .form-group input[type="text"],
 .form-group textarea {
-    width: calc(100% - 20px);
+    width: 100%;
     padding: 10px;
     border: 1px solid var(--border-light-gray);
     border-radius: 4px;
     font-size: 1rem;
     color: var(--text-charcoal);
     background-color: var(--background-white);
+    box-sizing: border-box;
 }
 
 .form-group input[type="email"]:focus,
