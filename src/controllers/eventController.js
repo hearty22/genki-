@@ -55,7 +55,7 @@ export const getEventById = async (req, res) => {
 // Update an event
 export const updateEvent = async (req, res) => {
     try {
-        const { title, description, date } = req.body;
+        const { title, description, date, time, color } = req.body;
         let event = await Event.findById(req.params.id);
 
         if (!event) {
@@ -68,7 +68,18 @@ export const updateEvent = async (req, res) => {
 
         event.title = title || event.title;
         event.description = description || event.description;
-        event.date = date || event.date;
+        event.color = color || event.color;
+
+        // Combinar fecha y hora en un solo objeto Date si se proporcionan
+        if (date && time) {
+            event.date = new Date(`${date}T${time}:00`);
+        } else if (date) {
+            // Si solo se proporciona la fecha, intentar mantener la hora existente si event.date ya es un objeto Date
+            const existingDate = event.date ? new Date(event.date) : new Date();
+            const [year, month, day] = date.split('-').map(Number);
+            existingDate.setFullYear(year, month - 1, day);
+            event.date = existingDate;
+        }
 
         event = await event.save();
         res.json(event);

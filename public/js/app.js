@@ -201,10 +201,8 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // Event modal related elements and listeners
     const eventModal = document.getElementById('event-modal');
-    console.log('eventModal element:', eventModal); // Debugging line
     if (eventModal) {
         const eventForm = document.getElementById('event-form');
-        console.log('eventForm element:', eventForm); // Debugging line
         const eventTitleInput = document.getElementById('eventTitle');
         const eventDateInput = document.getElementById('eventDate');
         const eventTimeInput = document.getElementById('eventTime');
@@ -274,8 +272,80 @@ document.addEventListener('DOMContentLoaded', async () => {
         // Event listener for event form submission
         eventForm.addEventListener('submit', async (e) => {
             e.preventDefault();
-            console.log('Formulario de evento enviado. Previniendo recarga de página.');
-            // Aquí irá la lógica para guardar o actualizar el evento
+
+            // Clear previous errors
+            eventTitleError.textContent = '';
+            eventDateError.textContent = '';
+            eventTimeError.textContent = '';
+
+            const title = eventTitleInput.value.trim();
+            const date = eventDateInput.value;
+            const time = eventTimeInput.value;
+            const color = eventColorInput.value;
+            const description = eventDescriptionInput.value; // Assuming you have an eventDescriptionInput
+
+            let isValid = true;
+            if (!title) {
+                eventTitleError.textContent = 'El título es obligatorio.';
+                isValid = false;
+            }
+            if (!date) {
+                eventDateError.textContent = 'La fecha es obligatoria.';
+                isValid = false;
+            }
+            if (!time) {
+                eventTimeError.textContent = 'La hora es obligatoria.';
+                isValid = false;
+            }
+
+            if (!isValid) {
+                return;
+            }
+
+            const eventData = {
+                title,
+                date,
+                time,
+                color,
+                description
+            };
+
+            console.log('Event data being sent:', eventData); // Debugging line
+
+            const token = getCookie('authToken');
+            let url = '/api/events';
+            let method = 'POST';
+
+            if (currentEditingEventId) {
+                url = `/api/events/${currentEditingEventId}`;
+                method = 'PUT';
+            }
+
+            try {
+                const response = await fetch(url, {
+                    method: method,
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify(eventData)
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    showMessage(data.message, 'success');
+                    eventModal.style.display = 'none';
+                    eventForm.reset();
+                    currentEditingEventId = null;
+                    fetchAndRenderAllActivities(); // Refresh the activities list
+                } else {
+                    showMessage(data.message || 'Error al guardar el evento.', 'error');
+                }
+            } catch (error) {
+                console.error('Error al guardar el evento:', error);
+                showMessage('Error de conexión al guardar el evento.', 'error');
+            }
         });
     }
 
@@ -307,11 +377,13 @@ document.addEventListener('DOMContentLoaded', async () => {
                 let actionsHtml = '';
     
                 if (activity.type === 'event') {
+                    console.log('Debugging event date and time:', activity.date, activity.time);
+                    const eventDateTime = new Date(`${activity.date}T${activity.time}`);
                     detailsHtml = `
                         <h3>${activity.title}</h3>
                         <p><strong>Tipo:</strong> Evento</p>
-                        <p><strong>Fecha:</strong> ${new Date(activity.date).toLocaleDateString('es-ES')}</p>
-                        <p><strong>Hora:</strong> ${new Date(activity.date).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</p>
+                        <p><strong>Fecha:</strong> ${eventDateTime.toLocaleDateString('es-ES')}</p>
+                        <p><strong>Hora:</strong> ${eventDateTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</p>
                         <p><strong>Descripción:</strong> ${activity.description || 'N/A'}</p>
                     `;
                     actionsHtml = `
