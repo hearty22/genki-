@@ -310,8 +310,6 @@ document.addEventListener('DOMContentLoaded', async () => {
                 description
             };
 
-            console.log('Event data being sent:', eventData); // Debugging line
-
             const token = getCookie('authToken');
             let url = '/api/events';
             let method = 'POST';
@@ -371,14 +369,13 @@ document.addEventListener('DOMContentLoaded', async () => {
                 activityCard.style.borderLeft = `4px solid ${activity.color}`;
     
                 // console.log('Creating activity card for:', activity.type, activity); // Removed console.log
-                console.log('Activity object before rendering:', activity); // Added for debugging
+                // console.log('Activity object before rendering:', activity); // Removed for debugging
 
                 let detailsHtml = '';
                 let actionsHtml = '';
     
                 if (activity.type === 'event') {
-                    console.log('Debugging event date and time:', activity.date, activity.time);
-                    const eventDateTime = new Date(`${activity.date}T${activity.time}`);
+                    const eventDateTime = new Date(activity.date);
                     detailsHtml = `
                         <h3>${activity.title}</h3>
                         <p><strong>Tipo:</strong> Evento</p>
@@ -489,7 +486,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 const formattedEvents = eventsData.map(event => ({
                     ...event,
                     type: 'event',
-                    date: new Date(`${event.date.split('T')[0]}T${event.time}`),
+                    date: new Date(event.date),
                     color: event.color || '#FF5733'
                 }));
                 allActivities = allActivities.concat(formattedEvents);
@@ -512,7 +509,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // Initial fetches when DOM is loaded
     fetchAndRenderAllActivities(); // Fetch and render all activities on dashboard
-    console.log('DOMContentLoaded event fired.');
     const loginForm = document.getElementById('login-form');
     const registerForm = document.getElementById('register-form');
 
@@ -534,8 +530,6 @@ document.addEventListener('DOMContentLoaded', async () => {
                 const responseData = await response.json();
                 if (response.ok) {
                     showMessage(responseData.message, 'success');
-                    console.log('Login exitoso, redirigiendo a dashboard.html');
-                    console.log('Cookies after login:', document.cookie); // Verificar cookies
                     window.location.href = '/dashboard.html';
                 } else {
                     if (response.status === 400) {
@@ -583,8 +577,6 @@ document.addEventListener('DOMContentLoaded', async () => {
                     window.location.href = '/login.html';
                 } else {
                     const errorData = await response.json();
-                    console.log('Register error response status:', response.status);
-                    console.log('Register error data:', errorData);
                     if (response.status === 400) {
                         showMessage(errorData.message || 'Datos de entrada inválidos', 'error', 'register-message');
                     } else if (response.status === 409) {
@@ -634,7 +626,6 @@ document.addEventListener('DOMContentLoaded', async () => {
                 return;
             }
             if (response.status === 404){
-                console.log(response.status)
                 return profileImageDisplay.src = "/assets/images/default-profile.png"
             }
             if (response.ok) {
@@ -1075,7 +1066,6 @@ async function fetchAndRenderDashboardClasses() {
             }
         });
         const data = await response.json();
-        console.log('Raw API response data:', data); // Added for debugging
         if (response.status === 401) {
             window.location.href = '/login.html';
             return;
@@ -1084,8 +1074,6 @@ async function fetchAndRenderDashboardClasses() {
         if (response.ok) {
             const classesList = document.getElementById('classes-list');
             classesList.innerHTML = ''; // Clear existing classes
-
-            console.log('Classes to render:', data); // Added for debugging
 
             if (data.length === 0) {
                 classesList.innerHTML = '<p>No hay clases programadas.</p>';
@@ -1110,7 +1098,6 @@ async function fetchAndRenderDashboardClasses() {
 
                 // Add event listeners for edit and delete buttons
                 classElement.querySelector('.button-edit').addEventListener('click', () => {
-                    console.log('Edit button clicked for class:', classItem);
                     window.location.href = `/edit-class.html?id=${classItem._id}`;
                 });
 
@@ -1151,7 +1138,6 @@ async function fetchAndRenderDashboardClasses() {
 // Manejo del botón de cerrar sesión
 document.addEventListener('DOMContentLoaded', () => {
     const logoutButton = document.querySelector('#logout-button');
-    console.log('Logout Button Element:', logoutButton);
     if (logoutButton) {
         logoutButton.addEventListener('click', async () => {
             try {
@@ -1163,7 +1149,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     credentials: 'include'
                 });
 
-                console.log('Received response from logout endpoint.');
                 const data = await response.json();
 
                 if (response.ok) {
