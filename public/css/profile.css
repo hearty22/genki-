@@ -1,0 +1,147 @@
+.main-content {
+    padding: 20px;
+    flex-grow: 1;
+    background-color: var(--background-light-gray);
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-left: 20px; /* Adjust as needed for spacing from sidebar */
+    overflow-x: hidden;
+}
+
+.profile-image-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 20px;
+    padding: 20px;
+    background-color: var(--white);
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.profile-image-upload-label {
+    cursor: pointer;
+    margin-bottom: 15px;
+    display: block;
+}
+
+.profile-image-display {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid var(--primary-pastel-pink);
+    transition: border-color 0.3s ease;
+}
+
+.profile-image-upload-label:hover .profile-image-display {
+    border-color: var(--primary-pastel-purple);
+}
+
+.profile-image-section button {
+    margin: 5px;
+}
+
+#profile-form {
+    background-color: var(--white);
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    margin-bottom: 20px;
+    box-sizing: border-box;
+    max-width: 100%;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 600;
+    color: var(--text-charcoal);
+}
+
+.form-group input[type="email"],
+.form-group input[type="text"],
+.form-group textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid var(--border-light-gray);
+    border-radius: 4px;
+    font-size: 1rem;
+    color: var(--text-charcoal);
+    background-color: var(--background-white);
+    box-sizing: border-box;
+}
+
+.form-group input[type="email"]:focus,
+.form-group input[type="text"]:focus,
+.form-group textarea:focus {
+    border-color: var(--primary-pastel-purple);
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(147, 112, 219, 0.2);
+}
+
+.profile-actions {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.profile-actions button {
+    background-color: var(--primary-pastel-pink);
+    color: var(--white);
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.3s ease;
+}
+
+.profile-actions button:hover {
+    background-color: var(--primary-pastel-purple);
+}
+
+.message-area {
+    margin-bottom: 20px;
+    padding: 10px;
+    border-radius: 4px;
+    text-align: center;
+    font-weight: 600;
+}
+
+.message-area.success {
+    background-color: var(--success-light);
+    color: var(--success-dark);
+}
+
+.message-area.error {
+    background-color: var(--error-light);
+    color: var(--error-dark);
+}
+
+/* General button styling */
+.button {
+    background-color: var(--primary-pastel-pink);
+    color: var(--white);
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: background-color 0.3s ease;
+}
+
+.button:hover {
+    background-color: var(--primary-pastel-purple);
+}
+
+.button-danger {
+    background-color: var(--error-dark);
+}
+
+.button-danger:hover {
+    background-color: #cc0000;
+}

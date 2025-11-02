@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Libreta de Calificaciones</title>
+    <link rel="stylesheet" href="./css/styles.css">
+    <link rel="stylesheet" href="./css/dashboard.css">
+    <link rel="stylesheet" href="./css/gradebook.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="icon" href="./assets/images/GENKI_-removebg-preview.png">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat+Alternates:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="workspace-container">
+        <!-- Barra lateral -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <img src="./assets/images/GENKI_-removebg-preview.png" alt="GENKI! logo">
+                <h2>Genki</h2>
+            </div>
+            <nav class="sidebar-nav">
+                <button class="sidebar-button" onclick="location.href='dashboard.html'"><i class="fas fa-home"></i> Inicio</button>
+                <button class="sidebar-button" onclick="location.href='calendar.html'"><i class="fas fa-calendar-alt"></i> Calendario</button>
+                <button class="sidebar-button active" onclick="location.href='gradebook.html'"><i class="fas fa-book"></i> Calificaciones</button>
+                <button class="sidebar-button" onclick="location.href='profile.html'"><i class="fas fa-user"></i> Perfil</button>
+                <button class="sidebar-button" onclick="location.href='reports.html'"><i class="fas fa-chart-bar"></i> Reportes</button>
+            </nav>
+            <div class="sidebar-footer">
+                <button class="sidebar-button logout-button" id="logout-button"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</button>
+                <button id="darkModeToggle" class="sidebar-button">
+                    <i class="fas fa-moon"></i>
+                </button>
+            </div>
+        </aside>
+        <main class="main-content">
+            <div class="dashboard-navbar">
+            </div>
+            <div class="gradebook-controls">
+                <div class="form-group">
+                    <label for="course-select">Curso:</label>
+                    <select id="course-select">
+                        <option value="">Seleccione un curso</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="assessment-select">Evaluación:</label>
+                    <select id="assessment-select">
+                        <option value="">Seleccione una evaluación</option>
+                    </select>
+                </div>
+            </div>
+            <div class="assessment-management-controls">
+                <h2>Gestión de Evaluaciones</h2>
+                <button id="add-assessment-button" class="btn btn-secondary">Añadir Evaluación</button>
+                <button id="add-student-button" class="btn btn-secondary">Añadir Alumno</button>
+                <button id="edit-assessment-button" class="btn btn-secondary">Editar Evaluación</button>
+                <button id="delete-assessment-button" class="btn btn-secondary">Eliminar Evaluación</button>
+            </div>
+            <div class="gradebook-grid-container">
+                <h2>Planilla de Calificaciones</h2>
+                <div id="gradebook-grid">
+                    <!-- La tabla de calificaciones se cargará aquí -->
+                </div>
+                <button id="save-grades-button" class="btn btn-primary">Guardar Calificaciones</button>
+            </div>
+        </main>
+    </div>
+
+    <!-- Add Assessment Modal -->
+    <div id="add-assessment-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <h2>Añadir Nueva Evaluación</h2>
+            <form id="add-assessment-form">
+                <div class="form-group">
+                    <label for="new-assessment-name">Nombre de la Evaluación:</label>
+                    <input type="text" id="new-assessment-name" required>
+                </div>
+                <div class="form-group">
+                    <label for="new-assessment-course">Curso:</label>
+                    <select id="new-assessment-course" required>
+                        <option value="">Seleccione un curso</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary">Guardar Evaluación</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Edit Assessment Modal -->
+    <div id="edit-assessment-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <h2>Editar Evaluación</h2>
+            <form id="edit-assessment-form">
+                <input type="hidden" id="edit-assessment-id">
+                <div class="form-group">
+                    <label for="edit-assessment-name">Nombre de la Evaluación:</label>
+                    <input type="text" id="edit-assessment-name" required>
+                </div>
+                <div class="form-group">
+                    <label for="edit-assessment-course">Curso:</label>
+                    <select id="edit-assessment-course" required>
+                        <option value="">Seleccione un curso</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Add Student Modal -->
+    <div id="add-student-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-button" id="close-add-student-modal-button">&times;</span>
+            <h2>Añadir Nuevo Alumno a la Clase</h2>
+            <form id="add-student-form">
+                <div class="form-group">
+                    <label for="new-student-name">Nombre del Nuevo Alumno:</label>
+                    <input type="text" id="new-student-name" placeholder="Introduce el nombre del alumno" required>
+                </div>
+                <button type="submit" class="btn btn-primary" id="add-selected-student-button">Añadir Alumno</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="./js/app.js"></script>
+    <script src="./js/gradebook.js"></script>
+</body>
+</html>
