@@ -52,6 +52,7 @@
             <div class="assessment-management-controls">
                 <h2>Gestión de Evaluaciones</h2>
                 <button id="add-assessment-button" class="btn btn-secondary">Añadir Evaluación</button>
+                <button id="add-student-button" class="btn btn-secondary">Añadir Alumno</button>
                 <button id="edit-assessment-button" class="btn btn-secondary">Editar Evaluación</button>
                 <button id="delete-assessment-button" class="btn btn-secondary">Eliminar Evaluación</button>
             </div>
@@ -104,6 +105,21 @@
                     </select>
                 </div>
                 <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Add Student Modal -->
+    <div id="add-student-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-button" id="close-add-student-modal-button">&times;</span>
+            <h2>Añadir Nuevo Alumno a la Clase</h2>
+            <form id="add-student-form">
+                <div class="form-group">
+                    <label for="new-student-name">Nombre del Nuevo Alumno:</label>
+                    <input type="text" id="new-student-name" placeholder="Introduce el nombre del alumno" required>
+                </div>
+                <button type="submit" class="btn btn-primary" id="add-selected-student-button">Añadir Alumno</button>
             </form>
         </div>
     </div>

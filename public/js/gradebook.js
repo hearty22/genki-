@@ -432,4 +432,101 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // Initial population
     populateCourses();
+
+    // Get add student modal elements
+    const addStudentButton = document.getElementById('add-student-button');
+    const addStudentModal = document.getElementById('add-student-modal');
+    const closeAddStudentModalButton = document.getElementById('close-add-student-modal-button');
+    const newStudentNameInput = document.getElementById('new-student-name');
+    const addSelectedStudentButton = document.getElementById('add-selected-student-button');
+
+    addStudentButton.addEventListener('click', () => {
+        addStudentModal.style.display = 'block';
+    });
+
+    closeAddStudentModalButton.addEventListener('click', () => {
+        addStudentModal.style.display = 'none';
+    });
+
+    // Function to show the add student modal
+    async function showAddStudentModal() {
+        const courseId = courseSelect.value;
+        if (!courseId) {
+            alert('Por favor, seleccione un curso primero.');
+            return;
+        }
+        addStudentModal.style.display = 'block';
+        newStudentNameInput.value = '';
+        addSelectedStudentButton.disabled = false; // Enable button for new student
+    }
+
+    // Function to hide the add student modal
+    function hideAddStudentModal() {
+        addStudentModal.style.display = 'none';
+    }
+
+    // Add new student to class
+    addSelectedStudentButton.addEventListener('click', async (event) => {
+        event.preventDefault(); // Prevent default form submission
+        console.log('Add New Student button clicked.');
+
+        const studentName = newStudentNameInput.value.trim();
+        if (!studentName) {
+            alert('Por favor, introduzca el nombre del nuevo alumno.');
+            return;
+        }
+
+        const courseId = courseSelect.value;
+        if (!courseId) {
+            alert('Por favor, seleccione un curso.');
+            return;
+        }
+
+        try {
+            const token = getCookie('authToken');
+            if (!token) {
+                window.location.href = 'login.html';
+                return;
+            }
+
+            const nameParts = studentName.split(' ').filter(part => part.trim() !== '');
+            const firstName = nameParts[0] || '';
+            let lastName = '';
+            if (nameParts.length > 1) {
+                lastName = nameParts.slice(1).join(' ');
+            } else {
+                lastName = firstName;
+            }
+            console.log('Sending student data:', { firstName, lastName });
+            const response = await fetch(`/api/classes/${courseId}/students/create`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify({ firstName, lastName })
+            });
+
+            if (response.status === 401) {
+                window.location.href = 'login.html';
+                return;
+            }
+            if (!response.ok) {
+                const errorData = await response.json();
+                console.error('Server error data (create and add student):', errorData);
+                throw new Error(errorData.message || `HTTP error! status: ${response.status}`);
+            }
+            const newStudentData = await response.json(); // Assuming the response contains the new student info
+            console.log('Student created and added to class successfully:', newStudentData);
+
+            alert('Alumno añadido al curso exitosamente.');
+            hideAddStudentModal();
+            // Re-render gradebook to show the new student
+            renderGradebook(courseId, assessmentSelect.value);
+        } catch (error) {
+            console.error('Error adding new student:', error);
+            alert(`Error al añadir nuevo alumno: ${error.message}`);
+        }
+    });
 });
+

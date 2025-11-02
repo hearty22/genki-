@@ -1,4 +1,6 @@
 import Class from '../models/Class.js';
+import User from '../models/User.js'; // Import the User model
+import { hashPasswordDirect } from '../middleware/hashPassword.js'; // Import hashPasswordDirect utility
 
 // Create a new class
 export const createClass = async (req, res) => {
@@ -110,5 +112,102 @@ export const getStudentsByClass = async (req, res) => {
     } catch (error) {
         console.error('Error fetching students by class:', error);
         res.status(500).json({ success: false, message: 'Error fetching students by class', error: error.message });
+    }
+};
+
+// Add a student to a class
+export const addStudentToClass = async (req, res) => {
+    try {
+        const { classId } = req.params;
+        const { studentId } = req.body;
+
+        console.log('Attempting to add student to class:', { classId, studentId });
+
+        const classItem = await Class.findById(classId);
+
+        if (!classItem) {
+            console.log('Class not found for ID:', classId);
+            return res.status(404).json({ success: false, message: 'Class not found' });
+        }
+
+        console.log('Class found:', classItem.subjectName);
+        console.log('Current students in class:', classItem.students);
+
+        // Check if student already exists in the class
+        if (classItem.students.includes(studentId)) {
+            console.log('Student already in this class:', studentId);
+            return res.status(400).json({ success: false, message: 'Student already in this class' });
+        }
+
+        classItem.students.push(studentId);
+        console.log('Students array after push:', classItem.students);
+        await classItem.save();
+        console.log('Class saved successfully with new student.');
+
+        res.status(200).json({ success: true, message: 'Student added to class successfully', class: classItem });
+    } catch (error) {
+        console.error('Error adding student to class:', error);
+        res.status(500).json({ success: false, message: 'Error adding student to class', error: error.message });
+    }
+};
+
+// Create a new student and add to a class
+export const createAndAddStudentToClass = async (req, res) => {
+    try {
+        const { classId } = req.params;
+        const { firstName, lastName } = req.body;
+
+        if (!firstName || !lastName) {
+            return res.status(400).json({ success: false, message: 'First name and last name are required' });
+        }
+
+        // Generate a placeholder email and password for the student
+        const placeholderEmail = `${firstName.toLowerCase()}.${lastName.toLowerCase()}.${Date.now()}@student.com`;
+        const placeholderPassword = Math.random().toString(36).slice(-8); // Random 8-character password
+
+        // Hash the placeholder password
+        const hashedPassword = await hashPasswordDirect(placeholderPassword);
+
+        // Create a new User with 'student' role
+        const newStudent = new User({
+            email: placeholderEmail,
+            password: hashedPassword,
+            firstName,
+            lastName,
+            role: 'student'
+        });
+
+        await newStudent.save();
+
+        // Add the new student's ID to the class
+        const classItem = await Class.findById(classId);
+
+        if (!classItem) {
+            return res.status(404).json({ success: false, message: 'Class not found' });
+        }
+
+        // Check if student already exists in the class (by ID)
+        if (classItem.students.includes(newStudent._id)) {
+            return res.status(400).json({ success: false, message: 'Student already in this class' });
+        }
+
+        classItem.students.push(newStudent._id);
+        await classItem.save();
+
+        res.status(201).json({
+            success: true,
+            message: 'Student created and added to class successfully',
+            student: {
+                id: newStudent._id,
+                firstName: newStudent.firstName,
+                lastName: newStudent.lastName,
+                email: newStudent.email
+            },
+            class: classItem
+        });
+
+    } catch (error) {
+        console.error('Error creating and adding student to class:', error);
+        return res.status(500).json({ success: false, message: 'Error creating and adding student to class', error: error.message });
     }
 };
