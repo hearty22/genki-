@@ -399,3 +399,32 @@ body {
     justify-content: flex-end;
     margin-top: 20px;
 }
+
+@media (max-width: 768px) {
+    .main-content {
+        margin-left: 0; /* Remove sidebar offset on small screens */
+    }
+
+    .event-details-grid {
+        grid-template-columns: 1fr; /* Stack columns on small screens */
+    }
+
+    .detail-label {
+        text-align: left; /* Align labels to left on small screens */
+        padding-right: 0;
+    }
+
+    .modal-content {
+        width: 95%;
+        padding: 20px;
+    }
+
+    .fc .fc-toolbar-title {
+        font-size: 1.4em; /* Adjust font size for smaller screens */
+    }
+
+    .fc .fc-button {
+        padding: 6px 10px; /* Adjust button padding */
+        font-size: 0.9em;
+    }
+}

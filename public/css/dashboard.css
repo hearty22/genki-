@@ -198,6 +198,74 @@ html, body {
     justify-content: space-between; /* Distribuye el espacio verticalmente */
 }
 
+@media (max-width: 768px) {
+    .sidebar {
+        position: fixed;
+        left: -250px; /* Ocultar sidebar por defecto */
+        height: 100%;
+        z-index: 1000;
+        transition: left 0.3s ease;
+        box-shadow: 2px 0 5px rgba(0,0,0,0.2);
+    }
+
+    .sidebar.active {
+        left: 0; /* Mostrar sidebar */
+    }
+
+    .main-content {
+        margin-left: 0; /* Main content takes full width */
+    }
+
+    .workspace-container.sidebar-active .main-content {
+        /* Optional: push main content to the right when sidebar is active */
+        transform: translateX(250px);
+    }
+}
+
+.menu-toggle {
+    display: none; /* Ocultar por defecto en desktop */
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 8px;
+    cursor: pointer;
+    z-index: 1001;
+}
+
+.menu-toggle:hover {
+    background-color: var(--primary-dark-color);
+}
+
+@media (max-width: 768px) {
+    .menu-toggle {
+        display: block; /* Mostrar en mobile */
+    }
+
+    .main-content {
+        width: 100%;
+        margin-left: 0; /* Asegurar que el contenido principal ocupe todo el ancho */
+    }
+
+    .overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 999;
+    }
+
+    .overlay.active {
+        display: block;
+    }
+}
+
 .main-content {
     flex-grow: 1;
     display: flex;

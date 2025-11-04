@@ -180,6 +180,25 @@ async function fetchUpcomingEventsAndClasses() {
 }
 
 document.addEventListener('DOMContentLoaded', async () => {
+    // Toggle sidebar for mobile
+    const menuToggle = document.getElementById('menu-toggle');
+    const sidebar = document.querySelector('.sidebar');
+    const overlay = document.getElementById('overlay');
+    const workspaceContainer = document.querySelector('.workspace-container');
+
+    if (menuToggle && sidebar && overlay && workspaceContainer) {
+        menuToggle.addEventListener('click', () => {
+            sidebar.classList.toggle('active');
+            overlay.classList.toggle('active');
+            workspaceContainer.classList.toggle('sidebar-active');
+        });
+
+        overlay.addEventListener('click', () => {
+            sidebar.classList.remove('active');
+            overlay.classList.remove('active');
+            workspaceContainer.classList.remove('sidebar-active');
+        });
+    }
     // Global form element variables
     let addClassButton = document.getElementById('add-class-button');
     let classModal = document.getElementById('class-modal');
