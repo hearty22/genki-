@@ -1190,6 +1190,28 @@ function toggleDarkMode() {
     body.dataset.theme = body.dataset.theme === 'dark' ? 'light' : 'dark';
     localStorage.setItem('theme', body.dataset.theme);
     updateDarkModeToggleIcon();
+    updateLogo(body.dataset.theme);
+}
+
+function updateLogo(theme) {
+    const mainLogo = document.getElementById('main-logo');
+    const sidebarLogo = document.getElementById('sidebar-logo');
+
+    if (mainLogo) {
+        if (theme === 'dark') {
+            mainLogo.src = './assets/images/genki_removebg-white.png';
+        } else {
+            mainLogo.src = './assets/images/GENKI_-removebg-preview.png';
+        }
+    }
+
+    if (sidebarLogo) {
+        if (theme === 'dark') {
+            sidebarLogo.src = './assets/images/GENKI_-removebg-preview-white.png';
+        } else {
+            sidebarLogo.src = './assets/images/GENKI_-removebg-preview.png';
+        }
+    }
 }
 
 function updateDarkModeToggleIcon() {
@@ -1213,6 +1235,7 @@ document.addEventListener('DOMContentLoaded', () => {
         document.body.dataset.theme = 'light';
     }
     updateDarkModeToggleIcon(); // Update icon on load
+    updateLogo(document.body.dataset.theme); // Update logo on load
 
     const darkModeToggle = document.getElementById('darkModeToggle');
     if (darkModeToggle) {
