@@ -46,6 +46,32 @@
             --shadow-lg: 0 10px 20px rgba(0,0,0,0.07);
         }
 
+        /* Modo Oscuro - Variables y Estilos */
+        [data-theme="dark"] {
+            --primary-color: #805ad5;
+            --primary-hover: #6b46c1;
+            --secondary-color: #f687b3;
+            --secondary-hover: #ed64a6;
+            
+            --background-color: #1a202c;
+            --surface-color: #2d3748;
+            
+            --text-primary: #e2e8f0;
+            --text-secondary: #cbd5e0;
+            --text-light: #ffffff;
+            
+            --border-color: #4a5568;
+            
+            --shadow-sm: 0 2px 4px rgba(0,0,0,0.2);
+            --shadow-md: 0 4px 10px rgba(0,0,0,0.2);
+            --shadow-lg: 0 10px 20px rgba(0,0,0,0.3);
+
+            /* Ajuste para el botón primario en hover en modo oscuro */
+            .primary-button:hover {
+                color: var(--text-primary);
+            }
+        }
+
         /* 2. Reseteo Básico y Estilos del Body */
         * {
             margin: 0;
@@ -64,6 +90,7 @@
             color: var(--text-primary);
             line-height: 1.6;
             -webkit-font-smoothing: antialiased; /* Mejora renderizado de fuentes */
+            transition: background-color 0.3s ease, color 0.3s ease;
         }
 
         /* 3. Estilos de Tipografía Base */
@@ -71,6 +98,7 @@
             font-weight: 700;
             margin-bottom: 0.75em;
             line-height: 1.2;
+            color: var(--text-primary);
         }
 
         p {
@@ -128,6 +156,7 @@
             border-color: var(--primary-hover);
             transform: translateY(-3px); /* Efecto de levantar */
             box-shadow: var(--shadow-md);
+            color: var(--text-primary); /* Texto oscuro para contraste en hover */
         }
 
         /* Botón Secundario (Estilo "Ghost" o contorno) */
@@ -138,7 +167,7 @@
         }
 
         .secondary-button:hover {
-            background-color: #f7f5fa; /* Lavanda muy claro al pasar el mouse */
+            background-color: var(--background-color); /* Fondo lavanda muy claro al pasar el mouse */
             border-color: var(--primary-color);
             color: var(--primary-hover);
         }
@@ -209,7 +238,7 @@
 
         .hero-section p {
             font-size: 1.3rem;
-            color: rgba(255, 255, 255, 0.95); /* Más legible */
+            color: var(--text-light); /* Usar variable para el color del texto */
             max-width: 700px;
             margin: 0 auto 2.5rem auto; /* Centrado y con más margen inferior */
         }
@@ -387,7 +416,7 @@
         <div class="container">
             <div class="logo">
                 <!-- Logo de reemplazo -->
-                <img src="./assets/images/GENKI_-removebg-preview.png" alt="Genki Logo">
+                <img id="main-logo" src="./assets/images/GENKI_-removebg-preview.png" alt="Genki Logo">
                 <span>Genki</span>
             </div>
             <nav class="main-nav">

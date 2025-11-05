@@ -1199,9 +1199,9 @@ function updateLogo(theme) {
 
     if (mainLogo) {
         if (theme === 'dark') {
-            mainLogo.src = './assets/images/genki_removebg-white.png';
+            mainLogo.src = './assets/images/logogenkiG-white.png';
         } else {
-            mainLogo.src = './assets/images/GENKI_-removebg-preview.png';
+            mainLogo.src = './assets/images/logogenkiG.png';
         }
     }
 
