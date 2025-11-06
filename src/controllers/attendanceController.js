@@ -13,14 +13,14 @@ export const getScheduledClasses = async (req, res) => {
         const dayNames = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
         const todayName = dayNames[currentDayOfWeek];
 
-        const currentTime = today.toTimeString().substring(0, 5); // HH:MM format
+        // Find classes for the current teacher scheduled for today
+        const classes = await Class.find({ 
+            user: teacherId,
+            dayOfWeek: dayNames[currentDayOfWeek],
+            students: { $exists: true, $ne: [] } 
+        }).populate('students');
 
-        const scheduledClasses = await Class.find({
-            user: teacherId, // Assuming 'user' field in Class model stores the teacher's ID
-            dayOfWeek: todayName
-        }).select('_id subjectName courseGroup startTime');
-
-        res.status(200).json(scheduledClasses);
+        res.json(classes);
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: 'Server Error' });

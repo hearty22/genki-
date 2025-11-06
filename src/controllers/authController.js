@@ -226,7 +226,8 @@ export const login = async (req, res) => {
       httpOnly: false, // Permitir acceso desde JavaScript para compatibilidad
       secure: process.env.NODE_ENV === 'production', // Solo HTTPS en producción
       sameSite: 'lax',
-      maxAge: 7 * 24 * 60 * 60 * 1000 // 7 días
+      maxAge: 7 * 24 * 60 * 60 * 1000, // 7 días
+      signed: true
     };
 
     // Establecer cookies

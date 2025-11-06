@@ -11,14 +11,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     const classIdInput = document.getElementById('class-id');
     const cancelEditButton = document.getElementById('cancel-edit-button');
 
-    // Función para obtener el token de autenticación (asumiendo que está en una cookie)
-    function getCookie(name) {
-        const value = `; ${document.cookie}`;
-        const parts = value.split(`; ${name}=`);
-        if (parts.length === 2) return parts.pop().split(';').shift();
-        return null;
-    }
-
     // Función para mostrar mensajes (asumiendo que existe en app.js o se define aquí)
     function showMessage(message, type) {
         const messageContainer = document.getElementById('message-container');
@@ -39,21 +31,13 @@ document.addEventListener('DOMContentLoaded', async () => {
         return;
     }
 
-    
-    const authToken = getCookie('token');
-    if (!authToken) {
-        showMessage('No autenticado. Por favor, inicia sesión.', 'error');
-        window.location.href = '/login.html';
-        return;
-    }
-
     try {
-        const response = await fetch(`/api/classes/${classId}`, {
-            method: 'GET',
-            headers: {
-                'Authorization': `Bearer ${authToken}`
-            }
-        });
+        const response = await fetch(`/api/classes/${classId}`);
+
+        if (response.status === 401) {
+            window.location.href = '/login.html';
+            return;
+        }
 
         const classData = await response.json();
         console.log('API Response for class data:', classData);
@@ -106,11 +90,15 @@ document.addEventListener('DOMContentLoaded', async () => {
             const response = await fetch(`/api/classes/${classId}`, {
                 method: 'PUT',
                 headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${authToken}`
+                    'Content-Type': 'application/json'
                 },
                 body: JSON.stringify(updatedClassData)
             });
+
+            if (response.status === 401) {
+                window.location.href = '/login.html';
+                return;
+            }
 
             const data = await response.json();
 
