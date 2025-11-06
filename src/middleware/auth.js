@@ -4,14 +4,11 @@ import User from '../models/User.js';
 // Middleware para verificar token JWT
 export const authenticateToken = async (req, res, next) => {
   try {
-    const authHeader = req.headers['authorization'];
-    let token = authHeader && authHeader.split(' ')[1]; // Bearer TOKEN
-
-    if (!token && req.cookies && req.cookies.authToken) {
-      token = req.cookies.authToken;
-    }
+    console.log('authenticateToken middleware triggered');
+    const token = req.signedCookies.authToken;
 
     if (!token) {
+      console.log('No token found in headers or cookies');
       return res.status(401).json({
         success: false,
         message: 'Token de acceso requerido'
@@ -21,11 +18,13 @@ export const authenticateToken = async (req, res, next) => {
     // Verificar el token
     const secret = process.env.JWT_SECRET ? process.env.JWT_SECRET.trim() : '';
     const decoded = jwt.verify(token, secret);
+    console.log('Token decoded:', decoded);
     
     // Buscar el usuario en la base de datos
     const user = await User.findById(decoded.userId).select('-password');
     
     if (!user) {
+      console.log('User not found for decoded token');
       return res.status(401).json({
         success: false,
         message: 'Token inválido - usuario no encontrado'
@@ -33,6 +32,7 @@ export const authenticateToken = async (req, res, next) => {
     }
 
     if (!user.isActive) {
+      console.log('User account is inactive');
       return res.status(401).json({
         success: false,
         message: 'Cuenta desactivada'
@@ -41,9 +41,11 @@ export const authenticateToken = async (req, res, next) => {
 
     // Agregar el usuario a la request
     req.user = user;
+    console.log('Authentication successful, user set in request');
     next();
   } catch (error) {
     if (error.name === 'JsonWebTokenError') {
+      console.log('Invalid token error:', error.message);
       return res.status(401).json({
         success: false,
         message: 'Token inválido'
@@ -51,6 +53,7 @@ export const authenticateToken = async (req, res, next) => {
     }
     
     if (error.name === 'TokenExpiredError') {
+      console.log('Token expired error:', error.message);
       return res.status(401).json({
         success: false,
         message: 'Token expirado'

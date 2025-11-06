@@ -74,7 +74,7 @@ function showMessage(message, type, messageContainerId) {
 
                 if (!isValid) return;
 
-                const token = getCookie('authToken') || localStorage.getItem('token');
+                
                 if (!token) {
                     showMessage('No autenticado. Inicia sesión nuevamente.', 'error');
                     return;
@@ -329,7 +329,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 description
             };
 
-            const token = getCookie('authToken');
+            
             let url = '/api/events';
             let method = 'POST';
 
@@ -389,7 +389,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     
                 // console.log('Creating activity card for:', activity.type, activity); // Removed console.log
                 // console.log('Activity object before rendering:', activity); // Removed for debugging
-
+    
                 let detailsHtml = '';
                 let actionsHtml = '';
     
@@ -442,7 +442,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                                 const response = await fetch(`/api/events/${activity._id}`, {
                                     method: 'DELETE',
                                     headers: {
-                                        'Authorization': `Bearer ${getCookie('authToken')}`
+                                        
                                     }
                                 });
                                                  const data = await response.json();
@@ -520,6 +520,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     // Function to open event modal for editing
+
+
 
 
 
@@ -625,18 +627,16 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // Function to fetch and display user profile data
     async function fetchProfile() {
-        const authToken = getCookie('authToken');
-        if (!authToken) {
-            console.error('No authentication token found.');
-            window.location.href = '/login.html'; // Redirect to login if not authenticated
-            return;
-        }
+        await new Promise(resolve => setTimeout(resolve, 100)); // Esperar 100ms
+
+        
+
 
         try {
             const response = await fetch('/api/auth/profile', {
                 method: 'GET',
                 headers: {
-                    'Authorization': `Bearer ${authToken}`
+                    
                 }
             });
             const data = await response.json();

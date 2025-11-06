@@ -11,16 +11,8 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // Function to fetch data from the API
     async function fetchData(url) {
-        const token = getCookie('authToken'); // Get token from cookie
-        if (!token) {
-            window.location.href = 'login.html';
-            return;
-        }
-        const response = await fetch(url, {
-            headers: {
-                'Authorization': `Bearer ${token}`
-            }
-        });
+        
+        const response = await fetch(url);
         if (response.status === 401) {
             window.location.href = 'login.html';
             return;
@@ -166,16 +158,10 @@ document.addEventListener('DOMContentLoaded', async () => {
         }));
 
         try {
-            const token = getCookie('authToken'); // Get token from cookie
-            if (!token) {
-                window.location.href = 'login.html';
-                return;
-            }
             const response = await fetch(`/api/assessments/${assessmentId}/grades`, {
                 method: 'PUT',
                 headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`
+                    'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({ grades: gradesToSave })
             });

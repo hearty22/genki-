@@ -2,8 +2,9 @@ import express from 'express';
 import { register, login, getProfile, updateProfile, logout, uploadProfileImage, updateProfileImageUrl, removeProfileImage } from '../controllers/authController.js';
 import { validateRegister, validateLogin } from '../middleware/validation.js';
 import { hashPassword } from '../middleware/hashPassword.js';
-import { authenticateToken } from '../middleware/auth.js';
+import { authenticateToken, generateToken } from '../middleware/auth.js';
 import upload from '../middleware/upload.js';
+import passport from 'passport';
 
 const router = express.Router();
 
@@ -62,6 +63,38 @@ router.put('/profile/image/url',
 router.delete('/profile/image',
   authenticateToken,    // Verificar token JWT
   removeProfileImage    // Controlador de eliminación de imagen
+);
+
+// Rutas de autenticación con Google
+router.get('/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
+
+router.get('/google/callback',
+  passport.authenticate('google', { failureRedirect: '/login.html' }),
+  (req, res) => {
+    // Generar token JWT
+    const token = generateToken(req.user._id);
+    console.log('Generated token in /google/callback:', token);
+
+    // Guardar el token en una cookie
+    res.cookie('authToken', token, { 
+      secure: process.env.NODE_ENV === 'production', // Solo enviar en HTTPS en producción
+      signed: true, // Firmar la cookie para mayor seguridad
+      path: '/' // Asegurar que la cookie esté disponible en todo el sitio
+    });
+
+    // Redirigir al dashboard
+    res.redirect('/dashboard.html');
+  }
+);
+
+// Rutas de autenticación con Microsoft
+router.get('/microsoft', passport.authenticate('microsoft'));
+
+router.get('/microsoft/callback', 
+ 
+  (req, res) => {
+    res.redirect('/dashboard.html');
+  }
 );
 
 export default router;

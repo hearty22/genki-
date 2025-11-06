@@ -7,6 +7,9 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import "dotenv/config"
 import cookieParser from 'cookie-parser';
+import passport from 'passport';
+import session from 'express-session';
+import './src/config/passport.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -25,10 +28,18 @@ app.use(cors({
   origin: "*",
   credentials: true
 }));
-app.use(cookieParser());
+app.use(cookieParser(process.env.SESSION_SECRET));
 
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
+
+app.use(session({
+  secret: process.env.SESSION_SECRET,
+  resave: false,
+  saveUninitialized: false
+}));
+app.use(passport.initialize());
+app.use(passport.session());
 
 // Middleware para servir archivos estáticos
 app.use(express.static(path.join(__dirname, 'public')));

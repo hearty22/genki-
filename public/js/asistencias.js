@@ -9,25 +9,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     let selectedClassId = '';
     let activeSessions = []; // Tracks all active sessions (existing + new)
 
-    // Function to get cookie value (reused from app.js)
-    function getCookie(name) {
-        const value = `; ${document.cookie}`;
-        const parts = value.split(`; ${name}=`);
-        if (parts.length === 2) return parts.pop().split(';').shift();
-    }
-
     // Function to fetch data from the API
     async function fetchData(url) {
-        const token = getCookie('authToken');
-        if (!token) {
-            window.location.href = 'login.html';
-            return;
-        }
-        const response = await fetch(url, {
-            headers: {
-                'Authorization': `Bearer ${token}`
-            }
-        });
+        const response = await fetch(url);
         if (response.status === 401) {
             window.location.href = 'login.html';
             return;
@@ -176,11 +160,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
 
         try {
-            const token = getCookie('authToken');
-            if (!token) {
-                window.location.href = 'login.html';
-                return;
-            }
             const today = new Date().toISOString().split('T')[0];
 
             // Iterate through active sessions and save attendance for each
@@ -193,8 +172,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 const response = await fetch(`/api/attendance`, {
                     method: 'PUT',
                     headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${token}`
+                        'Content-Type': 'application/json'
                     },
                     body: JSON.stringify({ classId: selectedClassId, date: today, startTime: session.startTime, records: attendanceToSave })
                 });

@@ -120,27 +120,21 @@ document.addEventListener('DOMContentLoaded', function() {
                 loadingIndicator.style.display = 'block'; // Show loading indicator
             }
 
-            const authToken = getCookie('authToken');
-            if (!authToken) {
-                console.error('No authentication token found.');
-                if (loadingIndicator) {
-                    loadingIndicator.style.display = 'none'; // Hide loading indicator on error
-                }
-                return;
-            }
+            
+
 
             try {
                 const [classesResult, eventsResult] = await Promise.allSettled([
                     fetch('/api/classes', {
                         method: 'GET',
                         headers: {
-                            'Authorization': `Bearer ${authToken}`
+                            
                         }
                     }),
                     fetch('/api/events', {
                         method: 'GET',
                         headers: {
-                            'Authorization': `Bearer ${authToken}`
+                            
                         }
                     })
                 ]);

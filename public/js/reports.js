@@ -11,14 +11,14 @@ document.addEventListener('DOMContentLoaded', async () => {
     // Function to fetch courses
     async function fetchCourses() {
         try {
-            const authToken = getCookie('authToken');
+            
             if (!authToken) {
                 console.error('No authentication token found.');
                 return [];
             }
             const response = await fetch('/api/classes', {
                 headers: {
-                    'Authorization': `Bearer ${authToken}`
+                    
                 }
             });
             if (response.status === 401) {

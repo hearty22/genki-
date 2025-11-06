@@ -14,8 +14,18 @@ const userSchema = new mongoose.Schema({
   },
   password: {
     type: String,
-    required: [true, 'La contraseña es obligatoria'],
+    required: false,
     minlength: [6, 'La contraseña debe tener al menos 6 caracteres']
+  },
+  googleId: {
+    type: String,
+    unique: true,
+    sparse: true
+  },
+  microsoftId: {
+    type: String,
+    unique: true,
+    sparse: true
   },
   firstName: {
     type: String,

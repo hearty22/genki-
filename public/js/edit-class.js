@@ -39,8 +39,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         return;
     }
 
-    const authToken = getCookie('authToken');
-    console.log('Auth Token:', authToken);
+    
+    const authToken = getCookie('token');
     if (!authToken) {
         showMessage('No autenticado. Por favor, inicia sesión.', 'error');
         window.location.href = '/login.html';

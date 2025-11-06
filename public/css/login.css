@@ -112,3 +112,52 @@ p.toggle-link a {
 p.toggle-link a:hover {
     text-decoration: underline;
 }
+
+.separator {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    color: var(--text-light-gray);
+    margin: 20px 0;
+}
+
+.separator::before, .separator::after {
+    content: '';
+    flex: 1;
+    border-bottom: 1px solid var(--border-subtle-gray);
+}
+
+.separator:not(:empty)::before {
+    margin-right: .25em;
+}
+
+.separator:not(:empty)::after {
+    margin-left: .25em;
+}
+
+.social-login {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.social-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid var(--border-subtle-gray);
+    text-decoration: none;
+    color: var(--text-charcoal);
+    font-weight: 500;
+    transition: background-color 0.2s ease;
+}
+
+.social-button:hover {
+    background-color: var(--background-light-gray);
+}
+
+.social-button svg {
+    margin-right: 10px;
+}
