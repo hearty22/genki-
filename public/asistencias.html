@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Perfil - Genki</title>
+    <title>Asistencia</title>
     <link rel="stylesheet" href="./css/styles.css">
     <link rel="stylesheet" href="./css/dashboard.css">
-    <link rel="stylesheet" href="./css/profile.css">
+    <link rel="stylesheet" href="./css/gradebook.css"> <!-- Reutilizamos gradebook.css por ahora, luego crearemos asistencias.css si es necesario -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -29,9 +29,9 @@
                 <button class="sidebar-button" onclick="location.href='dashboard.html'"><i class="fas fa-home"></i> Inicio</button>
                 <button class="sidebar-button" onclick="location.href='calendar.html'"><i class="fas fa-calendar-alt"></i> Calendario</button>
                 <button class="sidebar-button" onclick="location.href='gradebook.html'"><i class="fas fa-book"></i> Calificaciones</button>
-                <button class="sidebar-button" onclick="location.href='asistencias.html'"><i class="fas fa-clipboard-check"></i> Asistencias</button>
                 <button class="sidebar-button" onclick="location.href='profile.html'"><i class="fas fa-user"></i> Perfil</button>
                 <button class="sidebar-button" onclick="location.href='reports.html'"><i class="fas fa-chart-bar"></i> Reportes</button>
+                <button class="sidebar-button active" onclick="location.href='asistencias.html'"><i class="fas fa-user-check"></i> Asistencia</button>
             </nav>
             <div class="sidebar-footer">
                 <button class="sidebar-button logout-button" id="logout-button"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</button>
@@ -41,39 +41,26 @@
             </div>
         </aside>
         <main class="main-content">
-            <div id="profile-message" class="message-area"></div>
-            <h1>Mi Perfil</h1>
-
-            <div class="profile-image-section styled-section">
-                <label for="profile-image-upload" class="profile-image-upload-label">
-                    <img id="profile-image-display" alt="Foto de Perfil" class="profile-image-display">
-                    <input type="file" id="profile-image-upload" accept="image/*" style="display: none;">
-                </label>
-                <button id="remove-image-button" class="button button-danger">Eliminar Imagen</button>
-                <button id="update-image-button" type="button" class="button">Actualizar Imagen</button>
+            <div class="dashboard-navbar">
             </div>
-
-            <form id="profile-form">
+            <div class="attendance-section">
+                <h2>Planilla de Asistencia</h2>
                 <div class="form-group">
-                    <label for="profile-email">Correo Electrónico:</label>
-                    <input type="email" id="profile-email" required>
+                    <label for="class-select-attendance">Clase:</label>
+                    <select id="class-select-attendance">
+                        <option value="">Seleccione una clase</option>
+                    </select>
                 </div>
-                <div class="form-group">
-                    <label for="profile-phone">Teléfono:</label>
-                    <input type="text" id="profile-phone">
+                <div id="attendance-grid">
+                    <!-- La tabla de asistencia se cargará aquí -->
                 </div>
-                <div class="form-group">
-                    <label for="profile-bio">Biografía:</label>
-                    <textarea id="profile-bio" rows="4"></textarea>
-                </div>
-                <button type="submit" class="button">Actualizar Perfil</button>
-            </form>
-            <div class="profile-actions">
-                <button onclick="location.href='dashboard.html'">Volver al Dashboard</button>
+                <button id="add-session-button" class="btn btn-secondary">Agregar Sesión</button>
+                <button id="save-attendance-button" class="btn btn-primary">Guardar Asistencia</button>
             </div>
         </main>
     </div>
 
     <script src="./js/app.js"></script>
+    <script src="./js/asistencias.js"></script> <!-- Nuevo archivo JS para la lógica de asistencia -->
 </body>
 </html>

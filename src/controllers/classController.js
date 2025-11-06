@@ -39,13 +39,20 @@ export const getClasses = async (req, res) => {
 export const getClassById = async (req, res) => {
     try {
         const { id } = req.params;
-        const classItem = await Class.findOne({ _id: id, user: req.user.id });
+        const classItem = await Class.findOne({ _id: id, user: req.user.id }).populate('students');
 
         if (!classItem) {
             return res.status(404).json({ success: false, message: 'Class not found or user not authorized' });
         }
 
-        res.status(200).json(classItem);
+        // Map students to include a 'name' field for the frontend
+        const studentsWithNames = classItem.students.map(student => ({
+            _id: student._id,
+            name: `${student.firstName} ${student.lastName}`,
+            // Add any other student fields you need in the frontend
+        }));
+
+        res.status(200).json({ ...classItem.toObject(), students: studentsWithNames });
     } catch (error) {
         console.error('Error fetching class by ID:', error);
         res.status(500).json({ success: false, message: 'Error fetching class by ID', error: error.message });

@@ -18,16 +18,21 @@
 </head>
 <body>
     <div class="workspace-container">
+        <button class="menu-toggle" id="menu-toggle">
+            <i class="fas fa-bars"></i>
+        </button>
+        <div class="overlay" id="overlay"></div>
         <!-- Barra lateral -->
         <aside class="sidebar">
             <div class="sidebar-header">
-                <img src="./assets/images/GENKI_-removebg-preview.png" alt="GENKI! logo">
+                <img id="sidebar-logo" src="./assets/images/GENKI_-removebg-preview.png" alt="GENKI! logo">
                 <h2>Genki</h2>
             </div>
             <nav class="sidebar-nav">
                 <button class="sidebar-button" onclick="location.href='dashboard.html'"><i class="fas fa-home"></i> Inicio</button>
                 <button class="sidebar-button active" onclick="location.href='calendar.html'"><i class="fas fa-calendar-alt"></i> Calendario</button>
                 <button class="sidebar-button" onclick="location.href='gradebook.html'"><i class="fas fa-book"></i> Calificaciones</button>
+                <button class="sidebar-button" onclick="location.href='asistencias.html'"><i class="fas fa-clipboard-check"></i> Asistencias</button>
                 <button class="sidebar-button" onclick="location.href='profile.html'"><i class="fas fa-user"></i> Perfil</button>
                 <button class="sidebar-button" onclick="location.href='reports.html'"><i class="fas fa-chart-bar"></i> Reportes</button>
             </nav>

@@ -1,0 +1,75 @@
+/* styles for reports.html */
+
+.report-generation-section {
+    background-color: var(--white);
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.05);
+    margin-bottom: 30px;
+}
+
+.report-generation-section .form-group {
+    margin-bottom: 20px;
+}
+
+.report-generation-section label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: var(--text-charcoal);
+}
+
+.report-generation-section .form-control {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid var(--border-light-gray);
+    border-radius: 8px;
+    font-size: 1rem;
+    color: var(--text-charcoal);
+    background-color: var(--background-white);
+    box-sizing: border-box;
+}
+
+.report-generation-section .form-control:focus {
+    border-color: var(--primary-pastel-purple);
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(147, 112, 219, 0.2);
+}
+
+.report-generation-section .btn-primary {
+    background-color: var(--primary-pastel-pink);
+    color: var(--white);
+    padding: 12px 25px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 600;
+    transition: background-color 0.3s ease;
+    display: block;
+    width: fit-content;
+    margin-top: 20px;
+}
+
+.report-generation-section .btn-primary:hover {
+    background-color: var(--primary-pastel-purple);
+}
+
+@media (max-width: 768px) {
+    .report-generation-section {
+        padding: 15px;
+    }
+
+    .report-generation-section .form-group {
+        margin-bottom: 15px;
+    }
+
+    .report-generation-section .form-control {
+        padding: 10px;
+    }
+
+    .report-generation-section .btn-primary {
+        width: 100%;
+        text-align: center;
+    }
+}

@@ -32,6 +32,61 @@
 }
 
 
+/* Dark Mode Styles for Dashboard Containers */
+body[data-theme="dark"] .classes-section,
+body[data-theme="dark"] .modal-content,
+body[data-theme="dark"] .classes-list,
+body[data-theme="dark"] .class-item,
+body[data-theme="dark"] .activity-item {
+    background-color: var(--dark-mode-card-bg);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+body[data-theme="dark"] .classes-section h2,
+body[data-theme="dark"] .modal-content h2,
+body[data-theme="dark"] .classes-list h2,
+body[data-theme="dark"] .class-item h3,
+body[data-theme="dark"] .activity-item h3 {
+    color: var(--dark-mode-text-primary);
+}
+
+body[data-theme="dark"] .classes-section p,
+body[data-theme="dark"] .modal-content p,
+body[data-theme="dark"] .classes-list p,
+body[data-theme="dark"] .class-item p,
+body[data-theme="dark"] .activity-item p {
+    color: var(--dark-mode-text-secondary);
+}
+
+body[data-theme="dark"] .form-group label {
+    color: var(--dark-mode-text-secondary);
+}
+
+body[data-theme="dark"] .form-group input[type="text"],
+body[data-theme="dark"] .form-group input[type="time"],
+body[data-theme="dark"] .form-group input[type="date"],
+body[data-theme="dark"] .form-group select,
+body[data-theme="dark"] .form-group textarea {
+    background-color: var(--dark-mode-input-bg);
+    color: var(--dark-mode-text-primary);
+    border-color: var(--dark-mode-border-color);
+}
+
+body[data-theme="dark"] .form-group input:focus,
+body[data-theme="dark"] .form-group select:focus,
+body[data-theme="dark"] .form-group textarea:focus {
+    border-color: var(--primary-light-blue);
+    box-shadow: 0 0 5px var(--primary-light-blue);
+}
+
+body[data-theme="dark"] .error-message {
+    color: var(--dark-mode-error-text);
+}
+
+body[data-theme="dark"] .form-text.text-muted {
+    color: var(--dark-mode-text-secondary);
+}
+
 /* Modal Styles */
 .modal {
     display: none; /* Hidden by default */
@@ -196,6 +251,74 @@ html, body {
     box-shadow: 0 8px 24px rgba(185, 155, 230, 0.18);
     box-sizing: border-box; /* Incluye padding en el cálculo de la altura */
     justify-content: space-between; /* Distribuye el espacio verticalmente */
+}
+
+@media (max-width: 768px) {
+    .sidebar {
+        position: fixed;
+        left: -250px; /* Ocultar sidebar por defecto */
+        height: 100%;
+        z-index: 1000;
+        transition: left 0.3s ease;
+        box-shadow: 2px 0 5px rgba(0,0,0,0.2);
+    }
+
+    .sidebar.active {
+        left: 0; /* Mostrar sidebar */
+    }
+
+    .main-content {
+        margin-left: 0; /* Main content takes full width */
+    }
+
+    .workspace-container.sidebar-active .main-content {
+        /* Optional: push main content to the right when sidebar is active */
+        transform: translateX(250px);
+    }
+}
+
+.menu-toggle {
+    display: none; /* Ocultar por defecto en desktop */
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 8px;
+    cursor: pointer;
+    z-index: 1001;
+}
+
+.menu-toggle:hover {
+    background-color: var(--primary-dark-color);
+}
+
+@media (max-width: 768px) {
+    .menu-toggle {
+        display: block; /* Mostrar en mobile */
+    }
+
+    .main-content {
+        width: 100%;
+        margin-left: 0; /* Asegurar que el contenido principal ocupe todo el ancho */
+    }
+
+    .overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 999;
+    }
+
+    .overlay.active {
+        display: block;
+    }
 }
 
 .main-content {

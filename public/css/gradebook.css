@@ -117,3 +117,126 @@
     box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3); /* Primary button hover style */
     background-color: #0056b3; /* Fallback for older browsers */
 }
+
+.assessment-management-controls {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 30px;
+    background-color: #ffffff;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.05);
+    flex-wrap: wrap; /* Allow buttons to wrap */
+    justify-content: center; /* Center buttons */
+}
+
+.assessment-management-controls h2 {
+    width: 100%; /* Full width for title */
+    text-align: center;
+    margin-bottom: 20px;
+    color: var(--text-charcoal);
+    font-size: 1.6em;
+}
+
+.assessment-management-controls button {
+    flex-grow: 1; /* Allow buttons to grow */
+    min-width: 150px; /* Minimum width for buttons */
+    padding: 12px 20px;
+    border-radius: 8px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.assessment-management-controls button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+
+.attendance-section {
+    background-color: #ffffff;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.05);
+    margin-top: 30px;
+}
+
+.attendance-section h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: var(--text-charcoal);
+    font-size: 1.6em;
+}
+
+#attendance-grid {
+    margin-bottom: 20px;
+    overflow-x: auto;
+}
+
+.attendance-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 400px;
+}
+
+.attendance-table th,
+.attendance-table td {
+    border: 1px solid #e0e0e0;
+    padding: 12px 15px;
+    text-align: left;
+}
+
+.attendance-table th {
+    background-color: #f2f2f2;
+    font-weight: bold;
+    color: #333;
+}
+
+.attendance-table tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.attendance-table tr:hover {
+    background-color: #f1f1f1;
+}
+
+.attendance-status-select {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 1em;
+}
+
+.attendance-status-select:focus {
+    border-color: #007bff;
+    outline: none;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
+}
+
+#save-attendance-button {
+    display: block;
+    margin: 20px auto 0 auto;
+    padding: 15px 30px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+    border-radius: 12px;
+    transition: all 0.3s ease;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+}
+
+#save-attendance-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+    background-color: #0056b3;
+}
+
+@media (max-width: 768px) {
+    .attendance-section .form-group {
+        flex-direction: column;
+        gap: 15px;
+    }
+}

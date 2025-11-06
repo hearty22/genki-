@@ -145,3 +145,30 @@
 .button-danger:hover {
     background-color: #cc0000;
 }
+
+@media (max-width: 768px) {
+    .profile-image-section {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .profile-image-section button {
+        width: 100%;
+        margin: 0;
+    }
+
+    #profile-form {
+        padding: 15px;
+    }
+
+    .form-group input[type="email"],
+    .form-group input[type="text"],
+    .form-group textarea {
+        padding: 12px;
+    }
+
+    .profile-actions button {
+        width: 100%;
+        margin-top: 10px;
+    }
+}
