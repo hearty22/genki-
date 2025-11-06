@@ -83,7 +83,22 @@
     background-color: #f1f1f1;
 }
 
+.gradebook-table input[type="text"]:focus {
+    border-color: #007bff;
+    outline: none;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
+}
+
 .gradebook-table input[type="number"] {
+    width: 80px;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 1em;
+    text-align: center;
+}
+
+.gradebook-table input[type="text"] {
     width: 80px;
     padding: 8px;
     border: 1px solid #ccc;

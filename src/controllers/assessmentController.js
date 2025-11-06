@@ -1,6 +1,7 @@
 import Class from '../models/Class.js';
 import User from '../models/User.js';
 import Assessment from '../models/Assessment.js';
+import Grade from '../models/Grade.js';
 
 // Dummy data for assessments and grades for demonstration
 // In a real application, these would come from a database
@@ -55,10 +56,7 @@ export const getGradesByAssessment = async (req, res) => {
         const { assessmentId } = req.params;
         // In a real app, fetch grades for this assessmentId from DB
         // For now, return dummy grades
-        const grades = dummyGrades[assessmentId] ? Object.keys(dummyGrades[assessmentId]).map(studentId => ({
-            studentId,
-            grade: dummyGrades[assessmentId][studentId]
-        })) : [];
+        const grades = await Grade.find({ assessment: assessmentId });
         res.status(200).json(grades);
     } catch (error) {
         console.error('Error fetching grades:', error);
@@ -72,13 +70,14 @@ export const updateGrades = async (req, res) => {
         const { assessmentId } = req.params;
         const { grades } = req.body; // grades is an array of { studentId, grade }
 
-        // In a real app, update grades in DB
-        // For now, update dummy grades
-        dummyGrades[assessmentId] = {};
-        grades.forEach(({ studentId, grade }) => {
-            dummyGrades[assessmentId][studentId] = grade;
+        const promises = grades.map(g => {
+            return Grade.findOneAndUpdate(
+                { assessment: assessmentId, student: g.studentId },
+                { grade: g.grade },
+                { upsert: true, new: true }
+            );
         });
-
+        await Promise.all(promises);
         res.status(200).json({ success: true, message: 'Grades updated successfully' });
     } catch (error) {
         console.error('Error updating grades:', error);
@@ -163,6 +162,8 @@ export const deleteAssessment = async (req, res) => {
 
         const deletedAssessment = await Assessment.findByIdAndDelete(id);
 
+        // TODO: Delete all grades associated with this assessment.
+
         if (!deletedAssessment) {
             return res.status(404).json({ success: false, message: 'Assessment not found' });
         }
@@ -191,7 +192,8 @@ export const getCalculatedGrade = async (req, res) => {
             // This is a simplified example. You would need a way to get the grade of the student for each component assessment.
             // For demonstration, let's assume a function getGrade(assessmentId, studentId) exists.
             // You will need to implement this function based on your data structure for grades.
-            const grade = await getGrade(component.assessment._id, studentId); // You need to implement getGrade
+            const gradeEntry = await Grade.findOne({ assessment: component.assessment._id, student: studentId });
+            const grade = gradeEntry ? gradeEntry.grade : 0;
             calculatedGrade += (grade * component.weight) / 100;
         }
 

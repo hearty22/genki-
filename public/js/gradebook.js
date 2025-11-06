@@ -63,7 +63,8 @@ document.addEventListener('DOMContentLoaded', async () => {
             return;
         }
         if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
+            const errorData = await response.json().catch(() => ({ message: `HTTP error! status: ${response.status}` }));
+            throw new Error(errorData.message);
         }
         const contentType = response.headers.get("content-type");
         if (contentType && contentType.indexOf("application/json") !== -1) {
@@ -99,7 +100,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
             if (selectedAssessment && selectedAssessment.isCalculated) {
                 for (const student of students) {
-                    const calculatedGrade = await fetchData(`/api/assessments/${assessmentId}/students/${student._id}/calculated-grade`);
+                    const calculatedGrade = await fetchData(`/api/assessments/${assessmentId}/student/${student._id}/grade`);
                     const row = document.createElement('tr');
                     row.innerHTML = `<td>${student.name}</td><td><input type="text" class="grade-input" value="${calculatedGrade.grade}" disabled></td>`;
                     tbody.appendChild(row);
@@ -107,11 +108,11 @@ document.addEventListener('DOMContentLoaded', async () => {
             } else {
                 const currentGrades = await fetchData(`/api/assessments/${assessmentId}/grades`);
                 grades = {};
-                currentGrades.forEach(grade => { grades[grade.studentId] = grade.grade; });
+                currentGrades.forEach(grade => { grades[grade.student] = grade.grade; });
 
                 students.forEach(student => {
                     const row = document.createElement('tr');
-                    row.innerHTML = `<td>${student.name}</td><td><input type="text" class="grade-input" data-student-id="${student._id}" value="${getStudentGrade(student._id, grades)}"></td>`;
+                    row.innerHTML = `<td>${student.name}</td><td><input type="number" class="grade-input" data-student-id="${student._id}" value="${getStudentGrade(student._id, grades)}"></td>`;
                     tbody.appendChild(row);
                 });
                 saveGradesButton.style.display = 'block';
@@ -255,7 +256,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             renderGradebook(courseSelect.value, null);
         } catch (error) {
             console.error('Error deleting assessment:', error);
-            alert('Error al eliminar la evaluación.');
+            alert(`Error al eliminar la evaluación: ${error.message}`);
         }
     });
 
