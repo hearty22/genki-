@@ -52,8 +52,11 @@ if (process.env.NODE_ENV !== 'production') {
   });
 }
 
+import assessmentRoutes from './src/routes/assessmentRoutes.js';
+
 // Rutas principales
 app.use('/api', routes);
+app.use('/api/assessments', assessmentRoutes);
 
 // Ruta raíz
 app.get('/', (req, res) => {

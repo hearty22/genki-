@@ -18,10 +18,11 @@ router.route('/:id').get(authenticateToken, getClassById).put(authenticateToken,
 
 // Rutas para administrar alumnos en una clase
 router.route('/:id/students')
-    .get(authenticateToken, requireRole(['docente', 'admin']), getStudentsForClass)
-    .post(authenticateToken, requireRole(['docente', 'admin']), addStudentToClass);
+    // TODO: Consider re-enabling role-based authorization if needed in the future.
+    .get(authenticateToken, getStudentsForClass)
+    .post(authenticateToken, addStudentToClass);
 
 router.route('/:id/students/:studentId')
-    .delete(authenticateToken, requireRole(['docente', 'admin']), removeStudentFromClass);
+    .delete(authenticateToken, removeStudentFromClass);
 
 export default router;

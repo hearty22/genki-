@@ -39,8 +39,7 @@ export const getStudentsByClass = async (req, res) => {
         // Assuming students are populated and have firstName, lastName, and id
         const students = classItem.students.map(student => ({
             id: student._id,
-            firstName: student.firstName,
-            lastName: student.lastName
+            name: student.name
         }));
 
         res.status(200).json(students);
@@ -90,12 +89,23 @@ export const updateGrades = async (req, res) => {
 // Create a new assessment
 export const createAssessment = async (req, res) => {
     try {
-        const { name, course: courseId, date, maxGrade } = req.body;
+        const { name, course, date, maxGrade, isCalculated, calculationFormula, rounding } = req.body;
+
+        if (isCalculated) {
+            const totalWeight = calculationFormula.reduce((sum, item) => sum + item.weight, 0);
+            if (totalWeight !== 100) {
+                return res.status(400).json({ message: 'The sum of the weights must be 100%' });
+            }
+        }
+
         const newAssessment = new Assessment({
             name,
-            course: courseId,
+            course,
             date,
-            maxGrade
+            maxGrade,
+            isCalculated,
+            calculationFormula,
+            rounding
         });
         const savedAssessment = await newAssessment.save();
         res.status(201).json({ success: true, message: 'Assessment created successfully', assessment: savedAssessment });
@@ -109,13 +119,23 @@ export const createAssessment = async (req, res) => {
 export const updateAssessment = async (req, res) => {
     try {
         const { id } = req.params;
-        const { name, course: courseId, date, maxGrade } = req.body;
+        const { name, course, date, maxGrade, isCalculated, calculationFormula, rounding } = req.body;
+
+        if (isCalculated) {
+            const totalWeight = calculationFormula.reduce((sum, item) => sum + item.weight, 0);
+            if (totalWeight !== 100) {
+                return res.status(400).json({ message: 'The sum of the weights must be 100%' });
+            }
+        }
 
         const updatedAssessment = await Assessment.findByIdAndUpdate(id, {
             name,
-            course: courseId,
+            course,
             date,
-            maxGrade
+            maxGrade,
+            isCalculated,
+            calculationFormula,
+            rounding
         }, { new: true });
 
         if (!updatedAssessment) {
@@ -134,6 +154,13 @@ export const deleteAssessment = async (req, res) => {
     try {
         const { id } = req.params;
 
+        // Check if this assessment is part of any calculated assessment
+        const calculatedAssessments = await Assessment.find({ 'calculationFormula.assessment': id });
+
+        if (calculatedAssessments.length > 0) {
+            return res.status(400).json({ message: 'This assessment cannot be deleted because it is part of a calculated assessment.' });
+        }
+
         const deletedAssessment = await Assessment.findByIdAndDelete(id);
 
         if (!deletedAssessment) {
@@ -144,5 +171,35 @@ export const deleteAssessment = async (req, res) => {
     } catch (error) {
         console.error('Error deleting assessment:', error);
         res.status(500).json({ success: false, message: 'Error deleting assessment', error: error.message });
+    }
+};
+
+// @desc    Get grade for a student in a calculated assessment
+// @route   GET /api/assessments/:assessmentId/student/:studentId/grade
+// @access  Private
+export const getCalculatedGrade = async (req, res) => {
+    try {
+        const { assessmentId, studentId } = req.params;
+        const assessment = await Assessment.findById(assessmentId).populate('calculationFormula.assessment');
+
+        if (!assessment || !assessment.isCalculated) {
+            return res.status(404).json({ message: 'Calculated assessment not found.' });
+        }
+
+        let calculatedGrade = 0;
+        for (const component of assessment.calculationFormula) {
+            // This is a simplified example. You would need a way to get the grade of the student for each component assessment.
+            // For demonstration, let's assume a function getGrade(assessmentId, studentId) exists.
+            // You will need to implement this function based on your data structure for grades.
+            const grade = await getGrade(component.assessment._id, studentId); // You need to implement getGrade
+            calculatedGrade += (grade * component.weight) / 100;
+        }
+
+        const roundedGrade = Math.round(calculatedGrade * (10 ** assessment.rounding)) / (10 ** assessment.rounding);
+
+        res.json({ studentId, grade: roundedGrade });
+
+    } catch (error) {
+        res.status(500).json({ message: error.message });
     }
 };

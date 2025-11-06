@@ -1,17 +1,38 @@
 import express from 'express';
-
-import { authenticateToken } from '../middleware/auth.js';
-
-import { getAssessmentsByClass, getStudentsByClass, getGradesByAssessment, updateGrades, createAssessment, updateAssessment, deleteAssessment } from '../controllers/assessmentController.js';
+import {
+    getAssessmentsByClass,
+    createAssessment,
+    updateAssessment,
+    deleteAssessment,
+    getCalculatedGrade,
+    getStudentsByClass,
+    getGradesByAssessment,
+    updateGrades
+} from '../controllers/assessmentController.js';
+import { authenticateToken, requireRole } from '../middleware/auth.js';
 
 const router = express.Router();
 
-router.get('/courses/:classId/assessments', authenticateToken, getAssessmentsByClass);
-router.get('/courses/:classId/students', authenticateToken, getStudentsByClass);
-router.get('/:assessmentId/grades', authenticateToken, getGradesByAssessment);
-router.put('/:assessmentId/grades', authenticateToken, updateGrades);
-router.put('/:id', authenticateToken, updateAssessment);
-router.post('/', authenticateToken, createAssessment);
-router.delete('/:id', authenticateToken, deleteAssessment);
+// Routes for assessments
+router.route('/')
+    .post(authenticateToken, createAssessment);
+
+router.route('/:id')
+    .put(authenticateToken, updateAssessment)
+    .delete(authenticateToken, deleteAssessment);
+
+router.route('/course/:classId')
+    .get(authenticateToken, getAssessmentsByClass);
+
+// Route for calculated grades
+router.route('/:assessmentId/student/:studentId/grade')
+    .get(authenticateToken, getCalculatedGrade);
+
+// Routes for grades and students related to assessments
+router.route('/:classId/students').get(authenticateToken, getStudentsByClass);
+router.route('/:assessmentId/grades')
+    // TODO: Consider re-enabling role-based authorization if needed in the future.
+    .get(authenticateToken, getGradesByAssessment)
+    .put(authenticateToken, updateGrades);
 
 export default router;

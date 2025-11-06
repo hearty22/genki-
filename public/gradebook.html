@@ -61,6 +61,7 @@
             <div class="assessment-management-controls">
                 <h2>Gestión de Evaluaciones</h2>
                 <button id="add-assessment-button" class="btn btn-secondary">Añadir Evaluación</button>
+                <button id="add-calculated-assessment-button" class="btn btn-secondary">Crear Planilla Calculada</button>
                 <button id="admin-students-button" class="btn btn-secondary">Gestionar Alumnos</button>
                 <button id="edit-assessment-button" class="btn btn-secondary">Editar Evaluación</button>
                 <button id="delete-assessment-button" class="btn btn-secondary">Eliminar Evaluación</button>
@@ -129,6 +130,51 @@
                     <input type="text" id="student-name-input" placeholder="Nombre del Alumno" required>
                     <button type="submit" class="btn btn-primary btn-small">Agregar Alumno</button>
                 </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Edit Calculated Assessment Modal -->
+    <div id="edit-calculated-assessment-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <h2>Editar Planilla de Calificación Calculada</h2>
+            <form id="edit-calculated-assessment-form">
+                <input type="hidden" id="edit-calculated-assessment-id">
+                <div class="form-group">
+                    <label for="edit-calculated-assessment-name">Nombre de la Planilla:</label>
+                    <input type="text" id="edit-calculated-assessment-name" required>
+                </div>
+                <div id="edit-calculation-assessments-container"></div>
+                <div class="form-group">
+                    <label>Total Ponderación: <span id="edit-total-weight">0</span>%</label>
+                </div>
+                <button type="submit" id="update-calculated-assessment-button" class="btn btn-primary">Guardar Cambios</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Add Calculated Assessment Modal -->
+    <div id="add-calculated-assessment-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <h2>Crear Planilla de Calificación Calculada</h2>
+            <form id="add-calculated-assessment-form">
+                <div class="form-group">
+                    <label for="calculated-assessment-name">Nombre de la Planilla:</label>
+                    <input type="text" id="calculated-assessment-name" required>
+                </div>
+                <div class="form-group">
+                    <label for="calculated-assessment-course">Curso:</label>
+                    <select id="calculated-assessment-course" required>
+                        <option value="">Seleccione un curso</option>
+                    </select>
+                </div>
+                <div id="calculation-assessments-container"></div>
+                <div class="form-group">
+                    <label>Total Ponderación: <span id="total-weight">0</span>%</label>
+                </div>
+                <button type="submit" id="save-calculated-assessment-button" class="btn btn-primary" disabled>Guardar Planilla</button>
             </form>
         </div>
     </div>
