@@ -475,22 +475,14 @@ document.addEventListener('DOMContentLoaded', async () => {
                 return;
             }
 
-            const nameParts = studentName.split(' ').filter(part => part.trim() !== '');
-            const firstName = nameParts[0] || '';
-            let lastName = '';
-            if (nameParts.length > 1) {
-                lastName = nameParts.slice(1).join(' ');
-            } else {
-                lastName = firstName;
-            }
-            console.log('Sending student data:', { firstName, lastName });
-            const response = await fetch(`/api/classes/${courseId}/students/create`, {
+            console.log('Sending student data:', { name: studentName });
+            const response = await fetch(`/api/classes/${courseId}/students`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${token}`
                 },
-                body: JSON.stringify({ firstName, lastName })
+                body: JSON.stringify({ name: studentName })
             });
 
             if (response.status === 401) {

@@ -1,38 +1,27 @@
-import express from 'express';
-import { authenticateToken } from '../middleware/auth.js';
+import { Router } from 'express';
 import {
-    createClass,
     getClasses,
     getClassById,
+    createClass,
     updateClass,
     deleteClass,
-    getStudentsByClass,
     addStudentToClass,
-    createAndAddStudentToClass
+    removeStudentFromClass,
+    getStudentsForClass
 } from '../controllers/classController.js';
+import { authenticateToken, requireRole } from '../middleware/auth.js';
 
-const router = express.Router();
+const router = Router();
 
-// Route to create a new class
-router.post('/', authenticateToken, createClass);
+router.route('/').get(authenticateToken, getClasses).post(authenticateToken, createClass);
+router.route('/:id').get(authenticateToken, getClassById).put(authenticateToken, updateClass).delete(authenticateToken, deleteClass);
 
-// Route to get all classes for the authenticated user
-router.get('/', authenticateToken, getClasses);
+// Rutas para administrar alumnos en una clase
+router.route('/:id/students')
+    .get(authenticateToken, requireRole(['docente', 'admin']), getStudentsForClass)
+    .post(authenticateToken, requireRole(['docente', 'admin']), addStudentToClass);
 
-// Route to get a single class by ID
-router.get('/:id', authenticateToken, getClassById);
-
-// Route to update a class by ID
-router.put('/:id', authenticateToken, updateClass);
-
-// Route to delete a class by ID
-router.delete('/:id', authenticateToken, deleteClass);
-
-// Route to get students by class ID
-router.get('/:classId/students', authenticateToken, getStudentsByClass);
-
-// Route to add a student to a class
-router.post('/:classId/students', authenticateToken, addStudentToClass);
-router.post('/:classId/students/create', authenticateToken, createAndAddStudentToClass);
+router.route('/:id/students/:studentId')
+    .delete(authenticateToken, requireRole(['docente', 'admin']), removeStudentFromClass);
 
 export default router;

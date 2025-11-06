@@ -3,15 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Asistencia</title>
-    <link rel="stylesheet" href="./css/styles.css">
-    <link rel="stylesheet" href="./css/dashboard.css">
-    <link rel="stylesheet" href="./css/gradebook.css"> <!-- Reutilizamos gradebook.css por ahora, luego crearemos asistencias.css si es necesario -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <title>Planilla de Asistencia - Genki</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="icon" href="./assets/images/GENKI_-removebg-preview.png">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat+Alternates:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Montserrat+Alternates:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+      <link rel="stylesheet" href="./css/dashboard.css">
+    <link rel="stylesheet" href="./css/gradebook.css"> <!-- Reutilizamos gradebook.css por ahora, luego crearemos asistencias.css si es necesario -->
+    <link rel="stylesheet" href="css/asistencias.css">
 </head>
 <body>
     <div class="workspace-container">
@@ -55,9 +55,27 @@
                     <!-- La tabla de asistencia se cargará aquí -->
                 </div>
                 <button id="add-session-button" class="btn btn-secondary">Agregar Sesión</button>
+                <button id="delete-session-button" class="btn btn-danger">Eliminar Sesión</button>
+                <button id="admin-students-button" class="btn btn-secondary">Administrar Alumnos</button>
                 <button id="save-attendance-button" class="btn btn-primary">Guardar Asistencia</button>
             </div>
         </main>
+
+        <!-- Modal para Administrar Alumnos -->
+        <div id="admin-students-modal" class="modal">
+            <div class="modal-content">
+                <span class="close-button">&times;</span>
+                <h2>Administrar Alumnos</h2>
+                <div id="students-list"></div>
+                <form id="add-student-form">
+                    <div class="form-group">
+                        <input type="text" id="student-name-input" placeholder="Nombre del Alumno" required>
+                        <button type="submit" class="btn btn-primary btn-small">Agregar Alumno</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
     </div>
 
     <script src="./js/app.js"></script>

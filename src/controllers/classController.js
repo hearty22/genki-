@@ -122,39 +122,130 @@ export const getStudentsByClass = async (req, res) => {
     }
 };
 
-// Add a student to a class
+// @desc    Add a student to a class
+// @route   POST /api/classes/:id/students
+// @access  Private
 export const addStudentToClass = async (req, res) => {
     try {
-        const { classId } = req.params;
-        const { studentId } = req.body;
+        const { name } = req.body;
+        const classId = req.params.id;
 
-        console.log('Attempting to add student to class:', { classId, studentId });
-
-        const classItem = await Class.findById(classId);
-
-        if (!classItem) {
-            console.log('Class not found for ID:', classId);
-            return res.status(404).json({ success: false, message: 'Class not found' });
+        if (!name) {
+            return res.status(400).json({ message: 'El nombre del alumno es requerido.' });
         }
 
-        console.log('Class found:', classItem.subjectName);
-        console.log('Current students in class:', classItem.students);
+        // Dividir el nombre completo en nombre y apellido
+        const nameParts = name.trim().split(' ');
+        const firstName = nameParts.shift() || '';
+        const lastName = nameParts.join(' ') || '';
 
-        // Check if student already exists in the class
-        if (classItem.students.includes(studentId)) {
-            console.log('Student already in this class:', studentId);
-            return res.status(400).json({ success: false, message: 'Student already in this class' });
+        if (!firstName || !lastName) {
+            return res.status(400).json({ message: 'Se requiere nombre y apellido.' });
         }
 
-        classItem.students.push(studentId);
-        console.log('Students array after push:', classItem.students);
-        await classItem.save();
-        console.log('Class saved successfully with new student.');
+        // Generar un email único y ficticio
+        const email = `${firstName.toLowerCase()}.${lastName.toLowerCase().replace(' ', '.')}.${Date.now()}@student.com`;
 
-        res.status(200).json({ success: true, message: 'Student added to class successfully', class: classItem });
+        // Crear un nuevo usuario con el rol de estudiante
+        const newStudent = new User({
+            firstName,
+            lastName,
+            email,
+            role: 'student',
+            // Se puede establecer una contraseña por defecto si es necesario,
+            // pero para este caso no es requerido ya que no iniciarán sesión.
+        });
+
+        await newStudent.save();
+
+        // Añadir el ID del nuevo estudiante a la clase
+        const updatedClass = await Class.findByIdAndUpdate(
+            classId,
+            { $push: { students: newStudent._id } },
+            { new: true, runValidators: true }
+        ).populate({
+            path: 'students',
+            select: 'firstName lastName' // Seleccionar solo los campos necesarios
+        });
+
+        if (!updatedClass) {
+            return res.status(404).json({ message: 'Clase no encontrada.' });
+        }
+
+        // Mapear los estudiantes para devolver el formato esperado por el frontend
+        const students = updatedClass.students.map(student => ({
+            _id: student._id,
+            name: `${student.firstName} ${student.lastName}`
+        }));
+
+        res.status(201).json(students);
     } catch (error) {
-        console.error('Error adding student to class:', error);
-        res.status(500).json({ success: false, message: 'Error adding student to class', error: error.message });
+        console.error('Error al agregar el alumno:', error);
+        res.status(500).json({ message: 'Error al agregar el alumno.', error: error.message });
+    }
+};
+
+// @desc    Remove a student from a class
+// @route   DELETE /api/classes/:id/students/:studentId
+// @access  Private
+export const removeStudentFromClass = async (req, res) => {
+    try {
+        const { id, studentId } = req.params;
+
+        // Primero, elimina la referencia del alumno de la clase
+        const classToUpdate = await Class.findById(id);
+        if (!classToUpdate) {
+            return res.status(404).json({ message: 'Clase no encontrada.' });
+        }
+
+        // Filtrar el array de estudiantes para eliminar el studentId
+        classToUpdate.students.pull(studentId);
+        await classToUpdate.save();
+
+        // Opcional: Eliminar el usuario si ya no está en ninguna otra clase
+        // (lógica más compleja, omitida por simplicidad)
+
+        // Poblar la lista de estudiantes actualizada
+        const updatedClass = await Class.findById(id).populate({
+            path: 'students',
+            select: 'firstName lastName'
+        });
+
+        // Mapear los estudiantes para devolver el formato esperado por el frontend
+        const students = updatedClass.students.map(student => ({
+            _id: student._id,
+            name: `${student.firstName} ${student.lastName}`
+        }));
+
+        res.status(200).json(students);
+    } catch (error) {
+        console.error('Error al eliminar el alumno:', error);
+        res.status(500).json({ message: 'Error al eliminar el alumno.', error: error.message });
+    }
+};
+
+// @desc    Get all students for a class
+// @route   GET /api/classes/:id/students
+// @access  Private
+export const getStudentsForClass = async (req, res) => {
+    try {
+        const classId = req.params.id;
+        const classData = await Class.findById(classId).populate('students', 'firstName lastName');
+
+        if (!classData) {
+            return res.status(404).json({ message: 'Clase no encontrada.' });
+        }
+
+        // Mapear los estudiantes para devolver el formato esperado por el frontend
+        const students = classData.students.map(student => ({
+            _id: student._id,
+            name: `${student.firstName} ${student.lastName}`
+        }));
+
+        res.status(200).json(students);
+    } catch (error) {
+        console.error('Error al obtener los alumnos:', error);
+        res.status(500).json({ message: 'Error al obtener los alumnos.', error: error.message });
     }
 };
 
