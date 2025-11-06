@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="./css/styles.css">
     <link rel="stylesheet" href="./css/dashboard.css">
     <link rel="stylesheet" href="./css/gradebook.css">
+    <link rel="stylesheet" href="./css/asistencias.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -60,7 +61,7 @@
             <div class="assessment-management-controls">
                 <h2>Gestión de Evaluaciones</h2>
                 <button id="add-assessment-button" class="btn btn-secondary">Añadir Evaluación</button>
-                <button id="add-student-button" class="btn btn-secondary">Añadir Alumno</button>
+                <button id="admin-students-button" class="btn btn-secondary">Gestionar Alumnos</button>
                 <button id="edit-assessment-button" class="btn btn-secondary">Editar Evaluación</button>
                 <button id="delete-assessment-button" class="btn btn-secondary">Eliminar Evaluación</button>
             </div>
@@ -117,17 +118,17 @@
         </div>
     </div>
 
-    <!-- Add Student Modal -->
-    <div id="add-student-modal" class="modal">
+    <!-- Admin Students Modal -->
+    <div id="admin-students-modal" class="modal">
         <div class="modal-content">
-            <span class="close-button" id="close-add-student-modal-button">&times;</span>
-            <h2>Añadir Nuevo Alumno a la Clase</h2>
+            <span class="close-button">&times;</span>
+            <h2>Administrar Alumnos</h2>
+            <div id="students-list"></div>
             <form id="add-student-form">
                 <div class="form-group">
-                    <label for="new-student-name">Nombre del Nuevo Alumno:</label>
-                    <input type="text" id="new-student-name" placeholder="Introduce el nombre del alumno" required>
+                    <input type="text" id="student-name-input" placeholder="Nombre del Alumno" required>
+                    <button type="submit" class="btn btn-primary btn-small">Agregar Alumno</button>
                 </div>
-                <button type="submit" class="btn btn-primary" id="add-selected-student-button">Añadir Alumno</button>
             </form>
         </div>
     </div>
