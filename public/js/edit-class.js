@@ -35,7 +35,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         const response = await fetch(`/api/classes/${classId}`);
 
         if (response.status === 401) {
-            window.location.href = '/login.html';
+            window.location.href = '/login';
             return;
         }
 
@@ -96,7 +96,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             });
 
             if (response.status === 401) {
-                window.location.href = '/login.html';
+                window.location.href = '/login';
                 return;
             }
 
@@ -104,7 +104,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
             if (response.ok) {
                 showMessage(data.message, 'success');
-                window.location.href = '/dashboard.html'; // Redirigir al dashboard después de guardar
+                window.location.href = '/dashboard'; // Redirigir al dashboard después de guardar
             } else {
                 showMessage(data.message || 'Error al actualizar la clase.', 'error');
             }
@@ -115,6 +115,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
 
     cancelEditButton.addEventListener('click', () => {
-        window.location.href = '/dashboard.html'; // Redirigir al dashboard al cancelar
+        window.location.href = '/dashboard'; // Redirigir al dashboard al cancelar
     });
 });

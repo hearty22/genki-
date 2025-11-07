@@ -26,12 +26,12 @@
                 <h2>Genki</h2>
             </div>
             <nav class="sidebar-nav">
-                <button class="sidebar-button" onclick="location.href='dashboard.html'"><i class="fas fa-home"></i> Inicio</button>
-                <button class="sidebar-button" onclick="location.href='calendar.html'"><i class="fas fa-calendar-alt"></i> Calendario</button>
-                <button class="sidebar-button" onclick="location.href='gradebook.html'"><i class="fas fa-book"></i> Calificaciones</button>
-                <button class="sidebar-button" onclick="location.href='asistencias.html'"><i class="fas fa-clipboard-check"></i> Asistencias</button>
-                <button class="sidebar-button" onclick="location.href='profile.html'"><i class="fas fa-user"></i> Perfil</button>
-                <button class="sidebar-button" onclick="location.href='reports.html'"><i class="fas fa-chart-bar"></i> Reportes</button>
+                <button class="sidebar-button" onclick="location.href='/dashboard'"><i class="fas fa-home"></i> Inicio</button>
+                <button class="sidebar-button" onclick="location.href='/calendar'"><i class="fas fa-calendar-alt"></i> Calendario</button>
+                <button class="sidebar-button" onclick="location.href='/gradebook'"><i class="fas fa-book"></i> Calificaciones</button>
+                <button class="sidebar-button" onclick="location.href='/asistencias'"><i class="fas fa-clipboard-check"></i> Asistencias</button>
+                <button class="sidebar-button active" onclick="location.href='/profile'"><i class="fas fa-user"></i> Perfil</button>
+                <button class="sidebar-button" onclick="location.href='/reports'"><i class="fas fa-chart-bar"></i> Reportes</button>
             </nav>
             <div class="sidebar-footer">
                 <button class="sidebar-button logout-button" id="logout-button"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</button>
@@ -69,7 +69,7 @@
                 <button type="submit" class="button">Actualizar Perfil</button>
             </form>
             <div class="profile-actions">
-                <button onclick="location.href='dashboard.html'">Volver al Dashboard</button>
+                <button onclick="location.href='/dashboard'">Volver al Dashboard</button>
             </div>
         </main>
     </div>

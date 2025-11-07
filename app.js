@@ -42,7 +42,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 // Middleware para servir archivos estáticos
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, 'public'), { extensions: ['html'] }));
 
 // Middleware de logging para desarrollo
 if (process.env.NODE_ENV !== 'production') {

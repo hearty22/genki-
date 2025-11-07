@@ -57,7 +57,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     editButton.onclick = function() {
                         const classId = info.event.extendedProps.classId;
                         if (classId) {
-                            window.location.href = `edit-class.html?id=${classId}`;
+                            window.location.href = `edit-class?id=${classId}`;
                         } else {
                             console.error('No class ID found for this event.');
                         }
@@ -146,7 +146,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     const classesResponse = classesResult.value;
                     if (!classesResponse.ok) {
                         if (classesResponse.status === 401) {
-                            window.location.href = '/login.html';
+                            window.location.href = '/login';
                             return;
                         }
                         const errorData = await classesResponse.json();

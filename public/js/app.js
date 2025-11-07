@@ -551,7 +551,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 const responseData = await response.json();
                 if (response.ok) {
                     showMessage(responseData.message, 'success');
-                    window.location.href = '/dashboard.html';
+                    window.location.href = '/dashboard';
                 } else {
                     if (response.status === 400) {
                         showMessage(responseData.message || 'Datos de entrada inválidos', 'error');
@@ -595,7 +595,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                     showMessage(data.message, 'success');
                     registerForm.reset();
                     // Redirigir al login después de un registro exitoso
-                    window.location.href = '/login.html';
+                    window.location.href = '/login';
                 } else {
                     const errorData = await response.json();
                     if (response.status === 400) {
@@ -674,8 +674,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     
             const authToken = getCookie('authToken');
             if (!authToken) {
-                showMessage('No autenticado. Por favor, inicia sesión.', 'error');
-                return;
+                window.location.href = "/index"
             }
     
             const updatedProfile = {
@@ -1073,7 +1072,7 @@ async function fetchAndRenderDashboardClasses() {
     const authToken = getCookie('authToken');
     if (!authToken) {
         console.error('No authentication token found.');
-        window.location.href = "./login.html"
+        window.location.href = "./login"
         return;
     }
 
@@ -1086,7 +1085,7 @@ async function fetchAndRenderDashboardClasses() {
         });
         const data = await response.json();
         if (response.status === 401) {
-            window.location.href = '/login.html';
+            window.location.href = '/login';
             return;
         }
 
@@ -1117,7 +1116,7 @@ async function fetchAndRenderDashboardClasses() {
 
                 // Add event listeners for edit and delete buttons
                 classElement.querySelector('.button-edit').addEventListener('click', () => {
-                    window.location.href = `/edit-class.html?id=${classItem._id}`;
+                    window.location.href = `/edit-class?id=${classItem._id}`;
                 });
 
                 classElement.querySelector('.button-delete').addEventListener('click', async () => {
@@ -1172,7 +1171,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 if (response.ok) {
                     showMessage(data.message, 'success');
-                    window.location.href = '/index.html';
+                    window.location.href = '/';
                 } else {
                     showMessage(data.message || 'Error al cerrar sesión', 'error');
                 }

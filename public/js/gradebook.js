@@ -59,7 +59,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     async function fetchData(url, options = {}) {
         const response = await fetch(url, options);
         if (response.status === 401) {
-            window.location.href = 'login.html';
+            window.location.href = 'login';
             return;
         }
         if (!response.ok) {

@@ -21,7 +21,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     async function fetchData(url) {
         const response = await fetch(url);
         if (response.status === 401) {
-            window.location.href = 'login.html';
+            window.location.href = 'login';
             return;
         }
         if (!response.ok) {
@@ -192,7 +192,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 });
 
                 if (response.status === 401) {
-                    window.location.href = 'login.html';
+                    window.location.href = 'login';
                     return;
                 }
                 if (!response.ok) {

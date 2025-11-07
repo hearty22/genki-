@@ -22,11 +22,11 @@ document.addEventListener('DOMContentLoaded', async () => {
                 }
             });
             if (response.status === 401) {
-                window.location.href = '/login.html';
+                window.location.href = '/login';
                 return [];
             }
             if (response.status === 401) {
-                window.location.href = '/login.html';
+                window.location.href = '/login';
                 return [];
             }
             if (!response.ok) {
