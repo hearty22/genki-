@@ -1,0 +1,97 @@
+/* General container styling */
+.container {
+    background-color: var(--background-light-gray);
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 80%;
+    max-width: 800px;
+    border: 1px solid var(--border-color);
+}
+
+/* Header styling */
+h1 {
+    text-align: center;
+    color: var(--primary-deep-blue);
+    margin-bottom: 20px;
+    font-size: 2.5em;
+}
+
+/* Chat window styling */
+.chat-window {
+    border: 1px solid var(--border-soft);
+    border-radius: 4px;
+    height: 400px; /* Increased height */
+    overflow-y: auto;
+    padding: 15px;
+    margin-bottom: 20px;
+    background-color: var(--light-purple-bg);
+}
+
+/* Chat input section */
+.chat-input {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+#topic-input,
+.chat-input select {
+    flex-grow: 1;
+    padding: 10px;
+    border: 1px solid var(--border-soft);
+    border-radius: 5px;
+    font-size: 1em;
+    color: var(--text-dark);
+    background-color: var(--light-purple-bg);
+}
+
+#send-button {
+    padding: 10px 20px;
+    border: none;
+    background-color: var(--primary-deep-blue);
+    color: white;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+#send-button:hover {
+    background-color: var(--accent-purple);
+}
+
+/* Chart container */
+.chart-container {
+    margin-top: 20px;
+}
+
+/* Hidden class */
+.hidden {
+    display: none;
+}
+
+/* Dark mode styles */
+body[data-theme="dark"] .container {
+    background-color: var(--dark-mode-card-bg);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+body[data-theme="dark"] h1 {
+    color: var(--dark-mode-text-primary);
+}
+
+body[data-theme="dark"] .chat-window {
+    background-color: var(--dark-mode-input-bg);
+    border-color: var(--dark-mode-border-color);
+}
+
+body[data-theme="dark"] #topic-input,
+body[data-theme="dark"] .chat-input select {
+    background-color: var(--dark-mode-input-bg);
+    color: var(--dark-mode-text-primary);
+    border-color: var(--dark-mode-border-color);
+}
+
+body[data-theme="dark"] #send-button {
+    background-color: var(--primary-light-blue);
+}

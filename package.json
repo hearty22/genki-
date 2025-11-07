@@ -22,6 +22,8 @@
   },
   "homepage": "https://github.com/hearty22/tomeru-#readme",
   "dependencies": {
+    "@google/generative-ai": "^0.24.1",
+    "axios": "^1.13.2",
     "bcryptjs": "^3.0.2",
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.5",

@@ -5,7 +5,14 @@ import User from '../models/User.js';
 export const authenticateToken = async (req, res, next) => {
   try {
     console.log('authenticateToken middleware triggered');
-    const token = req.signedCookies.authToken;
+    let token = req.signedCookies.authToken;
+
+    if (!token && req.headers.authorization) {
+      const authHeader = req.headers.authorization;
+      if (authHeader.startsWith('Bearer ')) {
+        token = authHeader.substring(7, authHeader.length);
+      }
+    }
 
     if (!token) {
       console.log('No token found in headers or cookies');
