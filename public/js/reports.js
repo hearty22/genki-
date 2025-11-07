@@ -11,14 +11,14 @@ document.addEventListener('DOMContentLoaded', async () => {
     // Function to fetch courses
     async function fetchCourses() {
         try {
-            
+            const authToken = getCookie('authToken');
             if (!authToken) {
                 console.error('No authentication token found.');
                 return [];
             }
             const response = await fetch('/api/classes', {
                 headers: {
-                    
+                    'Authorization': `Bearer ${authToken}`
                 }
             });
             if (response.status === 401) {
@@ -83,28 +83,35 @@ document.addEventListener('DOMContentLoaded', async () => {
         courseSelect.addEventListener('change', async () => {
             const selectedCourseId = courseSelect.value;
             if (selectedCourseId) {
-                assessments = await fetchAssessments(selectedCourseId);
-                populateAssessments();
+                populateReportTypes(selectedCourseId);
             } else {
+                reportTypeSelect.innerHTML = '<option value="">Seleccione un tipo de reporte</option>';
                 assessmentSelectContainer.innerHTML = '';
             }
         });
     }
 
-    // Populate assessment dropdown
-    function populateAssessments() {
-        const assessmentSelect = document.createElement('select');
-        assessmentSelect.id = 'assessment-select';
-        assessmentSelect.className = 'form-control';
-        assessmentSelect.innerHTML = '<option value="">Seleccione una evaluación</option>';
-        assessments.forEach(assessment => {
+    // Populate report type dropdown
+    function populateReportTypes(courseId) {
+        reportTypeSelect.innerHTML = '<option value="">Seleccione un tipo de reporte</option>';
+        const reportTypes = [
+            { value: 'attendance', text: 'Asistencia' },
+            { value: 'grades', text: 'Calificaciones' }
+        ];
+
+        reportTypes.forEach(reportType => {
             const option = document.createElement('option');
-            option.value = assessment._id;
-            option.textContent = assessment.name;
-            assessmentSelect.appendChild(option);
+            option.value = reportType.value;
+            option.textContent = reportType.text;
+            reportTypeSelect.appendChild(option);
         });
-        assessmentSelectContainer.innerHTML = '';
-        assessmentSelectContainer.appendChild(assessmentSelect);
+
+        reportTypeSelect.addEventListener('change', () => {
+            const selectedReportType = reportTypeSelect.value;
+            if (selectedReportType === 'grades') {
+                assessmentSelectContainer.innerHTML = '';
+            } 
+        });
     }
 
     // Initial population
@@ -114,13 +121,12 @@ document.addEventListener('DOMContentLoaded', async () => {
         const selectedReportType = reportTypeSelect.value;
         const selectedReportFormat = reportFormatSelect.value;
         const selectedCourseId = document.getElementById('course-select') ? document.getElementById('course-select').value : '';
-        const selectedAssessmentId = document.getElementById('assessment-select') ? document.getElementById('assessment-select').value : '';
 
         let url = '';
         if (selectedReportType === 'attendance') {
             url = `/api/reports/attendance/${selectedReportFormat}?courseId=${selectedCourseId}`;
         } else if (selectedReportType === 'grades') {
-            url = `/api/reports/grades/${selectedReportFormat}?courseId=${selectedCourseId}&assessmentId=${selectedAssessmentId}`;
+            url = `/api/reports/grades/${selectedReportFormat}?courseId=${selectedCourseId}`;
         }
 
         if (url) {
