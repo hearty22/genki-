@@ -69,13 +69,12 @@ body {
 }
 
 .main-content {
-  /* TODO: Arreglar el estilo del main content para el calendario */
+  /* Contenedor principal del calendario */
   flex-grow: 1;
-  padding: 20vh;
+  padding: 32px;
   background-color: #ffffff;
-
   color: #333333;
-  margin-left: 250px; /* Offset for fixed sidebar */
+  margin-left: 250px; /* Offset para sidebar fija */
 }
 
 .calendar-section {
@@ -409,7 +408,8 @@ body {
 
 @media (max-width: 768px) {
   .main-content {
-    margin-left: 0; /* Remove sidebar offset on small screens */
+    margin-left: 0; /* Quita offset de sidebar en pantallas pequeñas */
+    padding: 20px; /* Reduce padding para móviles */
   }
 
   .event-details-grid {
@@ -433,5 +433,20 @@ body {
   .fc .fc-button {
     padding: 6px 10px; /* Adjust button padding */
     font-size: 0.9em;
+  }
+}
+
+@media (max-width: 480px) {
+  .main-content {
+    padding: 16px;
+  }
+
+  .fc .fc-toolbar-title {
+    font-size: 1.2em;
+  }
+
+  .fc .fc-button {
+    padding: 5px 8px;
+    font-size: 0.85em;
   }
 }

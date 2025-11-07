@@ -161,3 +161,25 @@ p.toggle-link a:hover {
 .social-button svg {
     margin-right: 10px;
 }
+
+@media (max-width: 768px) {
+    .login-container {
+        padding: 28px;
+        max-width: 90%;
+    }
+
+    h1 {
+        font-size: 1.6em;
+    }
+}
+
+@media (max-width: 480px) {
+    .login-container {
+        padding: 22px;
+    }
+
+    button {
+        padding: 10px 16px;
+        font-size: 0.95em;
+    }
+}

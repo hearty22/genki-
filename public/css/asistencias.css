@@ -23,3 +23,23 @@
     display: flex;
     gap: 10px;
 }
+
+/* Responsive: stack inputs and buttons on small screens */
+@media (max-width: 768px) {
+    #add-student-form .form-group {
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    #add-student-form .form-group input,
+    #add-student-form .form-group button,
+    .btn-small {
+        width: 100%;
+    }
+
+    #students-list li {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+}

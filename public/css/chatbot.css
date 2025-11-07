@@ -1,24 +1,108 @@
-/* General container styling */
+/* General container styling aligned with site theme */
 .container {
-    background-color: var(--background-light-gray);
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: #ffffff;
+    padding: 24px;
+    border-radius: 18px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
     width: 80%;
     max-width: 800px;
-    border: 1px solid var(--border-color);
+    border: 1px solid var(--border-soft);
 }
 
 /* Header styling */
 h1 {
     text-align: center;
-    color: var(--primary-deep-blue);
+    color: var(--text-charcoal);
     margin-bottom: 20px;
     font-size: 2.5em;
 }
 
 /* Chat window styling */
+.generation-type-selector {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+    gap: 12px;
+}
+
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 60px;
+    height: 34px;
+}
+
+.switch input { 
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: var(--accent-color);
+    transition: .4s;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 26px;
+    width: 26px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    transition: .4s;
+}
+
+input:checked + .slider {
+    background-color: var(--accent-pink);
+}
+
+input:checked + .slider:before {
+    transform: translateX(26px);
+}
+
+.slider.round {
+    border-radius: 34px;
+}
+
+.slider.round:before {
+    border-radius: 50%;
+}
+
+.label-text {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text-gray);
+    transition: color 0.3s ease;
+}
+
+.generation-type-selector .label-text[data-for="dynamics"] {
+    color: var(--text-charcoal);
+}
+
+.generation-type-selector .label-text[data-for="activities"] {
+    color: var(--text-gray);
+}
+
+body.dark-mode .generation-type-selector .label-text[data-for="dynamics"] {
+    color: var(--dark-mode-text-color);
+}
+
+body.dark-mode .generation-type-selector .label-text[data-for="activities"] {
+    color: var(--dark-mode-text-soft-color);
+}
+
+
 .chat-window {
+    height: 400px;
     border: 1px solid var(--border-soft);
     border-radius: 4px;
     height: 400px; /* Increased height */
@@ -47,22 +131,28 @@ h1 {
 }
 
 #send-button {
-    padding: 10px 20px;
+    padding: 12px 20px;
     border: none;
-    background-color: var(--primary-deep-blue);
+    background-color: var(--accent-color);
     color: white;
-    border-radius: 3px;
+    border-radius: 12px;
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    transition: background-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
 }
 
 #send-button:hover {
-    background-color: var(--accent-purple);
+    background-color: var(--accent-pink);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 10px rgba(185, 155, 230, 0.25);
 }
 
 /* Chart container */
 .chart-container {
     margin-top: 20px;
+}
+#type-chart {
+    width: 100%;
+    height: auto;
 }
 
 /* Hidden class */
@@ -73,6 +163,7 @@ h1 {
 /* Dark mode styles */
 body[data-theme="dark"] .container {
     background-color: var(--dark-mode-card-bg);
+    border-color: var(--dark-mode-border-color);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
 }
 
@@ -93,5 +184,59 @@ body[data-theme="dark"] .chat-input select {
 }
 
 body[data-theme="dark"] #send-button {
-    background-color: var(--primary-light-blue);
+    background-color: var(--accent-purple);
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+    .container {
+        width: 95%;
+        max-width: none;
+        padding: 16px;
+    }
+}
+
+@media (max-width: 768px) {
+    h1 {
+        font-size: 1.8em;
+    }
+
+    .chat-window {
+        height: 50vh;
+        padding: 12px;
+    }
+
+    .chat-input {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    #topic-input,
+    .chat-input select {
+        width: 100%;
+    }
+
+    #send-button {
+        width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    h1 {
+        font-size: 1.4em;
+    }
+
+    .container {
+        padding: 12px;
+    }
+
+    .chat-window {
+        height: 45vh;
+        padding: 10px;
+    }
+
+    #topic-input,
+    .chat-input select {
+        font-size: 0.95em;
+    }
 }

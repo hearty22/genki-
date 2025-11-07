@@ -145,6 +145,39 @@
     justify-content: center; /* Center buttons */
 }
 
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .gradebook-controls {
+        flex-direction: column;
+        gap: 12px;
+        padding: 18px;
+    }
+
+    .gradebook-controls .form-group {
+        min-width: 0;
+        width: 100%;
+    }
+
+    .gradebook-grid-container {
+        padding: 18px;
+    }
+
+    .assessment-management-controls {
+        gap: 12px;
+        padding: 18px;
+    }
+
+    .assessment-management-controls button {
+        min-width: 0;
+        width: 100%;
+    }
+
+    #gradebook-grid,
+    #attendance-grid {
+        overflow-x: auto;
+    }
+}
+
 .assessment-management-controls h2 {
     width: 100%; /* Full width for title */
     text-align: center;
