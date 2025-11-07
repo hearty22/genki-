@@ -1,11 +1,11 @@
 document.addEventListener('DOMContentLoaded', () => {
     const topicInput = document.getElementById('topic-input');
-    const typeInput = document.getElementById('type-input');
-    const difficultyInput = document.getElementById('difficulty-input');
+    const typeInput = document.getElementById('type-select');
+    const difficultyInput = document.getElementById('difficulty-select');
     const sendButton = document.getElementById('send-button');
     const chatOutput = document.getElementById('chat-output');
-    const loading = document.getElementById('loading');
-    const chartCanvas = document.getElementById('chart');
+    const loading = document.querySelector('.loading'); // Corrected selector
+    const chartCanvas = document.getElementById('type-chart'); // Corrected ID
     let chart = null;
 
     function getCookie(name) {
