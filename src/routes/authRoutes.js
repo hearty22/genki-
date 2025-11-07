@@ -97,4 +97,4 @@ router.get('/microsoft/callback',
   }
 );
 
-export default router;
+export default router; 

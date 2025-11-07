@@ -396,15 +396,16 @@ html, body {
     margin-bottom: 15px;
     font-size: 1.5em;
 }
-
+/* comentado ya que genera una barra incomoda y sin proposito que anteriormente contenia items pero ahora no */
 .dashboard-navbar {
     display: flex;
-    justify-content: center;
+    
+    /* justify-content: center;
     margin-bottom: 12px;
     background: linear-gradient(180deg, var(--bg-soft), var(--pastel-purple));
     border-radius: 16px;
-    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
-    padding: 12px;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06); */
+    /* padding: 12px; */
 }
 
 .nav-button {

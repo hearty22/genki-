@@ -1,433 +1,437 @@
 body {
-    font-family: 'Roboto', sans-serif;
-    margin: 0;
-    padding: 0;
-    background-color: #ffffff;
-    color: #333333;
-    display: flex;
-    min-height: 100vh;
-    width: 100%;
+  font-family: "Roboto", sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #ffffff;
+  color: #333333;
+  display: flex;
+  min-height: 100vh;
+  width: 100%;
 }
 
 .workspace-container {
-    display: flex;
-    width: 100%;
+  display: flex;
+  width: 100%;
 }
 
 .sidebar {
-    width: 250px;
-    background-color: #ffffff;
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    position: fixed;
-    top: 0;
-    left: 0;
-    height: 100vh;
-    z-index: 1000; /* Ensure sidebar is above other content */
+  width: 250px;
+  background-color: #ffffff;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  z-index: 1000; /* Ensure sidebar is above other content */
 }
 
 .sidebar-header {
-    text-align: center;
-    margin-bottom: 30px;
+  text-align: center;
+  margin-bottom: 30px;
 }
 
 .sidebar-header h2 {
-    color: var(--accent-purple);
-    font-size: 1.8em;
-    margin: 0;
+  color: var(--accent-purple);
+  font-size: 1.8em;
+  margin: 0;
 }
 
 .sidebar-nav {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
 }
 
 .sidebar-button {
-    background-color: var(--pastel-pink);
-    color: white;
-    border: 1px solid var(--border-soft);
-    padding: 12px 16px;
-    font-size: 1.05em;
-    cursor: pointer;
-    border-radius: 12px;
-    transition: background-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+  background-color: var(--pastel-pink);
+  color: white;
+  border: 1px solid var(--border-soft);
+  padding: 12px 16px;
+  font-size: 1.05em;
+  cursor: pointer;
+  border-radius: 12px;
+  transition: background-color 0.2s ease, transform 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
 .sidebar-button:hover {
-    background-color: var(--accent-pink);
-    color: white;
-    transform: translateY(-2px);
-    box-shadow: 0 6px 16px rgba(185, 155, 230, 0.25);
+  background-color: var(--accent-pink);
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(185, 155, 230, 0.25);
 }
 
 .sidebar-button.active {
-    background-color: var(--accent-pink);
-    color: white;
+  background-color: var(--accent-pink);
+  color: white;
 }
 
 .main-content {
-    /* TODO:   */
-    flex-grow: 1;
-    padding: 20vh;
-    background-color: #ffffff;
-            border: var(--accent-purple) solid 1px;
+  /* TODO: Arreglar el estilo del main content para el calendario */
+  flex-grow: 1;
+  padding: 20vh;
+  background-color: #ffffff;
 
-    color: #333333;
-    margin-left: 250px; /* Offset for fixed sidebar */
+  color: #333333;
+  margin-left: 250px; /* Offset for fixed sidebar */
 }
 
 .calendar-section {
-    background-color: #ffffff;
-    padding: 20px;
-    /* Removed box-shadow and border-radius */
-  }
+  background-color: #ffffff;
+  padding: 20px;
+  /* Removed box-shadow and border-radius */
+}
 
 .calendar-section h2 {
-    margin-bottom: 20px;
+  margin-bottom: 20px;
 }
 
 #calendar {
-    background-color: #ffffff;
-    color: #333333;
-    /* Removed padding and border-radius */
-  }
+  background-color: #ffffff;
+  color: #333333;
+  /* Removed padding and border-radius */
+}
 
-  .fc .fc-button {
-    background-color: var(--pastel-pink) !important; /* Pink button background */
-    color: #FFFFFF !important; /* White text for contrast */
-    border: none;
-    padding: 8px 15px;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.2s ease;
-  }
+.fc .fc-button {
+  background-color: var(--pastel-pink) !important; /* Pink button background */
+  color: #ffffff !important; /* White text for contrast */
+  border: none;
+  padding: 8px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
 
-  .fc .fc-button:hover {
-    background-color: var(--accent-pink) !important; /* Darker pink on hover */
-    transform: translateY(-1px);
-  }
+.fc .fc-button:hover {
+  background-color: var(--accent-pink) !important; /* Darker pink on hover */
+  transform: translateY(-1px);
+}
 
-  .fc .fc-button-primary {
-    background-color: var(--pastel-purple) !important; /* Purple primary button */
-  }
+.fc .fc-button-primary {
+  background-color: var(--pastel-purple) !important; /* Purple primary button */
+}
 
-  .fc .fc-button-primary:not(:disabled):active,
-  .fc .fc-button-primary:not(:disabled).fc-button-active {
-    background-color: var(--accent-purple) !important; /* Darker purple when active */
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-  }
+.fc .fc-button-primary:not(:disabled):active,
+.fc .fc-button-primary:not(:disabled).fc-button-active {
+  background-color: var(
+    --accent-purple
+  ) !important; /* Darker purple when active */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
 
-  .fc .fc-toolbar-title {
-    color: var(--pastel-pink) !important; /* Purple toolbar title */
-    font-size: 1.8em; /* Make toolbar title more prominent */
-    font-weight: 700; /* Bold for prominence */
-  }
+.fc .fc-toolbar-title {
+  color: var(--pastel-pink) !important; /* Purple toolbar title */
+  font-size: 1.8em; /* Make toolbar title more prominent */
+  font-weight: 700; /* Bold for prominence */
+}
 
 .fc .fc-daygrid-day-number {
-    color: var(--pastel-purple) !important; /* Purple for day numbers */
-  }
+  color: var(--pastel-purple) !important; /* Purple for day numbers */
+}
 
-  .fc .fc-daygrid-event {
-      background-color: var(--pastel-pink) !important; /* Pink background for events */
-      color: #FFFFFF !important; /* White text for event titles */
-      border: none;
-      font-size: 0.85em;
-      padding: 2px 5px;
-      border-radius: 3px;
-  }
+.fc .fc-daygrid-event {
+  background-color: var(
+    --pastel-pink
+  ) !important; /* Pink background for events */
+  color: #ffffff !important; /* White text for event titles */
+  border: none;
+  font-size: 0.85em;
+  padding: 2px 5px;
+  border-radius: 3px;
+}
 
-  .fc .fc-event-title {
-      color: #FFFFFF !important; /* White text for event titles */
-  }
+.fc .fc-event-title {
+  color: #ffffff !important; /* White text for event titles */
+}
 
-  .fc .fc-col-header-cell-cushion {
-    color: var(--pastel-purple) !important; /* Purple for column headers */
-    font-weight: 600;
-  }
+.fc .fc-col-header-cell-cushion {
+  color: var(--pastel-purple) !important; /* Purple for column headers */
+  font-weight: 600;
+}
 
-  .fc .fc-day-other .fc-daygrid-day-number {
-    color: #C0C0C0; /* Lighter grey for other month days */
-    opacity: 0.6;
-  }
+.fc .fc-day-other .fc-daygrid-day-number {
+  color: #c0c0c0; /* Lighter grey for other month days */
+  opacity: 0.6;
+}
 
-  .fc .fc-list-event-title {
-    color: #333333; /* Dark text for contrast */
-  }
+.fc .fc-list-event-title {
+  color: #333333; /* Dark text for contrast */
+}
 
-  .fc .fc-list-event-time {
-    color: #333333; /* Dark text for contrast */
-  }
+.fc .fc-list-event-time {
+  color: #333333; /* Dark text for contrast */
+}
 
-  .fc .fc-list-day-text,
-  .fc .fc-list-day-alt-text {
-    color: var(--text-dark); /* Using --text-dark for list day text */
-  }
+.fc .fc-list-day-text,
+.fc .fc-list-day-alt-text {
+  color: var(--text-dark); /* Using --text-dark for list day text */
+}
 
-  .fc .fc-list-event.fc-event-forced-url {
-    background-color: #f0f2f5; /* Light background for list events */
-  }
+.fc .fc-list-event.fc-event-forced-url {
+  background-color: #f0f2f5; /* Light background for list events */
+}
 
-  .fc .fc-list-event-dot {
-    background-color: var(--primary-color); /* Use primary color for event dot */
-  }
+.fc .fc-list-event-dot {
+  background-color: var(--primary-color); /* Use primary color for event dot */
+}
 
 /* Modal Styles */
 .modal {
-    display: none; /* Hidden by default */
-    position: fixed; /* Stay in place */
-    z-index: 1000; /* Sit on top */
-    left: 0;
-    top: 0;
-    width: 100%; /* Full width */
-    height: 100%; /* Full height */
-    overflow: auto; /* Enable scroll if needed */
-    background-color: rgba(0,0,0,0.6); /* Black w/ opacity */
-    align-items: center;
-    justify-content: center;
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1000; /* Sit on top */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgba(0, 0, 0, 0.6); /* Black w/ opacity */
+  align-items: center;
+  justify-content: center;
 }
 
 .modal-content {
-    background-color: #FFFFFF;
-    margin: auto;
-    padding: 30px;
-    border-radius: 10px;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.5);
-    width: 90%;
-    max-width: 500px;
-    position: relative;
-    color: var(--text-color);
+  background-color: #ffffff;
+  margin: auto;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+  width: 90%;
+  max-width: 500px;
+  position: relative;
+  color: var(--text-color);
 }
 
 .modal-content h2 {
-    color: var(--background-color); /* Darker text for contrast */
-    margin-top: 0;
-    margin-bottom: 20px;
-    text-align: center;
+  color: var(--background-color); /* Darker text for contrast */
+  margin-top: 0;                
+  margin-bottom: 20px;
+  text-align: center;
 }
 
 .modal-content label {
-    color: var(--background-color); /* Darker text for contrast */
-    display: block;
-    margin-bottom: 8px;
-    font-weight: bold;
+  color: var(--background-color); /* Darker text for contrast */
+  display: block;
+  margin-bottom: 8px;
+  font-weight: bold;
 }
 
 .modal-content input[type="text"],
 .modal-content input[type="time"],
 .modal-content select {
-    width: calc(100% - 20px);
-    padding: 10px;
-    margin-bottom: 15px;
-    border: 1px solid var(--border-color);
-    border-radius: 5px;
-    background-color: var(--input-bg-color);
-    color: var(--text-color);
-    font-size: 1em;
+  width: calc(100% - 20px);
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid var(--border-color);
+  border-radius: 5px;
+  background-color: var(--input-bg-color);
+  color: var(--text-color);
+  font-size: 1em;
 }
 
 .modal-content input[type="text"]::placeholder {
-    color: var(--text-color-dark);
+  color: var(--text-color-dark);
 }
 
 .modal-content button {
-    background-color: var(--primary-color);
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 1em;
-    transition: background-color 0.3s ease;
-    width: 100%;
+  background-color: var(--primary-color);
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1em;
+  transition: background-color 0.3s ease;
+  width: 100%;
 }
 
 .modal-content button:hover {
-    background-color: var(--button-hover-bg);
+  background-color: var(--button-hover-bg);
 }
 
 .close-button {
-    color: var(--background-color); /* Darker text for contrast */
-    position: absolute;
-    top: 15px;
-    right: 25px;
-    font-size: 28px;
-    font-weight: bold;
-    cursor: pointer;
+  color: var(--background-color); /* Darker text for contrast */
+  position: absolute;
+  top: 15px;
+  right: 25px;
+  font-size: 28px;
+  font-weight: bold;
+  cursor: pointer;
 }
 
 .close-button:hover,
 .close-button:focus {
-    color: var(--danger-color);
-    text-decoration: none;
-    cursor: pointer;
+  color: var(--danger-color);
+  text-decoration: none;
+  cursor: pointer;
 }
 
 .button-primary {
-    background-color: var(--primary-color);
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 1em;
-    transition: background-color 0.3s ease;
+  background-color: var(--primary-color);
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1em;
+  transition: background-color 0.3s ease;
 }
 
 .button-primary:hover {
-    background-color: var(--button-hover-bg);
+  background-color: var(--button-hover-bg);
 }
 
 .button-danger {
-    background-color: var(--danger-color);
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 1em;
-    transition: background-color 0.3s ease;
+  background-color: var(--danger-color);
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1em;
+  transition: background-color 0.3s ease;
 }
 
 .button-danger:hover {
-    background-color: #c0392b;
+  background-color: #c0392b;
 }
 
 .button-secondary {
-    background-color: var(--text-color-dark);
-    color: var(--background-color);
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 1em;
-    transition: background-color 0.3s ease;
+  background-color: var(--text-color-dark);
+  color: var(--background-color);
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1em;
+  transition: background-color 0.3s ease;
 }
 
 .button-secondary:hover {
-    background-color: #888;
+  background-color: #888;
 }
 
 .form-group {
-    margin-bottom: 15px;
+  margin-bottom: 15px;
 }
 
 .form-group label {
-    display: block;
-    margin-bottom: 5px;
-    color: var(--text-color);
+  display: block;
+  margin-bottom: 5px;
+  color: var(--text-color);
 }
 
 .form-group input[type="text"],
 .form-group input[type="time"],
 .form-group select {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid var(--border-color);
-    border-radius: 5px;
-    background-color: var(--input-bg-color);
-    color: var(--text-color);
+  width: 100%;
+  padding: 10px;
+  border: 1px solid var(--border-color);
+  border-radius: 5px;
+  background-color: var(--input-bg-color);
+  color: var(--text-color);
 }
 
 .form-group input[type="checkbox"] {
-    margin-right: 10px;
+  margin-right: 10px;
 }
 
 .checkbox-group {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    margin-bottom: 15px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 15px;
 }
 
 .checkbox-group label {
-    display: flex;
-    align-items: center;
-    color: var(--text-color);
+  display: flex;
+  align-items: center;
+  color: var(--text-color);
 }
 
 .checkbox-group input[type="checkbox"] {
-    margin-right: 5px;
+  margin-right: 5px;
 }
 
 .message-container {
-    padding: 10px;
-    margin-bottom: 15px;
-    border-radius: 5px;
-    text-align: center;
-    font-weight: bold;
+  padding: 10px;
+  margin-bottom: 15px;
+  border-radius: 5px;
+  text-align: center;
+  font-weight: bold;
 }
 
 .message-container.success {
-    background-color: var(--success-color);
-    color: var(--background-color);
+  background-color: var(--success-color);
+  color: var(--background-color);
 }
 
 .message-container.error {
-    background-color: var(--danger-color);
-    color: white;
+  background-color: var(--danger-color);
+  color: white;
 }
 
 .message-container.warning {
-    background-color: var(--warning-color);
-    color: var(--background-color);
+  background-color: var(--warning-color);
+  color: var(--background-color);
 }
 
 #loading-indicator {
-    color: var(--text-color);
+  color: var(--text-color);
 }
 
 .event-details-grid {
-    display: grid;
-    grid-template-columns: auto 1fr;
-    gap: 10px;
-    margin-top: 20px;
-    margin-bottom: 20px;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 10px;
+  margin-top: 20px;
+  margin-bottom: 20px;
 }
 
 .detail-row {
-    display: contents;
+  display: contents;
 }
 
 .detail-label {
-    font-weight: bold;
-    color: var(--text-color-dark);
-    text-align: right;
-    padding-right: 10px;
+  font-weight: bold;
+  color: var(--text-color-dark);
+  text-align: right;
+  padding-right: 10px;
 }
 
 .modal-actions {
-    display: flex;
-    justify-content: flex-end;
-    margin-top: 20px;
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 20px;
 }
 
 @media (max-width: 768px) {
-    .main-content {
-        margin-left: 0; /* Remove sidebar offset on small screens */
-    }
+  .main-content {
+    margin-left: 0; /* Remove sidebar offset on small screens */
+  }
 
-    .event-details-grid {
-        grid-template-columns: 1fr; /* Stack columns on small screens */
-    }
+  .event-details-grid {
+    grid-template-columns: 1fr; /* Stack columns on small screens */
+  }
 
-    .detail-label {
-        text-align: left; /* Align labels to left on small screens */
-        padding-right: 0;
-    }
+  .detail-label {
+    text-align: left; /* Align labels to left on small screens */
+    padding-right: 0;
+  }
 
-    .modal-content {
-        width: 95%;
-        padding: 20px;
-    }
+  .modal-content {
+    width: 95%;
+    padding: 20px;
+  }
 
-    .fc .fc-toolbar-title {
-        font-size: 1.4em; /* Adjust font size for smaller screens */
-    }
+  .fc .fc-toolbar-title {
+    font-size: 1.4em; /* Adjust font size for smaller screens */
+  }
 
-    .fc .fc-button {
-        padding: 6px 10px; /* Adjust button padding */
-        font-size: 0.9em;
-    }
+  .fc .fc-button {
+    padding: 6px 10px; /* Adjust button padding */
+    font-size: 0.9em;
+  }
 }
