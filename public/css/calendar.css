@@ -68,9 +68,12 @@ body {
 }
 
 .main-content {
+    /* TODO:   */
     flex-grow: 1;
-    padding: 0;
+    padding: 20vh;
     background-color: #ffffff;
+            border: var(--accent-purple) solid 1px;
+
     color: #333333;
     margin-left: 250px; /* Offset for fixed sidebar */
 }
