@@ -522,6 +522,7 @@ html, body {
 }
 
 .button-edit-event,
+.button-dashboard,
 .button-delete-event,
 .button-edit-class,
 .button-delete-class {
@@ -533,6 +534,7 @@ html, body {
 }
 
 .button-edit-event,
+.button-dashboard,
 .button-edit-class {
     background-color: var(--pastel-purple);
     color: white;
@@ -552,6 +554,7 @@ html, body {
 }
 
 .button-delete-event:hover,
+.button-dashboard:hover,
 .button-delete-class:hover {
     background-color: var(--accent-pink);
 }

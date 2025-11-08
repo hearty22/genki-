@@ -1,0 +1,35 @@
+.dashboard-container {
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+.dashboard-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+.stat-card {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.stat-card h3 {
+    margin-top: 0;
+    font-size: 1.2em;
+    color: #333;
+}
+
+#top-absences-list {
+    list-style: none;
+    padding: 0;
+}
+
+#top-absences-list li {
+    padding: 8px 0;
+    border-bottom: 1px solid #eee;
+}

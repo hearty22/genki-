@@ -44,6 +44,10 @@ app.use(passport.session());
 // Middleware para servir archivos estáticos
 app.use(express.static(path.join(__dirname, 'public'), { extensions: ['html'] }));
 
+app.get('/class-dashboard', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'class-dashboard.html'));
+});
+
 // Middleware de logging para desarrollo
 if (process.env.NODE_ENV !== 'production') {
   app.use((req, res, next) => {

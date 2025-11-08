@@ -49,6 +49,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     const addStudentForm = document.getElementById('add-student-form');
     const studentNameInput = document.getElementById('student-name-input');
 
+    // Dashboard elements
+
+
     let courses = [];
     let assessments = [];
     let students = [];
@@ -162,6 +165,8 @@ document.addEventListener('DOMContentLoaded', async () => {
             alert('Error al cargar las evaluaciones.');
         }
     }
+
+
 
     // --- Event Listeners ---
     courseSelect.addEventListener('change', () => {

@@ -7,7 +7,8 @@ import {
     deleteClass,
     addStudentToClass,
     removeStudentFromClass,
-    getStudentsForClass
+    getStudentsForClass,
+    getDashboardStats
 } from '../controllers/classController.js';
 import { authenticateToken, requireRole } from '../middleware/auth.js';
 
@@ -15,6 +16,9 @@ const router = Router();
 
 router.route('/').get(authenticateToken, getClasses).post(authenticateToken, createClass);
 router.route('/:id').get(authenticateToken, getClassById).put(authenticateToken, updateClass).delete(authenticateToken, deleteClass);
+
+// Ruta para las estadísticas del dashboard
+router.route('/:id/dashboard').get(authenticateToken, getDashboardStats);
 
 // Rutas para administrar alumnos en una clase
 router.route('/:id/students')

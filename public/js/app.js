@@ -428,6 +428,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 `;
                 userActivitiesContainer.appendChild(activityCard);
     
+
                 // Add event listeners for edit and delete buttons
                 if (activity.type === 'event') {
                     activityCard.querySelector('.button-edit-event').addEventListener('click', () => {
@@ -1108,6 +1109,7 @@ async function fetchAndRenderDashboardClasses() {
                     <p><strong>Hora:</strong> ${classItem.startTime} - ${classItem.endTime}</p>
                     <p><strong>Aula:</strong> ${classItem.location || 'N/A'}</p>
                     <div class="class-actions">
+                        <button class="button-dashboard" data-id="${classItem._id}">Dashboard</button>
                         <button class="button-edit" data-id="${classItem._id}">Editar</button>
                         <button class="button-delete" data-id="${classItem._id}">Eliminar</button>
                     </div>
@@ -1141,6 +1143,10 @@ async function fetchAndRenderDashboardClasses() {
                             showMessage('Error de conexión al eliminar la clase.', 'error');
                         }
                     }
+                });
+
+                classElement.querySelector('.button-dashboard').addEventListener('click', () => {
+                    window.location.href = `/class-dashboard?classId=${classItem._id}`;
                 });
             });
         } else {

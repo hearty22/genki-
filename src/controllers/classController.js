@@ -1,5 +1,8 @@
 import Class from '../models/Class.js';
 import User from '../models/User.js'; // Import the User model
+import Attendance from '../models/Attendance.js'; // Import the Attendance model
+import Grade from '../models/Grade.js'; // Import the Grade model
+import Assessment from '../models/Assessment.js'; // Import the Assessment model
 import { hashPasswordDirect } from '../middleware/hashPassword.js'; // Import hashPasswordDirect utility
 
 // Create a new class
@@ -307,5 +310,60 @@ export const createAndAddStudentToClass = async (req, res) => {
     } catch (error) {
         console.error('Error creating and adding student to class:', error);
         return res.status(500).json({ success: false, message: 'Error creating and adding student to class', error: error.message });
+    }
+};
+
+// @desc    Get dashboard statistics for a class
+// @route   GET /api/classes/:id/dashboard
+// @access  Private
+export const getDashboardStats = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const classItem = await Class.findOne({ _id: id, user: req.user.id }).populate('students');
+
+        if (!classItem) {
+            return res.status(404).json({ success: false, message: 'Class not found or user not authorized' });
+        }
+
+        // 1. Top 3 estudiantes con más ausencias
+        const attendances = await Attendance.find({ classId: id });
+        const absenceCounts = {};
+
+        attendances.forEach(attendance => {
+            attendance.records.forEach(record => {
+                if (record.status === 'absent') {
+                    const studentId = record.studentId.toString();
+                    absenceCounts[studentId] = (absenceCounts[studentId] || 0) + 1;
+                }
+            });
+        });
+
+        const sortedAbsences = Object.entries(absenceCounts)
+            .sort(([, a], [, b]) => b - a)
+            .slice(0, 3);
+
+        const topAbsences = await Promise.all(sortedAbsences.map(async ([studentId, count]) => {
+            const student = await User.findById(studentId);
+            return { name: student ? `${student.firstName} ${student.lastName}` : 'Unknown', absenceCount: count };
+        }));
+
+        // 2. Promedio de notas del curso
+        const assessments = await Assessment.find({ course: id });
+        const assessmentIds = assessments.map(a => a._id);
+        
+        const grades = await Grade.find({ assessment: { $in: assessmentIds } });
+        const averageGrade = grades.length > 0
+            ? grades.reduce((acc, grade) => acc + grade.grade, 0) / grades.length
+            : 0;
+
+        res.status(200).json({
+            success: true,
+            topAbsences,
+            averageGrade
+        });
+
+    } catch (error) {
+        console.error('Error fetching dashboard stats:', error);
+        res.status(500).json({ success: false, message: 'Error fetching dashboard stats', error: error.message });
     }
 };
