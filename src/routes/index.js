@@ -6,6 +6,7 @@ import reportRoutes from './reportRoutes.js'; // Import report routes
 import eventRoutes from './eventRoutes.js'; // Import event routes
 import userRoutes from './userRoutes.js'; // Import user routes
 import attendanceRoutes from './attendanceRoutes.js'; // Import attendance routes
+import gradeRoutes from './gradeRoutes.js'; // Import grade routes
 
 const router = express.Router();
 
@@ -29,6 +30,9 @@ router.use('/users', userRoutes); // Use user routes
 
 // Rutas de asistencia
 router.use('/attendance', attendanceRoutes); // Use attendance routes
+
+// Rutas de calificaciones
+router.use('/grades', gradeRoutes); // Use grade routes
 
 // Ruta de salud del API
 router.get('/health', (req, res) => {

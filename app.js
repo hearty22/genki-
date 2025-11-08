@@ -56,12 +56,8 @@ if (process.env.NODE_ENV !== 'production') {
   });
 }
 
-import assessmentRoutes from './src/routes/assessmentRoutes.js';
-import chatbotRoutes from './src/routes/chatbotRoutes.js';
 // Rutas principales
-app.use('/api/chatbot', chatbotRoutes);
 app.use('/api', routes);
-app.use('/api/assessments', assessmentRoutes);
 
 // Ruta raíz  
 app.get('/', (req, res) => {

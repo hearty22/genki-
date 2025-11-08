@@ -205,3 +205,15 @@ export const getCalculatedGrade = async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 };
+
+export const getAssessmentById = async (req, res) => {
+    try {
+        const assessment = await Assessment.findById(req.params.id);
+        if (!assessment) {
+            return res.status(404).json({ message: 'Evaluación no encontrada' });
+        }
+        res.json(assessment);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};

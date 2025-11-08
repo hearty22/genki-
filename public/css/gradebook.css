@@ -1,3 +1,6 @@
+.calculated-assessment-header {
+    background-color: #f0f8ff; /* AliceBlue */
+}
 .gradebook-controls {
     display: flex;
     gap: 20px;
@@ -59,58 +62,24 @@
 .gradebook-table {
     width: 100%;
     border-collapse: collapse;
-    min-width: 400px; /* Ensure table is not too small */
+    margin-top: 20px;
 }
 
-.gradebook-table th,
-.gradebook-table td {
-    border: 1px solid #e0e0e0;
-    padding: 12px 15px;
-    text-align: left;
+.gradebook-table th, .gradebook-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: center;
 }
 
 .gradebook-table th {
     background-color: #f2f2f2;
-    font-weight: bold;
-    color: #333;
-}
-
-.gradebook-table tr:nth-child(even) {
-    background-color: #f9f9f9;
-}
-
-.gradebook-table tr:hover {
-    background-color: #f1f1f1;
-}
-
-.gradebook-table input[type="text"]:focus {
-    border-color: #007bff;
-    outline: none;
-    box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
 }
 
 .gradebook-table input[type="number"] {
-    width: 80px;
-    padding: 8px;
+    width: 60px;
+    text-align: center;
     border: 1px solid #ccc;
     border-radius: 4px;
-    font-size: 1em;
-    text-align: center;
-}
-
-.gradebook-table input[type="text"] {
-    width: 80px;
-    padding: 8px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    font-size: 1em;
-    text-align: center;
-}
-
-.gradebook-table input[type="number"]:focus {
-    border-color: #007bff;
-    outline: none;
-    box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
 }
 
 #save-grades-button {

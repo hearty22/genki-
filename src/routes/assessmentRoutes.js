@@ -7,7 +7,8 @@ import {
     getCalculatedGrade,
     getStudentsByClass,
     getGradesByAssessment,
-    updateGrades
+    updateGrades,
+    getAssessmentById
 } from '../controllers/assessmentController.js';
 import { authenticateToken, requireRole } from '../middleware/auth.js';
 
@@ -18,6 +19,7 @@ router.route('/')
     .post(authenticateToken, createAssessment);
 
 router.route('/:id')
+    .get(authenticateToken, getAssessmentById)
     .put(authenticateToken, updateAssessment)
     .delete(authenticateToken, deleteAssessment);
 
