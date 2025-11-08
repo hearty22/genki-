@@ -227,6 +227,46 @@ export const removeStudentFromClass = async (req, res) => {
     }
 };
 
+// @desc    Update a student in a class
+// @route   PUT /api/classes/:id/students/:studentId
+// @access  Private
+export const updateStudent = async (req, res) => {
+    try {
+        const { studentId } = req.params;
+        const { name } = req.body;
+
+        if (!name) {
+            return res.status(400).json({ message: 'El nombre del alumno es requerido.' });
+        }
+
+        const nameParts = name.trim().split(' ');
+        const firstName = nameParts.shift() || '';
+        const lastName = nameParts.join(' ') || '';
+
+        if (!firstName || !lastName) {
+            return res.status(400).json({ message: 'Se requiere nombre y apellido.' });
+        }
+
+        const updatedStudent = await User.findByIdAndUpdate(
+            studentId,
+            { firstName, lastName },
+            { new: true, runValidators: true }
+        );
+
+        if (!updatedStudent) {
+            return res.status(404).json({ message: 'Alumno no encontrado.' });
+        }
+
+        res.status(200).json({
+            _id: updatedStudent._id,
+            name: `${updatedStudent.firstName} ${updatedStudent.lastName}`
+        });
+    } catch (error) {
+        console.error('Error al actualizar el alumno:', error);
+        res.status(500).json({ message: 'Error al actualizar el alumno.', error: error.message });
+    }
+};
+
 // @desc    Get all students for a class
 // @route   GET /api/classes/:id/students
 // @access  Private
@@ -347,19 +387,38 @@ export const getDashboardStats = async (req, res) => {
             return { name: student ? `${student.firstName} ${student.lastName}` : 'Unknown', absenceCount: count };
         }));
 
-        // 2. Promedio de notas del curso
+        // 2. Promedio de notas por evaluación
         const assessments = await Assessment.find({ course: id });
         const assessmentIds = assessments.map(a => a._id);
-        
-        const grades = await Grade.find({ assessment: { $in: assessmentIds } });
-        const averageGrade = grades.length > 0
-            ? grades.reduce((acc, grade) => acc + grade.grade, 0) / grades.length
-            : 0;
+
+        const grades = await Grade.find({ assessment: { $in: assessmentIds } }).populate('assessment');
+
+        const gradesByAssessment = grades.reduce((acc, grade) => {
+            const assessmentId = grade.assessment._id.toString();
+            if (!acc[assessmentId]) {
+                acc[assessmentId] = {
+                    name: grade.assessment.name,
+                    grades: []
+                };
+            }
+            acc[assessmentId].grades.push(grade.grade);
+            return acc;
+        }, {});
+
+        const averageGradesPerAssessment = Object.values(gradesByAssessment).map(assessment => {
+            const average = assessment.grades.length > 0
+                ? assessment.grades.reduce((sum, grade) => sum + grade, 0) / assessment.grades.length
+                : 0;
+            return {
+                name: assessment.name,
+                averageGrade: average
+            };
+        });
 
         res.status(200).json({
             success: true,
             topAbsences,
-            averageGrade
+            averageGradesPerAssessment
         });
 
     } catch (error) {

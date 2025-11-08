@@ -8,7 +8,8 @@ import {
     addStudentToClass,
     removeStudentFromClass,
     getStudentsForClass,
-    getDashboardStats
+    getDashboardStats,
+    updateStudent
 } from '../controllers/classController.js';
 import { authenticateToken, requireRole } from '../middleware/auth.js';
 
@@ -27,6 +28,7 @@ router.route('/:id/students')
     .post(authenticateToken, addStudentToClass);
 
 router.route('/:id/students/:studentId')
-    .delete(authenticateToken, removeStudentFromClass);
+    .delete(authenticateToken, removeStudentFromClass)
+    .put(authenticateToken, updateStudent);
 
 export default router;

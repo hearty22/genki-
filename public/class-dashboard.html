@@ -56,8 +56,41 @@
                         <canvas id="average-grade-chart"></canvas>
                     </div>
                 </div>
+
+                <!-- Student Management Section -->
+                <div class="student-management-section">
+                    <h3>Alumnos</h3>
+                    <button id="add-student-button" class="btn btn-primary">Añadir Alumno</button>
+                    <table id="students-table" class="table">
+                        <thead>
+                            <tr>
+                                <th>Nombre</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="students-table-body">
+                            <!-- Student rows will be inserted here -->
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </main>
+    </div>
+
+    <!-- Add/Edit Student Modal -->
+    <div id="student-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <h3 id="student-modal-title">Añadir Alumno</h3>
+            <form id="student-form">
+                <input type="hidden" id="student-id">
+                <div class="form-group">
+                    <label for="student-name">Nombre:</label>
+                    <input type="text" id="student-name" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Guardar</button>
+            </form>
+        </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
