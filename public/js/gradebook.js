@@ -195,7 +195,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         } catch (error) {
             console.error('Error rendering gradebook:', error);
-            alert('Error al cargar la planilla de calificaciones.');
+            showModal('Error al cargar la planilla de calificaciones.');
         }
     }
 
@@ -210,17 +210,20 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         try {
             await fetchData(`/api/assessments/${assessmentId}`, { method: 'DELETE' });
-            alert('Evaluación eliminada exitosamente.');
+            showModal('Evaluación eliminada exitosamente.');
             renderGradebook(courseSelect.value);
         } catch (error) {
             console.error('Error deleting assessment:', error);
-            alert(`Error al eliminar la evaluación: ${error.message}`);
+            showModal(`Error al eliminar la evaluación: ${error.message}`);
         }
     }
 
     async function openEditAssessmentModal(assessmentId) {
         const assessment = assessments.find(a => a._id === assessmentId);
-        if (!assessment) return alert('Evaluación no encontrada.');
+        if (!assessment) {
+            showModal('Evaluación no encontrada.');
+            return;
+        }
 
         editAssessmentIdInput.value = assessment._id;
         editAssessmentNameInput.value = assessment.name;
@@ -231,7 +234,10 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     async function openEditCalculatedAssessmentModal(assessmentId) {
         const assessment = assessments.find(a => a._id === assessmentId);
-        if (!assessment) return alert('Evaluación no encontrada.');
+        if (!assessment) {
+            showModal('Evaluación no encontrada.');
+            return;
+        }
 
         editCalculatedAssessmentIdInput.value = assessment._id;
         editCalculatedAssessmentNameInput.value = assessment.name;
@@ -262,7 +268,10 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     saveGradesButton.addEventListener('click', async () => {
         const courseId = courseSelect.value;
-        if (!courseId) return alert('Por favor, seleccione un curso.');
+        if (!courseId) {
+            showModal('Por favor, seleccione un curso.');
+            return;
+        }
 
         const gradesToSave = Array.from(document.querySelectorAll('.grade-input:not([disabled])'))
             .map(input => ({
@@ -278,11 +287,11 @@ document.addEventListener('DOMContentLoaded', async () => {
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ grades: gradesToSave })
             });
-            alert('Calificaciones guardadas exitosamente.');
+            showModal('Calificaciones guardadas exitosamente.');
             renderGradebook(courseId);
         } catch (error) {
             console.error('Error saving grades:', error);
-            alert('Error al guardar las calificaciones.');
+            showModal('Error al guardar las calificaciones.');
         }
     });
 
@@ -301,7 +310,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             }
         } catch (error) {
             console.error('Error fetching courses:', error);
-            alert('Error al cargar los cursos.');
+            showModal('Error al cargar los cursos.');
         }
     }
 
@@ -332,7 +341,10 @@ document.addEventListener('DOMContentLoaded', async () => {
             event.preventDefault();
             const name = newAssessmentNameInput.value;
             const course = newAssessmentCourseSelect.value;
-            if (!name || !course) return alert('Por favor, complete todos los campos.');
+            if (!name || !course) {
+                showModal('Por favor, complete todos los campos.');
+                return;
+            }
 
             try {
                 await fetchData('/api/assessments', {
@@ -340,13 +352,13 @@ document.addEventListener('DOMContentLoaded', async () => {
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ name, course })
                 });
-                alert('Evaluación añadida exitosamente.');
+                showModal('Evaluación añadida exitosamente.');
                 addAssessmentModal.style.display = 'none';
                 addAssessmentForm.reset();
                 renderGradebook(courseSelect.value);
             } catch (error) {
                 console.error('Error adding assessment:', error);
-                alert('Error al añadir la evaluación.');
+                showModal('Error al añadir la evaluación.');
             }
         });
 
@@ -355,7 +367,10 @@ document.addEventListener('DOMContentLoaded', async () => {
             const id = editAssessmentIdInput.value;
             const name = editAssessmentNameInput.value;
             const course = editAssessmentCourseSelect.value;
-            if (!name || !course) return alert('Por favor, complete todos los campos.');
+            if (!name || !course) {
+                showModal('Por favor, complete todos los campos.');
+                return;
+            }
 
             try {
                 await fetchData(`/api/assessments/${id}`, {
@@ -363,13 +378,13 @@ document.addEventListener('DOMContentLoaded', async () => {
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ name, course })
                 });
-                alert('Evaluación actualizada exitosamente.');
+                showModal('Evaluación actualizada exitosamente.');
                 editAssessmentModal.style.display = 'none';
                 editAssessmentForm.reset();
                 renderGradebook(courseSelect.value);
             } catch (error) {
                 console.error('Error updating assessment:', error);
-                alert('Error al actualizar la evaluación.');
+                showModal('Error al actualizar la evaluación.');
             }
         });
 
@@ -438,8 +453,14 @@ document.addEventListener('DOMContentLoaded', async () => {
                 calculationFormula.push({ assessment: assessmentId, weight });
             });
 
-            if (!name || !course || calculationFormula.length === 0) return alert('Por favor, complete todos los campos y seleccione al menos una evaluación.');
-            if (parseInt(totalWeightSpan.textContent) !== 100) return alert('La suma de las ponderaciones debe ser 100%.');
+            if (!name || !course || calculationFormula.length === 0) {
+                showModal('Por favor, complete todos los campos y seleccione al menos una evaluación.');
+                return;
+            }
+            if (parseInt(totalWeightSpan.textContent) !== 100) {
+                showModal('La suma de las ponderaciones debe ser 100%.');
+                return;
+            }
 
             try {
                 await fetchData('/api/assessments', {
@@ -447,13 +468,13 @@ document.addEventListener('DOMContentLoaded', async () => {
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ name, course, isCalculated: true, calculationFormula })
                 });
-                alert('Planilla calculada creada exitosamente.');
+                showModal('Planilla calculada creada exitosamente.');
                 addCalculatedAssessmentModal.style.display = 'none';
                 addCalculatedAssessmentForm.reset();
                 populateAssessments(courseSelect.value);
             } catch (error) {
                 console.error('Error creating calculated assessment:', error);
-                alert('Error al crear la planilla calculada.');
+                showModal('Error al crear la planilla calculada.');
             }
         });
 
@@ -487,7 +508,10 @@ document.addEventListener('DOMContentLoaded', async () => {
                 });
             });
 
-            if (parseInt(editTotalWeightSpan.textContent) !== 100) return alert('La suma de las ponderaciones debe ser 100%.');
+            if (parseInt(editTotalWeightSpan.textContent) !== 100) {
+                showModal('La suma de las ponderaciones debe ser 100%.');
+                return;
+            }
 
             try {
                 await fetchData(`/api/assessments/${assessmentId}`, {
@@ -500,14 +524,17 @@ document.addEventListener('DOMContentLoaded', async () => {
                 await renderGradebook(courseSelect.value, assessmentId);
             } catch (error) {
                 console.error('Error al actualizar la planilla calculada:', error);
-                alert('Error al actualizar la planilla calculada.');
+                showModal('Error al actualizar la planilla calculada.');
             }
         });
 
         // --- Student Administration ---
         adminStudentsButton.addEventListener('click', async () => {
             selectedClassId = courseSelect.value;
-            if (!selectedClassId) return alert('Por favor, seleccione una clase primero.');
+            if (!selectedClassId) {
+                showModal('Por favor, seleccione una clase primero.');
+                return;
+            }
             
             try {
                 const students = await fetchData(`/api/classes/${selectedClassId}/students`);

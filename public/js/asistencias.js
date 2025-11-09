@@ -46,7 +46,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             }
         } catch (error) {
             console.error('Error fetching classes for attendance:', error);
-            alert('Error al cargar las clases.');
+            showModal('Error al cargar las clases.');
         }
     }
 
@@ -132,7 +132,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         } catch (error) {
             console.error('Error rendering attendance grid:', error);
-            alert('Error al cargar la planilla de asistencia.');
+            showModal('Error al cargar la planilla de asistencia.');
         }
     }
 
@@ -156,7 +156,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 renderAttendanceGrid(selectedClassId);
             } catch (error) {
                 console.error('Error fetching initial attendance records:', error);
-                alert('Error al cargar los registros de asistencia iniciales.');
+                showModal('Error al cargar los registros de asistencia iniciales.');
             }
         } else {
             // Clear grid if no class is selected
@@ -169,7 +169,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     // Save attendance button click handler
     saveAttendanceButton.addEventListener('click', async () => {
         if (!selectedClassId) {
-            alert('Por favor, seleccione una clase.');
+            showModal('Por favor, seleccione una clase.');
             return;
         }
 
@@ -200,7 +200,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 }
             }
 
-            alert('Asistencia guardada exitosamente.');
+            showModal('Asistencia guardada exitosamente.');
 
             // Re-fetch attendance data to ensure the UI is up-to-date
             const allAttendanceRecords = await fetchData(`/api/attendance/${selectedClassId}/${today}`);
@@ -214,7 +214,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             renderAttendanceGrid(selectedClassId);
         } catch (error) {
             console.error('Error saving attendance:', error);
-            alert('Error al guardar la asistencia.');
+            showModal('Error al guardar la asistencia.');
         }
     });
 
@@ -230,10 +230,10 @@ document.addEventListener('DOMContentLoaded', async () => {
                 console.log('Calling renderAttendanceGrid with selectedClassId:', selectedClassId); // New debug log
                 renderAttendanceGrid(selectedClassId);
             } else {
-                alert('Ya existe una sesión con esta hora de inicio.');
+                showModal('Ya existe una sesión con esta hora de inicio.');
             }
         } else {
-            alert('Por favor, seleccione una clase primero.');
+            showModal('Por favor, seleccione una clase primero.');
         }
     });
 
@@ -244,10 +244,10 @@ document.addEventListener('DOMContentLoaded', async () => {
                 activeSessions.pop();
                 renderAttendanceGrid(selectedClassId);
             } else {
-                alert('No se puede eliminar la última sesión.');
+                showModal('No se puede eliminar la última sesión.');
             }
         } else {
-            alert('Por favor, seleccione una clase primero.');
+            showModal('Por favor, seleccione una clase primero.');
         }
     });
 
@@ -257,7 +257,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     adminStudentsButton.addEventListener('click', async () => {
         selectedClassId = classSelectAttendance.value;
         if (!selectedClassId) {
-            alert('Por favor, seleccione una clase primero.');
+            showModal('Por favor, seleccione una clase primero.');
             return;
         }
         await openStudentModal(selectedClassId);
