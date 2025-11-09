@@ -1,9 +1,10 @@
 import express from 'express';
-import { subscribe } from '../controllers/subscriptionController.js';
+import { subscribe, getVapidPublicKey } from '../controllers/subscriptionController.js';
 import { authenticateToken } from '../middleware/auth.js';
 
 const router = express.Router();
 
-router.route('/subscribe').post(authenticateToken, subscribe);
+router.post('/subscribe', authenticateToken, subscribe);
+router.get('/vapidPublicKey', authenticateToken ,getVapidPublicKey);
 
 export default router;

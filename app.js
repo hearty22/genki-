@@ -29,7 +29,7 @@ const vapidKeys = {
 };
 
 webPush.setVapidDetails(
-    'mailto:your-email@example.com',
+    'mailto:admin@example.com',
     vapidKeys.publicKey,
     vapidKeys.privateKey
 );
@@ -73,8 +73,8 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 // Rutas principales
+app.use('/api/subscriptions', subscriptionRoutes);
 app.use('/api', routes);
-app.use('/api', subscriptionRoutes);
 
 // Ruta raíz  
 app.get('/', (req, res) => {

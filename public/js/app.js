@@ -34,9 +34,12 @@ function showMessage(message, type, messageContainerId) {
 }
 
 document.addEventListener('DOMContentLoaded', async () => {
+    console.log("DOMContentLoaded event fired");
     // Attach event listeners for event form
     const eventForm = document.getElementById('event-form');
+    console.log("Checking for event form");
     if (eventForm) {
+        console.log("eventForm found, attaching listeners");
         const eventTitleInput = document.getElementById('eventTitle');
         const eventTitleError = document.getElementById('eventTitle-error');
         const eventDateInput = document.getElementById('eventDate');
@@ -130,37 +133,67 @@ document.addEventListener('DOMContentLoaded', async () => {
         try {
             const registration = await navigator.serviceWorker.register('/sw.js');
             console.log('Service Worker registered');
-
+    
+            // Wait for the service worker to be active
+            await navigator.serviceWorker.ready;
+            console.log('Service Worker is active');
+    
             const permission = await Notification.requestPermission();
-            if (permission === 'granted') {
-                console.log('Notification permission granted.');
-                const subscription = await registration.pushManager.subscribe({
-                    userVisibleOnly: true,
-                    applicationServerKey: urlBase64ToUint8Array('BAlZugHERLSrO4aYvmu3NPJFU7OZj7_hTBlSo17bZ08iDBo8rtdYkMZbJAR0ND9P39DqPUI6Fo4rs-ILMqqMH9k')
-                });
-
-                await fetch('/api/subscribe', {
-                    method: 'POST',
-                    body: JSON.stringify(subscription),
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${getCookie('authToken')}`
-                    }
-                });
+            if (permission !== 'granted') {
+                console.log('Notification permission not granted.');
+                return;
             }
+            console.log('Notification permission granted.');
+    
+            let subscription = await registration.pushManager.getSubscription();
+            if (subscription) {
+                console.log('User is already subscribed.');
+            } else {
+                console.log('Fetching VAPID public key...');
+                const response = await fetch('/api/subscriptions/vapidPublicKey');
+                const { publicKey } = await response.json();
+                console.log('VAPID public key fetched.');
+    
+                const applicationServerKey = urlBase64ToUint8Array(publicKey);
+    
+                console.log('Subscribing to push manager...');
+                subscription = await registration.pushManager.subscribe({
+                    userVisibleOnly: true,
+                    applicationServerKey
+                });
+                console.log('Subscribed successfully.');
+            }
+    
+            const authToken = document.cookie.split('; ').find(row => row.startsWith('authToken=')).split('=')[1];
+            const decodedToken = JSON.parse(atob(authToken.split('.')[1]));
+            const userId = decodedToken.id;
+    
+            await fetch('/api/subscriptions/subscribe', {
+                method: 'POST',
+                body: JSON.stringify({ subscription, userId }),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+            console.log('Subscription sent to server.');
+            
         } catch (error) {
             console.error('Service Worker Error', error);
         }
     }
 
+    console.log("Setting up notification button");
     const notificationsButton = document.getElementById('notifications-button');
+    console.log("notificationsButton element:", notificationsButton);
     const notificationModal = document.getElementById('notifications-modal');
     const closeNotificationModal = document.getElementById('closeNotificationModal');
     const clearNotificationsModalButton = document.getElementById('clear-notifications-modal-button');
     const markAsReadButton = document.getElementById('mark-as-read-button');
 
     if (notificationsButton) {
+        console.log("notificationsButton found, adding listener");
         notificationsButton.addEventListener('click', () => {
+            console.log("Notifications button clicked");
             notificationModal.style.display = 'block';
             fetchAndRenderNotifications();
         });
@@ -222,39 +255,40 @@ document.addEventListener('DOMContentLoaded', async () => {
             }
         });
     }
-});
 
-async function fetchAndRenderNotifications() {
-    try {
-        const token = getCookie("authToken")
-        const response = await fetch('/api/notifications', {
-            headers: { 'Authorization': `Bearer ${token}` }
+    async function fetchAndRenderNotifications() {
+        console.log("Fetching and rendering notifications");
+        try {
+            const token = getCookie("authToken")
+            const response = await fetch('/api/notifications', {
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+            const notifications = await response.json();
+            renderNotifications(notifications);
+        } catch (error) {
+            console.error('Error fetching notifications:', error);
+        }
+    }
+
+    function renderNotifications(notifications) {
+        const notificationsList = document.getElementById('notifications-container-modal');
+        if (!notificationsList) return;
+
+        notificationsList.innerHTML = '';
+
+        if (notifications.length === 0) {
+            notificationsList.innerHTML = '<p>No hay notificaciones nuevas.</p>';
+            return;
+        }
+
+        notifications.forEach(notification => {
+            const notificationItem = document.createElement('div');
+            notificationItem.classList.add('notification-item', `notification-${notification.type}`);
+            notificationItem.innerHTML = `<p>${notification.message}</p>`;
+            notificationsList.appendChild(notificationItem);
         });
-        const notifications = await response.json();
-        renderNotifications(notifications);
-    } catch (error) {
-        console.error('Error fetching notifications:', error);
     }
-}
-
-function renderNotifications(notifications) {
-    const notificationsList = document.getElementById('notifications-container-modal');
-    if (!notificationsList) return;
-
-    notificationsList.innerHTML = '';
-
-    if (notifications.length === 0) {
-        notificationsList.innerHTML = '<p>No hay notificaciones nuevas.</p>';
-        return;
-    }
-
-    notifications.forEach(notification => {
-        const notificationItem = document.createElement('div');
-        notificationItem.classList.add('notification-item', `notification-${notification.type}`);
-        notificationItem.innerHTML = `<p>${notification.message}</p>`;
-        notificationsList.appendChild(notificationItem);
-    });
-}
+});
     // Toggle sidebar for mobile
     const menuToggle = document.getElementById('menu-toggle');
     const sidebar = document.querySelector('.sidebar');
@@ -290,8 +324,6 @@ function renderNotifications(notifications) {
     let dayOfWeekError = document.getElementById('dayOfWeek-error');
     let startTimeError = document.getElementById('startTime-error');
     let endTimeError = document.getElementById('endTime-error');
-
-    let currentEditingEventId = null; // Para saber si estamos editando o creando
 
     // Event modal related elements and listeners
     const eventModal = document.getElementById('event-modal');
@@ -414,12 +446,12 @@ function renderNotifications(notifications) {
             }
 
             try {
-                const token = getCookie("authToken");
+                const authToken = getCookie('authToken');
                 const response = await fetch(url, {
                     method: method,
                     headers: {
                         'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${token}`
+                        'Authorization': `Bearer ${authToken}`
                     },
                     body: JSON.stringify(eventData)
                 });
@@ -1233,8 +1265,6 @@ async function fetchAndRenderDashboardClasses() {
     }
 }
 
-// Manejo del botón de cerrar sesión
-document.addEventListener('DOMContentLoaded', () => {
     const logoutButton = document.querySelector('#logout-button');
     if (logoutButton) {
         logoutButton.addEventListener('click', async () => {
@@ -1261,7 +1291,6 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }
-});
 
 // Dark Mode Toggle
 function toggleDarkMode() {
@@ -1304,8 +1333,6 @@ function updateDarkModeToggleIcon() {
     }
 }
 
-// Apply saved theme on load
-document.addEventListener('DOMContentLoaded', () => {
     const savedTheme = localStorage.getItem('theme');
     if (savedTheme) {
         document.body.dataset.theme = savedTheme;
@@ -1320,4 +1347,3 @@ document.addEventListener('DOMContentLoaded', () => {
     if (darkModeToggle) {
         darkModeToggle.addEventListener('click', toggleDarkMode);
     }
-});
