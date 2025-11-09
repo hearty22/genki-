@@ -1,6 +1,7 @@
 import Class from '../models/Class.js';
 import Attendance from '../models/Attendance.js';
 import User from '../models/User.js';
+import { createNotification } from './notificationController.js';
 
 // @desc    Get scheduled classes for the current day
 // @route   GET /api/attendance/scheduled-classes
@@ -89,6 +90,18 @@ export const saveAttendance = async (req, res) => {
                 status: record.status
             }));
             await attendance.save();
+
+            // Create notifications for absent students
+            for (const record of records) {
+                if (record.status === 'absent') {
+                    const student = await User.findById(record.studentId);
+                    if (student) {
+                        const message = `El estudiante ${student.firstName} ${student.lastName} estuvo ausente en la clase de hoy.`;
+                        await createNotification(teacherId, message, 'warning');
+                    }
+                }
+            }
+
             res.status(200).json({ message: 'Attendance updated successfully', attendance });
         } else {
             // Create new attendance record
@@ -103,6 +116,18 @@ export const saveAttendance = async (req, res) => {
                 teacherId
             });
             await attendance.save();
+
+            // Create notifications for absent students
+            for (const record of records) {
+                if (record.status === 'absent') {
+                    const student = await User.findById(record.studentId);
+                    if (student) {
+                        const message = `El estudiante ${student.firstName} ${student.lastName} estuvo ausente en la clase de hoy.`;
+                        await createNotification(teacherId, message, 'warning');
+                    }
+                }
+            }
+
             res.status(201).json({ message: 'Attendance saved successfully', attendance });
         }
     } catch (error) {

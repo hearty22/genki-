@@ -7,6 +7,7 @@ import eventRoutes from './eventRoutes.js'; // Import event routes
 import userRoutes from './userRoutes.js'; // Import user routes
 import attendanceRoutes from './attendanceRoutes.js'; // Import attendance routes
 import gradeRoutes from './gradeRoutes.js'; // Import grade routes
+import notificationRoutes from './notificationRoutes.js'; // Import notification routes
 
 const router = express.Router();
 
@@ -33,6 +34,9 @@ router.use('/attendance', attendanceRoutes); // Use attendance routes
 
 // Rutas de calificaciones
 router.use('/grades', gradeRoutes); // Use grade routes
+
+// Rutas de notificaciones
+router.use('/notifications', notificationRoutes); // Use notification routes
 
 // Ruta de salud del API
 router.get('/health', (req, res) => {

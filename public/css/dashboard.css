@@ -195,9 +195,65 @@ body[data-theme="dark"] .form-text.text-muted {
     display: none; /* Hidden by default */
 }
 
+/* ... existing code ... */
+
 .form-text.text-muted {
     font-size: 0.85em;
     color: #6c757d;
+}
+
+/* Notifications Section */
+.notifications-section {
+    background-color: var(--background-color);
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    margin-top: 20px;
+}
+
+.notifications-section h2 {
+    color: var(--text-color);
+    margin-bottom: 15px;
+}
+
+.notifications-list {
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.notification-item {
+    background-color: var(--light-gray);
+    padding: 10px;
+    border-radius: 4px;
+    margin-bottom: 10px;
+    border-left: 5px solid;
+}
+
+.notification-item.info {
+    border-left-color: var(--primary-light-blue);
+}
+
+.notification-item.warning {
+    border-left-color: var(--warning-yellow);
+}
+
+.notification-item.alert {
+    border-left-color: var(--error-red);
+}
+
+#clear-notifications-button {
+    background-color: var(--error-red);
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+#clear-notifications-button:hover {
+    background-color: darkred;
+
     margin-top: 5px;
     display: block;
 }

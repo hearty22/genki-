@@ -179,7 +179,77 @@ async function fetchUpcomingEventsAndClasses() {
     }
 }
 
+/* ... existing code ... */
+
 document.addEventListener('DOMContentLoaded', async () => {
+    // ... existing code ...
+    fetchAndRenderNotifications();
+
+    const clearNotificationsButton = document.getElementById('clear-notifications-button');
+    if (clearNotificationsButton) {
+        clearNotificationsButton.addEventListener('click', async () => {
+            const token = getCookie('authToken') || localStorage.getItem('token');
+            if (!token) return;
+
+            // Optimistically update the UI
+            const notificationsList = document.getElementById('notifications-list');
+            if (notificationsList) {
+                notificationsList.innerHTML = '<p>No hay notificaciones nuevas.</p>';
+            }
+
+            try {
+                const response = await fetch('/api/notifications/mark-all-as-read', {
+                    method: 'PUT',
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                if (response.ok) {
+                    // Fetch notifications again to be sure
+                    fetchAndRenderNotifications();
+                }
+            } catch (error) {
+                console.error('Error clearing notifications:', error);
+            }
+        });
+    }
+});
+
+async function fetchAndRenderNotifications() {
+    const token = getCookie('authToken') || localStorage.getItem('token');
+    if (!token) return;
+
+    try {
+        const response = await fetch('/api/notifications', {
+            headers: { 'Authorization': `Bearer ${token}` }
+        });
+        const notifications = await response.json();
+        renderNotifications(notifications);
+    } catch (error) {
+        console.error('Error fetching notifications:', error);
+    }
+}
+
+function renderNotifications(notifications) {
+    const notificationsList = document.getElementById('notifications-list');
+    if (!notificationsList) return;
+
+    notificationsList.innerHTML = '';
+
+    if (notifications.length === 0) {
+        notificationsList.innerHTML = '<p>No hay notificaciones nuevas.</p>';
+        return;
+    }
+
+    notifications.forEach(notification => {
+        const notificationItem = document.createElement('div');
+        notificationItem.className = `notification-item ${notification.type}`;
+        notificationItem.innerHTML = `<p>${notification.message}</p>`;
+        notificationsList.appendChild(notificationItem);
+    });
+}
+
     // Toggle sidebar for mobile
     const menuToggle = document.getElementById('menu-toggle');
     const sidebar = document.querySelector('.sidebar');
@@ -1033,7 +1103,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             classModal.style.display = 'none';
         }
     });
-});
+
 
 // Tab switching logic for dashboard
 const navButtons = document.querySelectorAll('.dashboard-navbar .nav-button');
