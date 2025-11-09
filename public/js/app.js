@@ -14,187 +14,103 @@ function showMessage(message, type, messageContainerId) {
         setTimeout(() => {
             messageContainer.textContent = '';
             messageContainer.className = 'message-area';
-            // Event form submission logic
-        if (eventForm) {
-            eventForm.addEventListener('submit', async (e) => {
-                e.preventDefault();
-                let isValid = true;
-
-                // Validación
-                if (!eventTitleInput.value.trim()) {
-                    eventTitleError.textContent = 'El título es obligatorio';
-                    isValid = false;
-                } else if (activity.type === 'class') {
-                    detailsHtml = `
-                        <h3>${activity.name}</h3>
-                        <p><strong>Tipo:</strong> Clase</p>
-                        <p><strong>Día:</strong> ${activity.dayOfWeek.join(', ')}</p>
-                        <p><strong>Hora:</strong> ${activity.startTime} - ${activity.endTime}</p>
-                        <p><strong>Profesor:</strong> ${activity.teacher}</p>
-                    `;
-                    actionsHtml = `
-                        <button class="button-edit-class" data-id="${activity._id}">Editar</button>
-                        <button class="button-delete-class" data-id="${activity._id}">Eliminar</button>
-                    `;
-                } else if (activity.type === 'class') {
-                    detailsHtml = `
-                        <h3>${activity.name}</h3>
-                        <p><strong>Tipo:</strong> Clase</p>
-                        <p><strong>Día:</strong> ${activity.dayOfWeek.join(', ')}</p>
-                        <p><strong>Hora:</strong> ${activity.startTime} - ${activity.endTime}</p>
-                        <p><strong>Profesor:</strong> ${activity.teacher}</p>
-                    `;
-                    actionsHtml = `
-                        <button class="button-edit-class" data-id="${activity._id}">Editar</button>
-                        <button class="button-delete-class" data-id="${activity._id}">Eliminar</button>
-                    `;
-                } else if (eventTitleInput.value.length < 3) {
-                    eventTitleError.textContent = 'El título debe tener al menos 3 caracteres';
-                    isValid = false;
-                } else {
-                    eventTitleError.textContent = '';
-                }
-
-                if (!eventDateInput.value) {
-                    eventDateError.textContent = 'La fecha es obligatoria';
-                    isValid = false;
-                } else if (new Date(eventDateInput.value) < new Date().setHours(0, 0, 0, 0) && !currentEditingEventId) {
-                    eventDateError.textContent = 'No se pueden crear eventos en fechas pasadas';
-                    isValid = false;
-                } else {
-                    eventDateError.textContent = '';
-                }
-
-                if (!eventTimeInput.value) {
-                    eventTimeError.textContent = 'La hora es obligatoria';
-                    isValid = false;
-                } else {
-                    eventTimeError.textContent = '';
-                }
-
-                if (!isValid) return;
-
-                
-                if (!authToken){
-                    showMessage('No autenticado. Inicia sesión nuevamente.', 'error');
-                    return;
-                }
-
-                const eventData = {
-                    title: eventTitleInput.value.trim(),
-                    description: eventDescriptionInput.value.trim(),
-                    date: eventDateInput.value,
-                    time: eventTimeInput.value,
-                    color: eventColorInput.value
-                };
-
-                try {
-                    const method = currentEditingEventId ? 'PUT' : 'POST';
-                    const url = currentEditingEventId ? `/api/events/${currentEditingEventId}` : '/api/events';
-
-                    const response = await fetch(url, {
-                        method: method,
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'Authorization': `Bearer ${token}`
-                        },
-                        body: JSON.stringify(eventData)
-                    });
-
-                    const data = await response.json();
-                    if (response.ok) {
-                        showMessage(data.message, 'success');
-                        eventModal.style.display = 'none';
-                        eventForm.reset();
-                        fetchAndRenderAllActivities(); // Actualizar lista de actividades
-                    } else {
-                        showMessage(data.message || 'Error al guardar el evento', 'error');
-                    }
-                } catch (error) {
-                    console.error('Error saving event:', error);
-                    showMessage('Error de conexión al guardar el evento', 'error');
-                }
-            });
-        }}, 3000);
+        }, 3000);
     }
-}
-
-// Nueva función para renderizar próximos acontecimientos
-function renderUpcomingEvents(eventsAndClasses) {
-    const container = document.getElementById('upcoming-events-list');
-    if (!container) return;
-
-    // Ordenar por fecha y hora
-    const sortedItems = [...eventsAndClasses].sort((a, b) => {
-        // Convertir a objetos Date si aún no lo son (para clases)
-        const dateA = a.date instanceof Date ? a.date : new Date(a.date);
-        const dateB = b.date instanceof Date ? b.date : new Date(b.date);
-        return dateA.getTime() - dateB.getTime();
-    });
-
-    container.innerHTML = '';
-    if (sortedItems.length === 0) {
-        container.innerHTML = '<p>No tienes acontecimientos próximos.</p>';
-        return;
-    }
-
-    sortedItems.forEach(item => {
-        const itemElement = document.createElement('div');
-        itemElement.className = `upcoming-item ${item.type}`;
-        itemElement.style.borderLeft = `4px solid ${item.color}`;
-        itemElement.innerHTML = `
-            <h3>${item.title}</h3>
-            <p><strong>Fecha:</strong> ${item.date.toLocaleDateString('es-ES')}</p>
-            <p><strong>Hora:</strong> ${item.time} ${item.endTime ? `- ${item.endTime}` : ''}</p>
-            <p><strong>Tipo:</strong> ${item.type === 'class' ? 'Clase' : 'Evento'}</p>
-        `;
-        container.appendChild(itemElement);
-    });
-}
-
-// Nueva función para cargar eventos y clases unificados
-async function fetchUpcomingEventsAndClasses() {
-    const token = getCookie('authToken') || localStorage.getItem('token');
-    if (!token) return;
-
-    try {
-        // Cargar eventos
-        const eventsResponse = await fetch('/api/events', {
-            headers: { 'Authorization': `Bearer ${token}` }
-        });
-        const eventsData = await eventsResponse.json();
-        const formattedEvents = eventsData.data?.map(event => ({
-            id: event._id,
-            title: event.title,
-            date: new Date(event.date),
-            time: new Date(event.date).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }), // Extraer la hora del objeto Date
-            type: 'event',
-            color: event.color || '#FF5733'
-        })) || [];
-
-        // Unificar y renderizar
-        renderUpcomingEvents([...formattedEvents]);
-    } catch (error) {
-        console.error('Error fetching upcoming events and classes:', error);
-    }
-}
-
-function urlBase64ToUint8Array(base64String) {
-    const padding = '='.repeat((4 - base64String.length % 4) % 4);
-    const base64 = (base64String + padding)
-        .replace(/\-/g, '+')
-        .replace(/_/g, '/');
-
-    const rawData = window.atob(base64);
-    const outputArray = new Uint8Array(rawData.length);
-
-    for (let i = 0; i < rawData.length; ++i) {
-        outputArray[i] = rawData.charCodeAt(i);
-    }
-    return outputArray;
 }
 
 document.addEventListener('DOMContentLoaded', async () => {
+    // Attach event listeners for event form
+    const eventForm = document.getElementById('event-form');
+    if (eventForm) {
+        const eventTitleInput = document.getElementById('eventTitle');
+        const eventTitleError = document.getElementById('eventTitle-error');
+        const eventDateInput = document.getElementById('eventDate');
+        const eventDateError = document.getElementById('eventDate-error');
+        const eventTimeInput = document.getElementById('eventTime');
+        const eventTimeError = document.getElementById('eventTime-error');
+        const eventDescriptionInput = document.getElementById('eventDescription');
+        const eventColorInput = document.getElementById('eventColor');
+        const eventModal = document.getElementById('event-modal');
+        let currentEditingEventId = null; // Ensure this is defined in the correct scope
+
+        eventForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            let isValid = true;
+
+            // Validation logic...
+            if (!eventTitleInput.value.trim()) {
+                eventTitleError.textContent = 'El título es obligatorio';
+                isValid = false;
+            } else if (eventTitleInput.value.length < 3) {
+                eventTitleError.textContent = 'El título debe tener al menos 3 caracteres';
+                isValid = false;
+            } else {
+                eventTitleError.textContent = '';
+            }
+
+            if (!eventDateInput.value) {
+                eventDateError.textContent = 'La fecha es obligatoria';
+                isValid = false;
+            } else if (new Date(eventDateInput.value) < new Date().setHours(0, 0, 0, 0) && !currentEditingEventId) {
+                eventDateError.textContent = 'No se pueden crear eventos en fechas pasadas';
+                isValid = false;
+            } else {
+                eventDateError.textContent = '';
+            }
+
+            if (!eventTimeInput.value) {
+                eventTimeError.textContent = 'La hora es obligatoria';
+                isValid = false;
+            } else {
+                eventTimeError.textContent = '';
+            }
+
+            if (!isValid) return;
+
+            const authToken = getCookie('authToken');
+            if (!authToken) {
+                showMessage('No autenticado. Inicia sesión nuevamente.', 'error');
+                return;
+            }
+
+            const eventData = {
+                title: eventTitleInput.value.trim(),
+                description: eventDescriptionInput.value.trim(),
+                date: eventDateInput.value,
+                time: eventTimeInput.value,
+                color: eventColorInput.value
+            };
+
+            try {
+                const method = currentEditingEventId ? 'PUT' : 'POST';
+                const url = currentEditingEventId ? `/api/events/${currentEditingEventId}` : '/api/events';
+
+                const response = await fetch(url, {
+                    method: method,
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${authToken}`
+                    },
+                    body: JSON.stringify(eventData)
+                });
+
+                const data = await response.json();
+                if (response.ok) {
+                    showMessage(data.message, 'success');
+                    if (eventModal) eventModal.style.display = 'none';
+                    eventForm.reset();
+                    // fetchAndRenderAllActivities(); // Make sure this function is defined and works as expected
+                } else {
+                    showMessage(data.message || 'Error al guardar el evento', 'error');
+                }
+            } catch (error) {
+                console.error('Error saving event:', error);
+                showMessage('Error de conexión al guardar el evento', 'error');
+            }
+        });
+    }
+
+    // The rest of your DOMContentLoaded logic...
     if ('serviceWorker' in navigator && 'PushManager' in window) {
         try {
             const registration = await navigator.serviceWorker.register('/sw.js');
@@ -642,23 +558,21 @@ function renderNotifications(notifications) {
         if (!token) return;
 
         try {
-            const eventsResponse = await fetch('/api/events', { headers: { 'Authorization': `Bearer ${token}` } });
+            const eventsResponse = await fetch('/api/events', {
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
             const eventsData = await eventsResponse.json();
+            const formattedEvents = eventsData.data?.map(event => ({
+                id: event._id,
+                title: event.title,
+                date: new Date(event.date),
+                time: new Date(event.date).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }), // Extraer la hora del objeto Date
+                type: 'event',
+                color: event.color || '#FF5733'
+            })) || [];
 
-            let allActivities = [];
-
-            if (eventsResponse.ok && eventsData) {
-                const formattedEvents = eventsData.map(event => ({
-                    ...event,
-                    type: 'event',
-                    date: new Date(event.date),
-                    color: event.color || '#FF5733'
-                }));
-                allActivities = allActivities.concat(formattedEvents);
-            }
-
-            renderUserEvents(allActivities);
-
+            // Unificar y renderizar
+            renderUserEvents([...formattedEvents]);
         } catch (error) {
             console.error('Error fetching all activities:', error);
             showMessage('Error de conexión al cargar las actividades.', 'error');
