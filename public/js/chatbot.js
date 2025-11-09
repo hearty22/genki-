@@ -29,7 +29,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         try {
             const token = getCookie('authToken');
-            const response = await fetch('http://localhost:3000/api/chatbot/generate-dynamic', {
+            const response = await fetch('/api/chatbot/generate-dynamic', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
