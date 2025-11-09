@@ -179,48 +179,81 @@ async function fetchUpcomingEventsAndClasses() {
     }
 }
 
-/* ... existing code ... */
+document.addEventListener('DOMContentLoaded', () => {
+    const notificationsButton = document.getElementById('notifications-button');
+    const notificationModal = document.getElementById('notifications-modal');
+    const closeNotificationModal = document.getElementById('closeNotificationModal');
+    const clearNotificationsModalButton = document.getElementById('clear-notifications-modal-button');
+    const markAsReadButton = document.getElementById('mark-as-read-button');
 
-document.addEventListener('DOMContentLoaded', async () => {
-    // ... existing code ...
-    fetchAndRenderNotifications();
+    if (notificationsButton) {
+        notificationsButton.addEventListener('click', () => {
+            notificationModal.style.display = 'block';
+            fetchAndRenderNotifications();
+        });
+    }
 
-    const clearNotificationsButton = document.getElementById('clear-notifications-button');
-    if (clearNotificationsButton) {
-        clearNotificationsButton.addEventListener('click', async () => {
-            const token = getCookie('authToken') || localStorage.getItem('token');
-            if (!token) return;
+    if (closeNotificationModal) {
+        closeNotificationModal.addEventListener('click', () => {
+            notificationModal.style.display = 'none';
+        });
+    }
 
-            // Optimistically update the UI
-            const notificationsList = document.getElementById('notifications-list');
-            if (notificationsList) {
-                notificationsList.innerHTML = '<p>No hay notificaciones nuevas.</p>';
-            }
+    window.addEventListener('click', (event) => {
+        if (event.target == notificationModal) {
+            notificationModal.style.display = 'none';
+        }
+    });
 
+    if (clearNotificationsModalButton) {
+        clearNotificationsModalButton.addEventListener('click', async () => {
             try {
-                const response = await fetch('/api/notifications/mark-all-as-read', {
-                    method: 'PUT',
+                const authToken = getCookie('authToken');
+                const response = await fetch('/api/notifications', {
+                    method: 'DELETE',
                     headers: {
-                        'Authorization': `Bearer ${token}`
+                        'Authorization': `Bearer ${authToken}`
                     }
                 });
 
                 if (response.ok) {
-                    // Fetch notifications again to be sure
-                    fetchAndRenderNotifications();
+                    const notificationsContainer = document.getElementById('notifications-container-modal');
+                    notificationsContainer.innerHTML = '<p>No hay notificaciones nuevas.</p>';
+                } else {
+                    console.error('Error al limpiar las notificaciones');
                 }
             } catch (error) {
-                console.error('Error clearing notifications:', error);
+                console.error('Error en la solicitud para limpiar notificaciones:', error);
+            }
+        });
+    }
+
+    if (markAsReadButton) {
+        markAsReadButton.addEventListener('click', async () => {
+            try {
+                const authToken = getCookie('authToken');
+                const response = await fetch('/api/notifications/mark-all-as-read', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${authToken}`
+                    }
+                });
+
+                if (response.ok) {
+                    fetchAndRenderNotifications();
+                } else {
+                    console.error('Error al marcar las notificaciones como leídas');
+                }
+            } catch (error) {
+                console.error('Error en la solicitud para marcar notificaciones como leídas:', error);
             }
         });
     }
 });
 
 async function fetchAndRenderNotifications() {
-    const token = getCookie('authToken') || localStorage.getItem('token');
-    if (!token) return;
-
     try {
+        const token = getCookie("authToken")
         const response = await fetch('/api/notifications', {
             headers: { 'Authorization': `Bearer ${token}` }
         });
@@ -232,7 +265,7 @@ async function fetchAndRenderNotifications() {
 }
 
 function renderNotifications(notifications) {
-    const notificationsList = document.getElementById('notifications-list');
+    const notificationsList = document.getElementById('notifications-container-modal');
     if (!notificationsList) return;
 
     notificationsList.innerHTML = '';
@@ -244,12 +277,11 @@ function renderNotifications(notifications) {
 
     notifications.forEach(notification => {
         const notificationItem = document.createElement('div');
-        notificationItem.className = `notification-item ${notification.type}`;
+        notificationItem.classList.add('notification-item', `notification-${notification.type}`);
         notificationItem.innerHTML = `<p>${notification.message}</p>`;
         notificationsList.appendChild(notificationItem);
     });
 }
-
     // Toggle sidebar for mobile
     const menuToggle = document.getElementById('menu-toggle');
     const sidebar = document.querySelector('.sidebar');

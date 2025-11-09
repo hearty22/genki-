@@ -32,6 +32,7 @@
                 <button class="sidebar-button" onclick="location.href='profile'"><i class="fas fa-user"></i> Perfil</button>
                 <button class="sidebar-button" onclick="location.href='reports'"><i class="fas fa-chart-bar"></i> Reportes</button>
                 <button class="sidebar-button active" onclick="location.href='chatbot'"><i class="fas fa-robot"></i> Chatbot</button>
+                <button class="sidebar-button" id="notifications-button"><i class="fas fa-bell"></i> Notificaciones</button>
             </nav>
             <div class="sidebar-footer">
                 <button class="sidebar-button logout-button" id="logout-button"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</button>
@@ -50,11 +51,7 @@
                         <button id="add-class-button">Añadir Clase</button>
                     </div>
 
-                    <div class="notifications-section">
-                        <h2>Notificaciones</h2>
-                        <div class="notifications-list" id="notifications-list"></div>
-                        <button id="clear-notifications-button">Limpiar Notificaciones</button>
-                    </div>
+
 
                     <section id="my-activities-section" class="classes-section">
                         <h2>Mis Actividades</h2>
@@ -160,6 +157,15 @@
             </form>
         </div>
     </div>
+        <div id="notifications-modal" class="modal">
+            <div class="modal-content">
+                <span class="close-button" id="closeNotificationModal">&times;</span>
+                <h2>Notificaciones</h2>
+                <div id="notifications-container-modal"></div>
+                <button id="clear-notifications-modal-button" class="btn btn-secondary">Limpiar Notificaciones</button>
+                <button id="mark-as-read-button" class="btn btn-secondary">Marcar como leído</button>
+            </div>
+        </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/6.1.19/index.global.min.js"></script>
     <script src="./js/app.js"></script>
 </body>

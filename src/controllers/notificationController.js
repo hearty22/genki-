@@ -67,3 +67,16 @@ export const markAllAsRead = async (req, res) => {
     res.status(500).send('Server Error');
   }
 };
+
+// @desc    Clear all notifications for a user
+// @route   DELETE /api/notifications
+// @access  Private
+export const clearNotifications = async (req, res) => {
+  try {
+    await Notification.deleteMany({ user: req.user.id });
+    res.json({ msg: 'All notifications cleared' });
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).send('Server Error');
+  }
+};
