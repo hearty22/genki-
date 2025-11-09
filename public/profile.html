@@ -43,34 +43,45 @@
         </aside>
         <main class="main-content">
             <div id="profile-message" class="message-area"></div>
-            <h1>Mi Perfil</h1>
+            <div class="profile-container">
+                <div class="profile-header">
+                    <h1>Mi Perfil</h1>
+                </div>
 
-            <div class="profile-image-section styled-section">
-                <label for="profile-image-upload" class="profile-image-upload-label">
-                    <img id="profile-image-display" alt="Foto de Perfil" class="profile-image-display">
-                    <input type="file" id="profile-image-upload" accept="image/*" style="display: none;">
-                </label>
-                <button id="remove-image-button" class="button button-danger">Eliminar Imagen</button>
-                <button id="update-image-button" type="button" class="button">Actualizar Imagen</button>
-            </div>
+                <div class="profile-card">
+                    <div class="profile-image-section">
+                        <label for="profile-image-upload" class="profile-image-upload-label">
+                            <img id="profile-image-display" alt="Foto de Perfil" class="profile-image-display">
+                        </label>
+                        <input type="file" id="profile-image-upload" accept="image/*" style="display: none;">
+                        <div class="image-buttons">
+                            <button id="update-image-button" type="button" class="button">Actualizar Imagen</button>
+                            <button id="remove-image-button" class="button button-danger">Eliminar Imagen</button>
+                        </div>
+                    </div>
+                </div>
 
-            <form id="profile-form">
-                <div class="form-group">
-                    <label for="profile-email">Correo Electrónico:</label>
-                    <input type="email" id="profile-email" required>
+                <div class="profile-card">
+                    <form id="profile-form">
+                        <div class="form-group">
+                            <label for="profile-email">Correo Electrónico:</label>
+                            <input type="email" id="profile-email" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="profile-phone">Teléfono:</label>
+                            <input type="text" id="profile-phone">
+                        </div>
+                        <div class="form-group">
+                            <label for="profile-bio">Biografía:</label>
+                            <textarea id="profile-bio" rows="4"></textarea>
+                        </div>
+                        <button type="submit" class="button">Actualizar Perfil</button>
+                    </form>
                 </div>
-                <div class="form-group">
-                    <label for="profile-phone">Teléfono:</label>
-                    <input type="text" id="profile-phone">
+                
+                <div class="profile-actions">
+                    <button onclick="location.href='/dashboard'">Volver al Dashboard</button>
                 </div>
-                <div class="form-group">
-                    <label for="profile-bio">Biografía:</label>
-                    <textarea id="profile-bio" rows="4"></textarea>
-                </div>
-                <button type="submit" class="button">Actualizar Perfil</button>
-            </form>
-            <div class="profile-actions">
-                <button onclick="location.href='/dashboard'">Volver al Dashboard</button>
             </div>
         </main>
     </div>
