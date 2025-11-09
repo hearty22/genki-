@@ -2,7 +2,9 @@ import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import connectDB from './src/config/database.js';
+import subscriptionRoutes from './src/routes/subscriptionRoutes.js';
 import routes from './src/routes/index.js';
+import './src/services/notificationScheduler.js';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import "dotenv/config"
@@ -18,6 +20,20 @@ const __dirname = path.dirname(__filename);
 dotenv.config();
 
 // Crear aplicación Express
+import webPush from 'web-push';
+
+// Configurar VAPID
+const vapidKeys = {
+    publicKey: process.env.VAPID_PUBLIC_KEY,
+    privateKey: process.env.VAPID_PRIVATE_KEY
+};
+
+webPush.setVapidDetails(
+    'mailto:your-email@example.com',
+    vapidKeys.publicKey,
+    vapidKeys.privateKey
+);
+
 const app = express();
 
 // Conectar a la base de datos
@@ -58,6 +74,7 @@ if (process.env.NODE_ENV !== 'production') {
 
 // Rutas principales
 app.use('/api', routes);
+app.use('/api', subscriptionRoutes);
 
 // Ruta raíz  
 app.get('/', (req, res) => {

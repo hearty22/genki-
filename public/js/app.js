@@ -179,7 +179,49 @@ async function fetchUpcomingEventsAndClasses() {
     }
 }
 
-document.addEventListener('DOMContentLoaded', () => {
+function urlBase64ToUint8Array(base64String) {
+    const padding = '='.repeat((4 - base64String.length % 4) % 4);
+    const base64 = (base64String + padding)
+        .replace(/\-/g, '+')
+        .replace(/_/g, '/');
+
+    const rawData = window.atob(base64);
+    const outputArray = new Uint8Array(rawData.length);
+
+    for (let i = 0; i < rawData.length; ++i) {
+        outputArray[i] = rawData.charCodeAt(i);
+    }
+    return outputArray;
+}
+
+document.addEventListener('DOMContentLoaded', async () => {
+    if ('serviceWorker' in navigator && 'PushManager' in window) {
+        try {
+            const registration = await navigator.serviceWorker.register('/sw.js');
+            console.log('Service Worker registered');
+
+            const permission = await Notification.requestPermission();
+            if (permission === 'granted') {
+                console.log('Notification permission granted.');
+                const subscription = await registration.pushManager.subscribe({
+                    userVisibleOnly: true,
+                    applicationServerKey: urlBase64ToUint8Array('BAlZugHERLSrO4aYvmu3NPJFU7OZj7_hTBlSo17bZ08iDBo8rtdYkMZbJAR0ND9P39DqPUI6Fo4rs-ILMqqMH9k')
+                });
+
+                await fetch('/api/subscribe', {
+                    method: 'POST',
+                    body: JSON.stringify(subscription),
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${getCookie('authToken')}`
+                    }
+                });
+            }
+        } catch (error) {
+            console.error('Service Worker Error', error);
+        }
+    }
+
     const notificationsButton = document.getElementById('notifications-button');
     const notificationModal = document.getElementById('notifications-modal');
     const closeNotificationModal = document.getElementById('closeNotificationModal');

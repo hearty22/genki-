@@ -69,7 +69,10 @@ const userSchema = new mongoose.Schema({
 }, {
   timestamps: true,
   toJSON: { virtuals: true },
-  toObject: { virtuals: true }
+  toObject: { virtuals: true },
+  subscription: {
+    type: Object
+  }
 });
 
 // Virtual para nombre completo

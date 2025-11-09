@@ -37,12 +37,14 @@
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.19.1",
     "multer": "^2.0.2",
+    "node-cron": "^4.2.1",
     "nodemon": "^3.1.10",
     "passport": "^0.7.0",
     "passport-facebook": "^3.0.0",
     "passport-google-oauth20": "^2.0.0",
     "passport-microsoft": "^2.1.0",
     "pdfkit": "^0.17.2",
-    "pdfkit-table": "^0.1.99"
+    "pdfkit-table": "^0.1.99",
+    "web-push": "^3.6.7"
   }
 }
