@@ -4,9 +4,11 @@ import Attendance from '../models/Attendance.js'; // Import the Attendance model
 import Grade from '../models/Grade.js'; // Import the Grade model
 import Assessment from '../models/Assessment.js'; // Import the Assessment model
 import { hashPasswordDirect } from '../middleware/hashPassword.js'; // Import hashPasswordDirect utility
+import csv from 'csv-parser';
+import { Readable } from 'stream';
 
 // Create a new class
-export const createClass = async (req, res) => {
+const createClass = async (req, res) => {
     try {
         const { subjectName, courseGroup, dayOfWeek, startTime, endTime, location, color } = req.body;
         const newClass = new Class({
@@ -28,7 +30,7 @@ export const createClass = async (req, res) => {
 };
 
 // Get all classes for the authenticated user
-export const getClasses = async (req, res) => {
+const getClasses = async (req, res) => {
     try {
         const classes = await Class.find({ user: req.user.id });
         res.status(200).json(classes);
@@ -39,7 +41,7 @@ export const getClasses = async (req, res) => {
 };
 
 // Get a single class by ID
-export const getClassById = async (req, res) => {
+const getClassById = async (req, res) => {
     try {
         const { id } = req.params;
         const classItem = await Class.findOne({ _id: id, user: req.user.id }).populate('students');
@@ -63,7 +65,7 @@ export const getClassById = async (req, res) => {
 };
 
 // Update a class
-export const updateClass = async (req, res) => {
+const updateClass = async (req, res) => {
     try {
         const { id } = req.params;
         const { subjectName, courseGroup, dayOfWeek, startTime, endTime, location, color } = req.body;
@@ -86,7 +88,7 @@ export const updateClass = async (req, res) => {
 };
 
 // Delete a class
-export const deleteClass = async (req, res) => {
+const deleteClass = async (req, res) => {
     try {
         const { id } = req.params;
         const deletedClass = await Class.findOneAndDelete({ _id: id, user: req.user.id });
@@ -103,7 +105,7 @@ export const deleteClass = async (req, res) => {
 };
 
 // Get students by class
-export const getStudentsByClass = async (req, res) => {
+const getStudentsByClass = async (req, res) => {
     try {
         const { classId } = req.params;
         const classItem = await Class.findById(classId).populate('students');
@@ -128,7 +130,7 @@ export const getStudentsByClass = async (req, res) => {
 // @desc    Add a student to a class
 // @route   POST /api/classes/:id/students
 // @access  Private
-export const addStudentToClass = async (req, res) => {
+const addStudentToClass = async (req, res) => {
     try {
         const { name } = req.body;
         const classId = req.params.id;
@@ -191,7 +193,7 @@ export const addStudentToClass = async (req, res) => {
 // @desc    Remove a student from a class
 // @route   DELETE /api/classes/:id/students/:studentId
 // @access  Private
-export const removeStudentFromClass = async (req, res) => {
+const removeStudentFromClass = async (req, res) => {
     try {
         const { id, studentId } = req.params;
 
@@ -230,7 +232,7 @@ export const removeStudentFromClass = async (req, res) => {
 // @desc    Update a student in a class
 // @route   PUT /api/classes/:id/students/:studentId
 // @access  Private
-export const updateStudent = async (req, res) => {
+const updateStudent = async (req, res) => {
     try {
         const { studentId } = req.params;
         const { name } = req.body;
@@ -270,7 +272,7 @@ export const updateStudent = async (req, res) => {
 // @desc    Get all students for a class
 // @route   GET /api/classes/:id/students
 // @access  Private
-export const getStudentsForClass = async (req, res) => {
+const getStudentsForClass = async (req, res) => {
     try {
         const classId = req.params.id;
         const classData = await Class.findById(classId).populate('students', 'firstName lastName');
@@ -293,7 +295,7 @@ export const getStudentsForClass = async (req, res) => {
 };
 
 // Create a new student and add to a class
-export const createAndAddStudentToClass = async (req, res) => {
+const createAndAddStudentToClass = async (req, res) => {
     try {
         const { classId } = req.params;
         const { firstName, lastName } = req.body;
@@ -356,7 +358,7 @@ export const createAndAddStudentToClass = async (req, res) => {
 // @desc    Get dashboard statistics for a class
 // @route   GET /api/classes/:id/dashboard
 // @access  Private
-export const getDashboardStats = async (req, res) => {
+const getDashboardStats = async (req, res) => {
     try {
         const { id } = req.params;
         const classItem = await Class.findOne({ _id: id, user: req.user.id }).populate('students');
@@ -425,4 +427,100 @@ export const getDashboardStats = async (req, res) => {
         console.error('Error fetching dashboard stats:', error);
         res.status(500).json({ success: false, message: 'Error fetching dashboard stats', error: error.message });
     }
+};
+
+// @desc    Import students to a class
+// @route   POST /api/classes/:id/import-students
+// @access  Private
+const importStudents = async (req, res) => {
+    const { id } = req.params;
+    const { fromClassId } = req.body;
+
+    try {
+        const classToUpdate = await Class.findById(id);
+        if (!classToUpdate) {
+            return res.status(404).json({ message: 'Clase no encontrada.' });
+        }
+
+        if (req.file) {
+            // Import from CSV
+            const students = [];
+            const readable = new Readable();
+            readable._read = () => {}; // _read is required
+            readable.push(req.file.buffer);
+            readable.push(null);
+
+            readable
+                .pipe(csv())
+                .on('data', (row) => {
+                    students.push(row);
+                })
+                .on('end', async () => {
+                    try {
+                        for (const studentData of students) {
+                            const { firstName, lastName, email } = studentData;
+                            let student = await User.findOne({ email });
+
+                            if (!student) {
+                                student = new User({ 
+                                    firstName, 
+                                    lastName, 
+                                    email, 
+                                    role: 'student' 
+                                });
+                                await student.save();
+                            }
+
+                            if (!classToUpdate.students.includes(student._id)) {
+                                classToUpdate.students.push(student._id);
+                            }
+                        }
+
+                        await classToUpdate.save();
+                        const updatedClass = await Class.findById(id).populate('students', 'firstName lastName');
+                        const updatedStudents = updatedClass.students.map(s => ({ _id: s._id, name: `${s.firstName} ${s.lastName}` }));
+                        res.status(200).json(updatedStudents);
+                    } catch (error) {
+                        res.status(500).json({ message: 'Error procesando el archivo CSV.', error: error.message });
+                    }
+                });
+        } else if (fromClassId) {
+            // Copy from another class
+            const fromClass = await Class.findById(fromClassId);
+            if (!fromClass) {
+                return res.status(404).json({ message: 'Clase de origen no encontrada.' });
+            }
+
+            fromClass.students.forEach(studentId => {
+                if (!classToUpdate.students.includes(studentId)) {
+                    classToUpdate.students.push(studentId);
+                }
+            });
+
+            await classToUpdate.save();
+            const updatedClass = await Class.findById(id).populate('students', 'firstName lastName');
+            const updatedStudents = updatedClass.students.map(s => ({ _id: s._id, name: `${s.firstName} ${s.lastName}` }));
+            res.status(200).json(updatedStudents);
+        } else {
+            res.status(400).json({ message: 'No se proporcionó un archivo CSV o una clase de origen.' });
+        }
+    } catch (error) {
+        res.status(500).json({ message: 'Error al importar alumnos.', error: error.message });
+    }
+};
+
+export {
+    createClass,
+    getClasses,
+    getClassById,
+    updateClass,
+    deleteClass,
+    getStudentsByClass,
+    addStudentToClass,
+    removeStudentFromClass,
+    updateStudent,
+    getStudentsForClass,
+    createAndAddStudentToClass,
+    getDashboardStats,
+    importStudents
 };

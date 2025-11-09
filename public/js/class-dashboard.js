@@ -11,6 +11,18 @@ document.addEventListener('DOMContentLoaded', async () => {
     const studentNameInput = document.getElementById('student-name');
     const closeModalButton = studentModal.querySelector('.close-button');
 
+    // Import Students Modal Elements
+    const importStudentsModal = document.getElementById('import-students-modal');
+    const importStudentsButton = document.getElementById('import-students-button');
+    const closeImportModalButton = importStudentsModal.querySelector('.close-button');
+    const importCsvButton = document.getElementById('import-csv-button');
+    const copyFromClassButton = document.getElementById('copy-from-class-button');
+    const importCsvSection = document.getElementById('import-csv-section');
+    const copyFromClassSection = document.getElementById('copy-from-class-section');
+    const importCsvForm = document.getElementById('import-csv-form');
+    const copyFromClassForm = document.getElementById('copy-from-class-form');
+    const classSelect = document.getElementById('class-select');
+
     let averageGradeChart = null;
 
     function getCookie(name) {
@@ -22,7 +34,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // --- Data Fetching ---
     async function fetchData(url, options = {}) {
-        console.log('Fetching data with options:', options); // Log options
         const response = await fetch(url, options);
         if (response.status === 401) {
             window.location.href = 'login';
@@ -91,6 +102,96 @@ document.addEventListener('DOMContentLoaded', async () => {
     window.addEventListener('click', (event) => {
         if (event.target === studentModal) {
             closeStudentModal();
+        }
+    });
+
+    // --- Import Students --- 
+    function openImportModal() {
+        importStudentsModal.style.display = 'block';
+        importCsvSection.style.display = 'none';
+        copyFromClassSection.style.display = 'none';
+    }
+
+    function closeImportModal() {
+        importStudentsModal.style.display = 'none';
+    }
+
+    async function loadTeacherClasses() {
+        const authToken = getCookie('authToken');
+        const options = { headers: { 'Authorization': `Bearer ${authToken}` } };
+        try {
+            const classes = await fetchData('/api/classes', options);
+            classSelect.innerHTML = '';
+            classes.forEach(cls => {
+                const option = document.createElement('option');
+                option.value = cls._id;
+                option.textContent = `${cls.subjectName} - ${cls.courseGroup}`;
+                classSelect.appendChild(option);
+            });
+        } catch (error) {
+            console.error('Error loading teacher classes:', error);
+        }
+    }
+
+    importStudentsButton.addEventListener('click', openImportModal);
+    closeImportModalButton.addEventListener('click', closeImportModal);
+    importCsvButton.addEventListener('click', () => {
+        importCsvSection.style.display = 'block';
+        copyFromClassSection.style.display = 'none';
+    });
+
+    copyFromClassButton.addEventListener('click', () => {
+        importCsvSection.style.display = 'none';
+        copyFromClassSection.style.display = 'block';
+        loadTeacherClasses();
+    });
+
+    importCsvForm.addEventListener('submit', async (event) => {
+        event.preventDefault();
+        const classId = new URLSearchParams(window.location.search).get('classId');
+        const authToken = getCookie('authToken');
+        const formData = new FormData(importCsvForm);
+
+        try {
+            const updatedStudents = await fetchData(`/api/classes/${classId}/import-students`, {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${authToken}`
+                },
+                body: formData
+            });
+            renderStudents(updatedStudents);
+            closeImportModal();
+        } catch (error) {
+            console.error('Error importing from CSV:', error);
+        }
+    });
+
+    copyFromClassForm.addEventListener('submit', async (event) => {
+        event.preventDefault();
+        const classId = new URLSearchParams(window.location.search).get('classId');
+        const authToken = getCookie('authToken');
+        const fromClassId = classSelect.value;
+
+        try {
+            const updatedStudents = await fetchData(`/api/classes/${classId}/import-students`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${authToken}`
+                },
+                body: JSON.stringify({ fromClassId })
+            });
+            renderStudents(updatedStudents);
+            closeImportModal();
+        } catch (error) {
+            console.error('Error copying from another class:', error);
+        }
+    });
+
+    window.addEventListener('click', (event) => {
+        if (event.target === importStudentsModal) {
+            closeImportModal();
         }
     });
 

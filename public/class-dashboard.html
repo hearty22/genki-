@@ -61,6 +61,7 @@
                 <div class="student-management-section">
                     <h3>Alumnos</h3>
                     <button id="add-student-button" class="btn btn-primary">Añadir Alumno</button>
+                    <button id="import-students-button" class="btn btn-secondary">Importar Alumnos</button>
                     <table id="students-table" class="table">
                         <thead>
                             <tr>
@@ -90,6 +91,40 @@
                 </div>
                 <button type="submit" class="btn btn-primary">Guardar</button>
             </form>
+        </div>
+    </div>
+
+    <!-- Import Students Modal -->
+    <div id="import-students-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <h3 id="import-students-modal-title">Importar Alumnos</h3>
+            <div class="import-options">
+                <button id="import-csv-button" class="btn btn-primary">Importar desde CSV</button>
+                <button id="copy-from-class-button" class="btn btn-primary">Copiar de otra clase</button>
+            </div>
+            <div id="import-csv-section" class="import-section" style="display: none;">
+                <h4>Importar desde CSV</h4>
+                <form id="import-csv-form">
+                    <div class="form-group">
+                        <label for="csv-file">Seleccionar archivo CSV:</label>
+                        <input type="file" id="csv-file" accept=".csv" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Importar</button>
+                </form>
+            </div>
+            <div id="copy-from-class-section" class="import-section" style="display: none;">
+                <h4>Copiar de otra clase</h4>
+                <form id="copy-from-class-form">
+                    <div class="form-group">
+                        <label for="class-select">Seleccionar clase:</label>
+                        <select id="class-select" required>
+                            <!-- Options will be populated dynamically -->
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Copiar</button>
+                </form>
+            </div>
         </div>
     </div>
 

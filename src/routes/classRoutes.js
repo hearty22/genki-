@@ -1,4 +1,5 @@
 import { Router } from 'express';
+import multer from 'multer';
 import {
     getClasses,
     getClassById,
@@ -9,17 +10,22 @@ import {
     removeStudentFromClass,
     getStudentsForClass,
     getDashboardStats,
-    updateStudent
+    updateStudent,
+    importStudents
 } from '../controllers/classController.js';
 import { authenticateToken, requireRole } from '../middleware/auth.js';
 
 const router = Router();
+const upload = multer({ storage: multer.memoryStorage() });
 
 router.route('/').get(authenticateToken, getClasses).post(authenticateToken, createClass);
 router.route('/:id').get(authenticateToken, getClassById).put(authenticateToken, updateClass).delete(authenticateToken, deleteClass);
 
 // Ruta para las estadísticas del dashboard
 router.route('/:id/dashboard').get(authenticateToken, getDashboardStats);
+
+// Rutas para importar alumnos
+router.route('/:id/import-students').post(authenticateToken, upload.single('csv'), importStudents);
 
 // Rutas para administrar alumnos en una clase
 router.route('/:id/students')
