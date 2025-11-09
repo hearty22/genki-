@@ -75,7 +75,7 @@ function showMessage(message, type, messageContainerId) {
                 if (!isValid) return;
 
                 
-                if (!token) {
+                if (!authToken){
                     showMessage('No autenticado. Inicia sesión nuevamente.', 'error');
                     return;
                 }
@@ -339,6 +339,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             }
 
             try {
+                const token = getCookie("authToken");
                 const response = await fetch(url, {
                     method: method,
                     headers: {
