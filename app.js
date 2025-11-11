@@ -61,7 +61,7 @@ app.use(passport.session());
 app.use(express.static(path.join(__dirname, 'public'), { extensions: ['html'] }));
 
 app.get('/class-dashboard', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'class-dashboard.html'));
+  res.sendFile(path.join(__dirname, 'public', 'class-dashboard'));
 });
 
 // Middleware de logging para desarrollo
